@@ -3,6 +3,7 @@ import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import BasicForm from "./components/BasicForm";
 import VehicleDamage from "./components/VehicleDamage";
+import ReviewForm from "./components/ReviewForm";
 
 import "./App.css";
 
@@ -23,7 +24,7 @@ function App() {
         <Header />
 
 
-        {/* PROGRESS STEPS */}
+        {/*  PROGRESS STEPS */}
 
         <div className="step-title">
 
@@ -80,7 +81,8 @@ function App() {
         </div>
 
 
-        {/* STEP 1 */}
+
+        {/* STEP */}
 
         {step === 1 && (
 
@@ -91,13 +93,28 @@ function App() {
         )}
 
 
-        {/* STEP 2 */}
+
+        {/* STEP */}
 
         {step === 2 && (
 
           <VehicleDamage
             onBack={() => setStep(1)}
             onContinue={() => setStep(3)}
+          />
+
+        )}
+
+
+
+        {/*STEP 3 */}
+
+        {step === 3 && (
+
+          <ReviewForm
+            onBack={() => setStep(2)}
+            onEditIncident={() => setStep(1)}
+            onEditVehicle={() => setStep(2)}
           />
 
         )}

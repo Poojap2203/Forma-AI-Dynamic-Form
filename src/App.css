@@ -330,6 +330,83 @@ body {
   border-radius: 8px;
 }
 
+/*INJURY DETAILS */
+
+.injury-details {
+  margin-top: 5px;
+}
+
+
+/*POLICE REPORT */
+
+.police-question {
+  margin-top: 22px;
+}
+
+
+/* DESCRIPTION */
+
+.description {
+  margin-top: 22px;
+}
+
+.description label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.description textarea {
+  width: 100%;
+  min-height: 110px;
+  padding: 13px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #1f2937;
+  outline: none;
+}
+
+.description textarea::placeholder {
+  color: #6b7280;
+}
+
+.description textarea:focus {
+  border-color: #6366f1;
+}
+
+
+/*CHARACTER COUNT */
+
+.character-count {
+  text-align: right;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+
+/* SAVE MESSAGE*/
+
+.save-message {
+  padding: 12px;
+  margin-top: 15px;
+  background: #ecfdf5;
+  color: #047857;
+  border-radius: 8px;
+}
+
+
+/*ERROR */
+
+.form-error {
+  padding: 12px;
+  margin-top: 15px;
+  background: #fee2e2;
+  color: #b91c1c;
+  border-radius: 8px;
+}
+
 /*RESPONSIVE*/
 
 @media (max-width: 800px) {

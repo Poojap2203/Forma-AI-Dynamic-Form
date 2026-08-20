@@ -2,18 +2,43 @@ import { useState } from "react";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
 import TextareaField from "./TextareaField";
+import InjuryDetails from "./InjuryDetails";
+import PoliceReport from "./PoliceReport";
 
 
 function BasicForm() {
 
   const [injured, setInjured] = useState("");
+  const [person, setPerson] = useState("");
+  const [injury, setInjury] = useState("");
+
+  const [policeReport, setPoliceReport] = useState("");
+
+  const [description, setDescription] = useState("");
+
   const [error, setError] = useState("");
 
+  const [saved, setSaved] = useState(false);
+
+
+  /* =========================
+     CONTINUE
+  ========================= */
 
   const handleContinue = () => {
 
     if (injured === "") {
       setError("Please select whether anyone was injured.");
+      return;
+    }
+
+    if (policeReport === "") {
+      setError("Please select whether a police report was filed.");
+      return;
+    }
+
+    if (description.trim() === "") {
+      setError("Please describe what happened.");
       return;
     }
 
@@ -23,11 +48,40 @@ function BasicForm() {
   };
 
 
+  /* =========================
+     SAVE DRAFT
+  ========================= */
+
+  const handleSaveDraft = () => {
+
+    const draftData = {
+      injured,
+      person,
+      injury,
+      policeReport,
+      description
+    };
+
+    localStorage.setItem(
+      "formaAI_draft",
+      JSON.stringify(draftData)
+    );
+
+    setSaved(true);
+
+    setTimeout(() => {
+      setSaved(false);
+    }, 2000);
+  };
+
+
   return (
     <div className="form-card">
 
 
-      {/* FORM HEADING */}
+      {/* =========================
+          FORM HEADING
+      ========================= */}
 
       <div className="form-heading">
 
@@ -49,10 +103,11 @@ function BasicForm() {
 
 
 
-      {/* FORM FIELDS */}
+      {/* =========================
+          BASIC INFORMATION
+      ========================= */}
 
       <div className="form-grid">
-
 
         <SelectField
           label="Incident Type"
@@ -65,30 +120,28 @@ function BasicForm() {
           ]}
         />
 
-
         <InputField
           label="Date of Incident"
           type="date"
         />
-
 
         <InputField
           label="Time of Incident"
           type="time"
         />
 
-
         <InputField
           label="Location"
           placeholder="Enter incident location"
         />
 
-
       </div>
 
 
 
-      {/* INJURY QUESTION */}
+      {/* =========================
+          INJURY
+      ========================= */}
 
       <div className="question">
 
@@ -96,9 +149,7 @@ function BasicForm() {
           Was anyone injured?
         </label>
 
-
         <div className="choice-container">
-
 
           <button
             type="button"
@@ -115,7 +166,6 @@ function BasicForm() {
             Yes
           </button>
 
-
           <button
             type="button"
             className={
@@ -125,12 +175,15 @@ function BasicForm() {
             }
             onClick={() => {
               setInjured("no");
+
+              setPerson("");
+              setInjury("");
+
               setError("");
             }}
           >
             No
           </button>
-
 
         </div>
 
@@ -138,16 +191,65 @@ function BasicForm() {
 
 
 
-      {/* DESCRIPTION */}
+      {/* =========================
+          INJURY DETAILS
+      ========================= */}
 
-      <TextareaField
-        label="Describe what happened"
-        placeholder="Tell us what happened..."
+      <InjuryDetails
+        injured={injured}
+        person={person}
+        setPerson={setPerson}
+        injury={injury}
+        setInjury={setInjury}
       />
 
 
 
-      {/* ERROR MESSAGE */}
+      {/* =========================
+          POLICE REPORT
+      ========================= */}
+
+      <PoliceReport
+        policeReport={policeReport}
+        setPoliceReport={setPoliceReport}
+      />
+
+
+
+      {/* =========================
+          DESCRIPTION
+      ========================= */}
+
+      <div className="description">
+
+        <label>
+          Describe what happened
+        </label>
+
+        <textarea
+          value={description}
+          onChange={(e) => {
+
+            if (e.target.value.length <= 500) {
+              setDescription(e.target.value);
+            }
+
+          }}
+          placeholder="Tell us what happened..."
+          maxLength="500"
+        />
+
+        <div className="character-count">
+          {description.length} / 500
+        </div>
+
+      </div>
+
+
+
+      {/* =========================
+          ERROR
+      ========================= */}
 
       {error && (
         <div className="form-error">
@@ -157,21 +259,31 @@ function BasicForm() {
 
 
 
-      {/* BUTTONS */}
+      {/* =========================
+          SUCCESS
+      ========================= */}
+
+      {saved && (
+        <div className="save-message">
+          Draft saved successfully!
+        </div>
+      )}
+
+
+
+      {/* =========================
+          BUTTONS
+      ========================= */}
 
       <div className="form-buttons">
-
 
         <button
           type="button"
           className="save"
-          onClick={() => {
-            alert("Draft saved!");
-          }}
+          onClick={handleSaveDraft}
         >
           Save Draft
         </button>
-
 
         <button
           type="button"
@@ -180,7 +292,6 @@ function BasicForm() {
         >
           Continue →
         </button>
-
 
       </div>
 

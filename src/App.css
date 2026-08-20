@@ -556,6 +556,10 @@ body {
   margin-bottom: 25px;
   color: #6b7280;
 }
+
+.review-item strong {
+  word-break: break-word;
+}
 /*RESPONSIVE*/
 
 @media (max-width: 800px) {

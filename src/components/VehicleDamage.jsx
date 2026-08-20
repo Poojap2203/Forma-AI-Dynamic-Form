@@ -1,29 +1,51 @@
 import { useState } from "react";
+function VehicleDamage({
+  initialData,
+  onBack,
+  onContinue
+}) {
 
-function VehicleDamage({ onBack, onContinue }) {
+  const [vehicleMake, setVehicleMake] = useState(
+    initialData?.vehicleMake || ""
+  );
 
-  const [vehicleMake, setVehicleMake] = useState("");
-  const [vehicleModel, setVehicleModel] = useState("");
-  const [registration, setRegistration] = useState("");
-  const [damageType, setDamageType] = useState("");
-  const [severity, setSeverity] = useState("");
-  const [damageDescription, setDamageDescription] = useState("");
+  const [vehicleModel, setVehicleModel] = useState(
+    initialData?.vehicleModel || ""
+  );
+
+  const [registration, setRegistration] = useState(
+    initialData?.registration || ""
+  );
+
+  const [damageType, setDamageType] = useState(
+    initialData?.damageType || ""
+  );
+
+  const [severity, setSeverity] = useState(
+    initialData?.severity || ""
+  );
+
+  const [damageDescription, setDamageDescription] =
+    useState(
+      initialData?.damageDescription || ""
+    );
 
   const [error, setError] = useState("");
 
+
   const handleContinue = () => {
 
-    if (vehicleMake === "") {
+    if (vehicleMake.trim() === "") {
       setError("Please enter the vehicle make.");
       return;
     }
 
-    if (vehicleModel === "") {
+    if (vehicleModel.trim() === "") {
       setError("Please enter the vehicle model.");
       return;
     }
 
-    if (registration === "") {
+    if (registration.trim() === "") {
       setError("Please enter the vehicle registration number.");
       return;
     }
@@ -38,16 +60,35 @@ function VehicleDamage({ onBack, onContinue }) {
       return;
     }
 
+    if (damageDescription.trim() === "") {
+      setError("Please describe the damage.");
+      return;
+    }
+
+
+    const formData = {
+      vehicleMake,
+      vehicleModel,
+      registration,
+      damageType,
+      severity,
+      damageDescription
+    };
+
+
     setError("");
 
-    onContinue();
+    onContinue(formData);
+
   };
 
 
   return (
+
     <div className="form-card">
 
-      {/* FORM HEADING */}
+
+      {/* HEADER */}
 
       <div className="form-heading">
 
@@ -56,17 +97,20 @@ function VehicleDamage({ onBack, onContinue }) {
         </div>
 
         <div>
+
           <h2>Vehicle & Damage</h2>
 
           <p>
             Tell us about your vehicle and the damage.
           </p>
+
         </div>
 
       </div>
 
 
-      {/* VEHICLE DETAILS */}
+
+      {/* VEHICLE */}
 
       <h3 className="section-title">
         Vehicle Details
@@ -75,6 +119,7 @@ function VehicleDamage({ onBack, onContinue }) {
 
       <div className="form-grid">
 
+
         <div className="form-group">
 
           <label>
@@ -82,10 +127,17 @@ function VehicleDamage({ onBack, onContinue }) {
           </label>
 
           <input
+
             type="text"
+
             value={vehicleMake}
-            onChange={(e) => setVehicleMake(e.target.value)}
+
+            onChange={(e) =>
+              setVehicleMake(e.target.value)
+            }
+
             placeholder="e.g. Honda"
+
           />
 
         </div>
@@ -98,10 +150,17 @@ function VehicleDamage({ onBack, onContinue }) {
           </label>
 
           <input
+
             type="text"
+
             value={vehicleModel}
-            onChange={(e) => setVehicleModel(e.target.value)}
+
+            onChange={(e) =>
+              setVehicleModel(e.target.value)
+            }
+
             placeholder="e.g. City"
+
           />
 
         </div>
@@ -114,10 +173,17 @@ function VehicleDamage({ onBack, onContinue }) {
           </label>
 
           <input
+
             type="text"
+
             value={registration}
-            onChange={(e) => setRegistration(e.target.value)}
+
+            onChange={(e) =>
+              setRegistration(e.target.value)
+            }
+
             placeholder="e.g. MP09AB1234"
+
           />
 
         </div>
@@ -125,7 +191,8 @@ function VehicleDamage({ onBack, onContinue }) {
       </div>
 
 
-      {/* DAMAGE DETAILS */}
+
+      {/* DAMAGE */}
 
       <h3 className="section-title damage-title">
         Damage Details
@@ -134,6 +201,7 @@ function VehicleDamage({ onBack, onContinue }) {
 
       <div className="form-grid">
 
+
         <div className="form-group">
 
           <label>
@@ -141,8 +209,13 @@ function VehicleDamage({ onBack, onContinue }) {
           </label>
 
           <select
+
             value={damageType}
-            onChange={(e) => setDamageType(e.target.value)}
+
+            onChange={(e) =>
+              setDamageType(e.target.value)
+            }
+
           >
 
             <option value="">
@@ -185,8 +258,13 @@ function VehicleDamage({ onBack, onContinue }) {
           </label>
 
           <select
+
             value={severity}
-            onChange={(e) => setSeverity(e.target.value)}
+
+            onChange={(e) =>
+              setSeverity(e.target.value)
+            }
+
           >
 
             <option value="">
@@ -216,6 +294,7 @@ function VehicleDamage({ onBack, onContinue }) {
       </div>
 
 
+
       {/* DAMAGE DESCRIPTION */}
 
       <div className="description">
@@ -224,60 +303,89 @@ function VehicleDamage({ onBack, onContinue }) {
           Describe the Damage
         </label>
 
+
         <textarea
+
           value={damageDescription}
+
           onChange={(e) => {
 
             if (e.target.value.length <= 500) {
-              setDamageDescription(e.target.value);
+
+              setDamageDescription(
+                e.target.value
+              );
+
             }
 
           }}
+
           maxLength="500"
+
           placeholder="Describe the damage to your vehicle..."
+
         />
 
+
         <div className="character-count">
+
           {damageDescription.length} / 500
+
         </div>
 
       </div>
 
 
+
       {/* ERROR */}
 
       {error && (
+
         <div className="form-error">
           {error}
         </div>
+
       )}
+
 
 
       {/* BUTTONS */}
 
       <div className="form-buttons">
 
+
         <button
+
           type="button"
+
           className="secondary-button"
+
           onClick={onBack}
+
         >
           ← Back
         </button>
 
 
         <button
+
           type="button"
+
           className="continue"
+
           onClick={handleContinue}
+
         >
           Continue →
         </button>
 
+
       </div>
+
 
     </div>
   );
 }
+
 
 export default VehicleDamage;

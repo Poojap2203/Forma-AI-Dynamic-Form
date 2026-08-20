@@ -13,18 +13,44 @@ function App() {
   const [step, setStep] = useState(1);
 
 
+  // Incident Details
+  const [incidentData, setIncidentData] = useState({
+    incidentType: "",
+    date: "",
+    time: "",
+    location: "",
+    injured: "",
+    person: "",
+    injury: "",
+    policeReport: "",
+    description: ""
+  });
+
+
+  // Vehicle & Damage
+  const [vehicleData, setVehicleData] = useState({
+    vehicleMake: "",
+    vehicleModel: "",
+    registration: "",
+    damageType: "",
+    severity: "",
+    damageDescription: ""
+  });
+
+
   return (
     <div className="app">
 
       <Sidebar />
-
 
       <main className="main">
 
         <Header />
 
 
-        {/*  PROGRESS STEPS */}
+        {/* =========================
+            PROGRESS
+        ========================= */}
 
         <div className="step-title">
 
@@ -38,9 +64,7 @@ function App() {
             1
           </div>
 
-          <span>
-            Incident Details
-          </span>
+          <span>Incident Details</span>
 
 
           <div className="line"></div>
@@ -56,9 +80,7 @@ function App() {
             2
           </div>
 
-          <span>
-            Vehicle & Damage
-          </span>
+          <span>Vehicle & Damage</span>
 
 
           <div className="line"></div>
@@ -74,47 +96,80 @@ function App() {
             3
           </div>
 
-          <span>
-            Review
-          </span>
+          <span>Review</span>
 
         </div>
 
 
 
-        {/* STEP */}
+        {/* =========================
+            STEP 1
+        ========================= */}
 
         {step === 1 && (
 
           <BasicForm
-            onContinue={() => setStep(2)}
+
+            initialData={incidentData}
+
+            onContinue={(data) => {
+
+              setIncidentData(data);
+
+              setStep(2);
+
+            }}
+
           />
 
         )}
 
 
 
-        {/* STEP */}
+        {/* =========================
+            STEP 2
+        ========================= */}
 
         {step === 2 && (
 
           <VehicleDamage
+
+            initialData={vehicleData}
+
             onBack={() => setStep(1)}
-            onContinue={() => setStep(3)}
+
+            onContinue={(data) => {
+
+              setVehicleData(data);
+
+              setStep(3);
+
+            }}
+
           />
 
         )}
 
 
 
-        {/*STEP 3 */}
+        {/* =========================
+            STEP 3
+        ========================= */}
 
         {step === 3 && (
 
           <ReviewForm
+
+            incidentData={incidentData}
+
+            vehicleData={vehicleData}
+
             onBack={() => setStep(2)}
+
             onEditIncident={() => setStep(1)}
+
             onEditVehicle={() => setStep(2)}
+
           />
 
         )}

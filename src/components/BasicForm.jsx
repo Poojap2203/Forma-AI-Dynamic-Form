@@ -1,64 +1,122 @@
 import { useState } from "react";
-import InputField from "./InputField";
-import SelectField from "./SelectField";
-import InjuryDetails from "./InjuryDetails";
-import PoliceReport from "./PoliceReport";
+function BasicForm({ initialData, onContinue }) {
 
+  const [incidentType, setIncidentType] = useState(
+    initialData?.incidentType || ""
+  );
 
-function BasicForm({ onContinue }) {
+  const [date, setDate] = useState(
+    initialData?.date || ""
+  );
 
-  const [injured, setInjured] = useState("");
-  const [person, setPerson] = useState("");
-  const [injury, setInjury] = useState("");
+  const [time, setTime] = useState(
+    initialData?.time || ""
+  );
 
-  const [policeReport, setPoliceReport] = useState("");
+  const [location, setLocation] = useState(
+    initialData?.location || ""
+  );
 
-  const [description, setDescription] = useState("");
+  const [injured, setInjured] = useState(
+    initialData?.injured || ""
+  );
+
+  const [person, setPerson] = useState(
+    initialData?.person || ""
+  );
+
+  const [injury, setInjury] = useState(
+    initialData?.injury || ""
+  );
+
+  const [policeReport, setPoliceReport] = useState(
+    initialData?.policeReport || ""
+  );
+
+  const [description, setDescription] = useState(
+    initialData?.description || ""
+  );
 
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
 
 
-  /*CONTINUE */
-
   const handleContinue = () => {
 
-    if (injured === "") {
+    // Incident Type
+    if (!incidentType) {
+      setError("Please select an incident type.");
+      return;
+    }
+
+    // Date
+    if (!date) {
+      setError("Please select the incident date.");
+      return;
+    }
+
+    // Location
+    if (!location.trim()) {
+      setError("Please enter the incident location.");
+      return;
+    }
+
+    // Injury
+    if (!injured) {
       setError("Please select whether anyone was injured.");
       return;
     }
 
-    if (injured === "yes" && person === "") {
+    // If injured = yes
+    if (injured === "yes" && !person) {
       setError("Please select who was injured.");
       return;
     }
 
-    if (injured === "yes" && injury.trim() === "") {
+    if (injured === "yes" && !injury.trim()) {
       setError("Please describe the injury.");
       return;
     }
 
-    if (policeReport === "") {
+    // Police report
+    if (!policeReport) {
       setError("Please select whether a police report was filed.");
       return;
     }
 
-    if (description.trim() === "") {
+    // Description
+    if (!description.trim()) {
       setError("Please describe what happened.");
       return;
     }
 
+
+    const formData = {
+      incidentType,
+      date,
+      time,
+      location,
+      injured,
+      person,
+      injury,
+      policeReport,
+      description
+    };
+
+
     setError("");
 
-    onContinue();
+    onContinue(formData);
   };
 
-
-  /* SAVE DRAFT*/
 
   const handleSaveDraft = () => {
 
     const draftData = {
+      incidentType,
+      date,
+      time,
+      location,
       injured,
       person,
       injury,
@@ -67,7 +125,7 @@ function BasicForm({ onContinue }) {
     };
 
     localStorage.setItem(
-      "formaAI_draft",
+      "formaAI_incident_draft",
       JSON.stringify(draftData)
     );
 
@@ -80,10 +138,11 @@ function BasicForm({ onContinue }) {
 
 
   return (
+
     <div className="form-card">
 
 
-      {/* FORM HEADING */}
+      {/* FORM HEADER */}
 
       <div className="form-heading">
 
@@ -93,7 +152,9 @@ function BasicForm({ onContinue }) {
 
         <div>
 
-          <h2>Incident Details</h2>
+          <h2>
+            Incident Details
+          </h2>
 
           <p>
             Tell us more about what happened.
@@ -105,44 +166,124 @@ function BasicForm({ onContinue }) {
 
 
 
-      {/* BASIC INFORMATION*/}
+      {/* FIRST ROW */}
 
       <div className="form-grid">
 
-        <SelectField
-          label="Incident Type"
-          options={[
-            "Road Accident",
-            "Vehicle Theft",
-            "Natural Disaster",
-            "Fire",
-            "Other"
-          ]}
-        />
+
+        {/* INCIDENT TYPE */}
+
+        <div className="form-group">
+
+          <label>
+            Incident Type
+          </label>
+
+          <select
+            value={incidentType}
+            onChange={(e) => {
+              setIncidentType(e.target.value);
+              setError("");
+            }}
+          >
+
+            <option value="">
+              Select Incident Type
+            </option>
+
+            <option value="Road Accident">
+              Road Accident
+            </option>
+
+            <option value="Vehicle Theft">
+              Vehicle Theft
+            </option>
+
+            <option value="Natural Disaster">
+              Natural Disaster
+            </option>
+
+            <option value="Fire">
+              Fire
+            </option>
+
+            <option value="Other">
+              Other
+            </option>
+
+          </select>
+
+        </div>
 
 
-        <InputField
-          label="Date of Incident"
-          type="date"
-        />
+
+        {/* DATE */}
+
+        <div className="form-group">
+
+          <label>
+            Date of Incident
+          </label>
+
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => {
+              setDate(e.target.value);
+              setError("");
+            }}
+          />
+
+        </div>
 
 
-        <InputField
-          label="Time of Incident"
-          type="time"
-        />
+
+        {/* TIME */}
+
+        <div className="form-group">
+
+          <label>
+            Time of Incident
+          </label>
+
+          <input
+            type="time"
+            value={time}
+            onChange={(e) => {
+              setTime(e.target.value);
+              setError("");
+            }}
+          />
+
+        </div>
 
 
-        <InputField
-          label="Location"
-          placeholder="Enter incident location"
-        />
+
+        {/* LOCATION */}
+
+        <div className="form-group">
+
+          <label>
+            Location
+          </label>
+
+          <input
+            type="text"
+            placeholder="Enter incident location"
+            value={location}
+            onChange={(e) => {
+              setLocation(e.target.value);
+              setError("");
+            }}
+          />
+
+        </div>
 
       </div>
 
 
 
-      {/*INJURY QUESTION */}
+      {/* INJURY QUESTION */}
 
       <div className="question">
 
@@ -166,7 +307,7 @@ function BasicForm({ onContinue }) {
               setError("");
             }}
           >
-            Yes
+            😟 Yes
           </button>
 
 
@@ -180,16 +321,14 @@ function BasicForm({ onContinue }) {
             onClick={() => {
 
               setInjured("no");
-
               setPerson("");
               setInjury("");
-
               setError("");
+
             }}
           >
-            No
+            🙂 No
           </button>
-
 
         </div>
 
@@ -197,24 +336,123 @@ function BasicForm({ onContinue }) {
 
 
 
-      {/* INJURY DETAILS*/}
+      {/* INJURY DETAILS */}
 
-      <InjuryDetails
-        injured={injured}
-        person={person}
-        setPerson={setPerson}
-        injury={injury}
-        setInjury={setInjury}
-      />
+      {injured === "yes" && (
+
+        <div className="form-grid">
+
+
+          <div className="form-group">
+
+            <label>
+              Who was injured?
+            </label>
+
+            <select
+              value={person}
+              onChange={(e) => {
+                setPerson(e.target.value);
+                setError("");
+              }}
+            >
+
+              <option value="">
+                Select Person
+              </option>
+
+              <option value="Driver">
+                Driver
+              </option>
+
+              <option value="Passenger">
+                Passenger
+              </option>
+
+              <option value="Pedestrian">
+                Pedestrian
+              </option>
+
+              <option value="Other">
+                Other
+              </option>
+
+            </select>
+
+          </div>
+
+
+
+          <div className="form-group">
+
+            <label>
+              Describe the injury
+            </label>
+
+            <input
+              type="text"
+              placeholder="Describe the injury"
+              value={injury}
+              onChange={(e) => {
+                setInjury(e.target.value);
+                setError("");
+              }}
+            />
+
+          </div>
+
+        </div>
+
+      )}
 
 
 
       {/* POLICE REPORT */}
 
-      <PoliceReport
-        policeReport={policeReport}
-        setPoliceReport={setPoliceReport}
-      />
+      <div className="question">
+
+        <label>
+          Police Report Filed?
+        </label>
+
+
+        <div className="choice-container">
+
+
+          <button
+            type="button"
+            className={
+              policeReport === "yes"
+                ? "choice active"
+                : "choice"
+            }
+            onClick={() => {
+              setPoliceReport("yes");
+              setError("");
+            }}
+          >
+            Yes
+          </button>
+
+
+          <button
+            type="button"
+            className={
+              policeReport === "no"
+                ? "choice active"
+                : "choice"
+            }
+            onClick={() => {
+              setPoliceReport("no");
+              setError("");
+            }}
+          >
+            No
+          </button>
+
+        </div>
+
+      </div>
 
 
 
@@ -226,20 +464,19 @@ function BasicForm({ onContinue }) {
           Describe what happened
         </label>
 
-
         <textarea
           value={description}
           onChange={(e) => {
 
             if (e.target.value.length <= 500) {
               setDescription(e.target.value);
+              setError("");
             }
 
           }}
           maxLength="500"
           placeholder="Tell us what happened..."
         />
-
 
         <div className="character-count">
           {description.length} / 500
@@ -249,30 +486,33 @@ function BasicForm({ onContinue }) {
 
 
 
-      {/* ERROR MESSAGE*/}
+      {/* ERROR */}
 
       {error && (
+
         <div className="form-error">
           {error}
         </div>
+
       )}
 
 
 
-      {/*SAVE MESSAGE*/}
+      {/* SAVE MESSAGE */}
 
       {saved && (
+
         <div className="save-message">
           Draft saved successfully!
         </div>
+
       )}
 
 
 
-      {/*BUTTONS */}
+      {/* BUTTONS */}
 
       <div className="form-buttons">
-
 
         <button
           type="button"
@@ -291,11 +531,11 @@ function BasicForm({ onContinue }) {
           Continue →
         </button>
 
-
       </div>
 
 
     </div>
+
   );
 }
 

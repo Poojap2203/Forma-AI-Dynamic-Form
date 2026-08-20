@@ -407,6 +407,35 @@ body {
   border-radius: 8px;
 }
 
+/*SECTION TITLE*/
+
+.section-title {
+  margin: 5px 0 18px;
+  font-size: 17px;
+  color: #1f2937;
+}
+
+.damage-title {
+  margin-top: 25px;
+}
+
+
+/* BACK BUTTON */
+
+.secondary-button {
+  padding: 11px 18px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #1f2937;
+  cursor: pointer;
+}
+
+.secondary-button:hover {
+  border-color: #6366f1;
+  color: #4f46e5;
+}
+
 /*RESPONSIVE*/
 
 @media (max-width: 800px) {

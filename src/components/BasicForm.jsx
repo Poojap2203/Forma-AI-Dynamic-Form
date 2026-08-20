@@ -1,12 +1,11 @@
 import { useState } from "react";
 import InputField from "./InputField";
 import SelectField from "./SelectField";
-import TextareaField from "./TextareaField";
 import InjuryDetails from "./InjuryDetails";
 import PoliceReport from "./PoliceReport";
 
 
-function BasicForm() {
+function BasicForm({ onContinue }) {
 
   const [injured, setInjured] = useState("");
   const [person, setPerson] = useState("");
@@ -17,18 +16,25 @@ function BasicForm() {
   const [description, setDescription] = useState("");
 
   const [error, setError] = useState("");
-
   const [saved, setSaved] = useState(false);
 
 
-  /* =========================
-     CONTINUE
-  ========================= */
+  /*CONTINUE */
 
   const handleContinue = () => {
 
     if (injured === "") {
       setError("Please select whether anyone was injured.");
+      return;
+    }
+
+    if (injured === "yes" && person === "") {
+      setError("Please select who was injured.");
+      return;
+    }
+
+    if (injured === "yes" && injury.trim() === "") {
+      setError("Please describe the injury.");
       return;
     }
 
@@ -44,13 +50,11 @@ function BasicForm() {
 
     setError("");
 
-    alert("Form details are ready!");
+    onContinue();
   };
 
 
-  /* =========================
-     SAVE DRAFT
-  ========================= */
+  /* SAVE DRAFT*/
 
   const handleSaveDraft = () => {
 
@@ -79,9 +83,7 @@ function BasicForm() {
     <div className="form-card">
 
 
-      {/* =========================
-          FORM HEADING
-      ========================= */}
+      {/* FORM HEADING */}
 
       <div className="form-heading">
 
@@ -103,9 +105,7 @@ function BasicForm() {
 
 
 
-      {/* =========================
-          BASIC INFORMATION
-      ========================= */}
+      {/* BASIC INFORMATION*/}
 
       <div className="form-grid">
 
@@ -120,15 +120,18 @@ function BasicForm() {
           ]}
         />
 
+
         <InputField
           label="Date of Incident"
           type="date"
         />
 
+
         <InputField
           label="Time of Incident"
           type="time"
         />
+
 
         <InputField
           label="Location"
@@ -139,9 +142,7 @@ function BasicForm() {
 
 
 
-      {/* =========================
-          INJURY
-      ========================= */}
+      {/*INJURY QUESTION */}
 
       <div className="question">
 
@@ -149,7 +150,9 @@ function BasicForm() {
           Was anyone injured?
         </label>
 
+
         <div className="choice-container">
+
 
           <button
             type="button"
@@ -166,6 +169,7 @@ function BasicForm() {
             Yes
           </button>
 
+
           <button
             type="button"
             className={
@@ -174,6 +178,7 @@ function BasicForm() {
                 : "choice"
             }
             onClick={() => {
+
               setInjured("no");
 
               setPerson("");
@@ -185,15 +190,14 @@ function BasicForm() {
             No
           </button>
 
+
         </div>
 
       </div>
 
 
 
-      {/* =========================
-          INJURY DETAILS
-      ========================= */}
+      {/* INJURY DETAILS*/}
 
       <InjuryDetails
         injured={injured}
@@ -205,9 +209,7 @@ function BasicForm() {
 
 
 
-      {/* =========================
-          POLICE REPORT
-      ========================= */}
+      {/* POLICE REPORT */}
 
       <PoliceReport
         policeReport={policeReport}
@@ -216,15 +218,14 @@ function BasicForm() {
 
 
 
-      {/* =========================
-          DESCRIPTION
-      ========================= */}
+      {/* DESCRIPTION */}
 
       <div className="description">
 
         <label>
           Describe what happened
         </label>
+
 
         <textarea
           value={description}
@@ -235,9 +236,10 @@ function BasicForm() {
             }
 
           }}
-          placeholder="Tell us what happened..."
           maxLength="500"
+          placeholder="Tell us what happened..."
         />
+
 
         <div className="character-count">
           {description.length} / 500
@@ -247,9 +249,7 @@ function BasicForm() {
 
 
 
-      {/* =========================
-          ERROR
-      ========================= */}
+      {/* ERROR MESSAGE*/}
 
       {error && (
         <div className="form-error">
@@ -259,9 +259,7 @@ function BasicForm() {
 
 
 
-      {/* =========================
-          SUCCESS
-      ========================= */}
+      {/*SAVE MESSAGE*/}
 
       {saved && (
         <div className="save-message">
@@ -271,11 +269,10 @@ function BasicForm() {
 
 
 
-      {/* =========================
-          BUTTONS
-      ========================= */}
+      {/*BUTTONS */}
 
       <div className="form-buttons">
+
 
         <button
           type="button"
@@ -285,6 +282,7 @@ function BasicForm() {
           Save Draft
         </button>
 
+
         <button
           type="button"
           className="continue"
@@ -292,6 +290,7 @@ function BasicForm() {
         >
           Continue →
         </button>
+
 
       </div>
 

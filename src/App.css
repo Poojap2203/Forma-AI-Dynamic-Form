@@ -254,7 +254,7 @@ body {
   gap: 15px;
 }
 
-.choice {
+ .choice {
   width: 100px;
   padding: 11px;
   border: 1px solid #d1d5db;
@@ -269,9 +269,9 @@ body {
 }
 
 .choice.active {
-  background: #eef2ff;
+  background: #6366f1;
   border-color: #6366f1;
-  color: #4f46e5;
+  color: white;
 }
 
 
@@ -322,6 +322,13 @@ body {
   background: #4f46e5;
 }
 
+.form-error {
+  padding: 12px;
+  margin-top: 15px;
+  background: #fee2e2;
+  color: #b91c1c;
+  border-radius: 8px;
+}
 
 /*RESPONSIVE*/
 

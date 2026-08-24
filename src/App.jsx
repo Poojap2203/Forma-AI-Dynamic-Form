@@ -1,18 +1,29 @@
-import { useEffect, useState } from "react";
+ import { useEffect, useState } from "react";
+
 import "./App.css";
+
 import BasicForm from "./components/BasicForm";
+
 import VehicleDamage from "./components/VehicleDamage";
+
 import AISummary from "./components/AISummary";
+
 import ReviewForm from "./components/ReviewForm";
+
 import MyClaims from "./components/MyClaims";
+
 import ClaimTracking from "./components/ClaimTracking";
+
 import Notifications from "./components/Notifications";
+
+import Templates from "./components/Templates";
+
+import AIAssistant from "./components/AIAssistant";
 
 
 function App() {
 
   const [currentStep, setCurrentStep] =
-
     useState(2);
 
 
@@ -21,12 +32,9 @@ function App() {
      ========================= */
 
   const [showNotifications, setShowNotifications] =
-
     useState(false);
 
-
   const [notificationCount, setNotificationCount] =
-
     useState(0);
 
 
@@ -35,24 +43,16 @@ function App() {
     try {
 
       const notifications =
-
         JSON.parse(
-
           localStorage.getItem(
-
             "formaAI_notifications"
-
           ) || "[]"
-
         );
 
 
       const unread =
-
         notifications.filter(
-
           (item) => !item.read
-
         ).length;
 
 
@@ -75,22 +75,18 @@ function App() {
 
 
   const [activePage, setActivePage] =
-
     useState("newClaim");
 
 
   const [trackingClaim, setTrackingClaim] =
-
     useState(null);
 
 
   const [draftLoaded, setDraftLoaded] =
-
     useState(false);
 
 
   const [formData, setFormData] =
-
     useState({
 
       incidentType: "",
@@ -127,25 +123,17 @@ function App() {
 
 
   /* =========================
-
      INCIDENT
-
      ========================= */
 
   const handleIncidentContinue =
-
     (data) => {
 
       setFormData(
-
         (previous) => ({
-
           ...previous,
-
           ...data
-
         })
-
       );
 
       setCurrentStep(3);
@@ -154,25 +142,17 @@ function App() {
 
 
   /* =========================
-
      VEHICLE
-
      ========================= */
 
   const handleVehicleContinue =
-
     (data) => {
 
       setFormData(
-
         (previous) => ({
-
           ...previous,
-
           ...data
-
         })
-
       );
 
       setCurrentStep(4);
@@ -213,35 +193,26 @@ function App() {
 
 
   /* =========================
-
      SAVE COMPLETE DRAFT
-
      ========================= */
 
   const handleSaveCompleteDraft = () => {
 
     localStorage.setItem(
-
       "formaAI_complete_draft",
-
       JSON.stringify(formData)
-
     );
 
 
     alert(
-
       "Complete claim draft saved successfully!"
-
     );
 
   };
 
 
   /* =========================
-
      LOAD DRAFT
-
      ========================= */
 
   const handleLoadDraft = () => {
@@ -249,58 +220,37 @@ function App() {
     try {
 
       const completeDraft =
-
         JSON.parse(
-
           localStorage.getItem(
-
             "formaAI_complete_draft"
-
           ) || "null"
-
         );
 
 
       const incidentDraft =
-
         JSON.parse(
-
           localStorage.getItem(
-
             "formaAI_incident_draft"
-
           ) || "null"
-
         );
 
 
       const vehicleDraft =
-
         JSON.parse(
-
           localStorage.getItem(
-
             "formaAI_vehicle_draft"
-
           ) || "null"
-
         );
 
 
       if (
-
         !completeDraft &&
-
         !incidentDraft &&
-
         !vehicleDraft
-
       ) {
 
         alert(
-
           "No saved draft found."
-
         );
 
         return;
@@ -309,7 +259,6 @@ function App() {
 
 
       setFormData(
-
         (previous) => ({
 
           ...previous,
@@ -321,7 +270,6 @@ function App() {
           ...(vehicleDraft || {})
 
         })
-
       );
 
 
@@ -334,15 +282,11 @@ function App() {
     } catch (error) {
 
       console.error(
-
         error
-
       );
 
       alert(
-
         "Unable to load the saved draft."
-
       );
 
     }
@@ -351,9 +295,7 @@ function App() {
 
 
   /* =========================
-
      NEW CLAIM
-
      ========================= */
 
   const handleNewClaim = () => {
@@ -404,42 +346,33 @@ function App() {
 
 
     localStorage.removeItem(
-
       "formaAI_incident_draft"
-
     );
 
-    localStorage.removeItem(
 
+    localStorage.removeItem(
       "formaAI_vehicle_draft"
-
     );
 
+
     localStorage.removeItem(
-
       "formaAI_complete_draft"
-
     );
 
   };
 
 
   /* =========================
-
      TRACK CLAIM
-
      ========================= */
 
   const handleTrackClaim =
-
     (claim) => {
 
       setTrackingClaim(claim);
 
       setActivePage(
-
         "claimTracking"
-
       );
 
     };
@@ -463,6 +396,7 @@ function App() {
 
           </div>
 
+
           <div>
 
             <h2>
@@ -470,6 +404,7 @@ function App() {
               Forma AI
 
             </h2>
+
 
             <span>
 
@@ -494,9 +429,7 @@ function App() {
             onClick={() => {
 
               setActivePage(
-
                 "newClaim"
-
               );
 
               setCurrentStep(2);
@@ -533,9 +466,7 @@ function App() {
             onClick={() => {
 
               setActivePage(
-
                 "newClaim"
-
               );
 
               setCurrentStep(2);
@@ -572,9 +503,7 @@ function App() {
             onClick={() => {
 
               setActivePage(
-
                 "myClaims"
-
               );
 
             }}
@@ -599,9 +528,7 @@ function App() {
             className="menu-item"
 
             onClick={
-
               handleLoadDraft
-
             }
 
           >
@@ -614,6 +541,7 @@ function App() {
 
             </span>
 
+
             <span className="notification-badge">
 
               2
@@ -623,7 +551,31 @@ function App() {
           </div>
 
 
-          <div className="menu-item">
+          {/* =========================
+              TEMPLATES
+              ========================= */}
+
+          <div
+
+            className={
+
+              activePage === "templates"
+
+                ? "menu-item active-menu"
+
+                : "menu-item"
+
+            }
+
+            onClick={() => {
+
+              setActivePage(
+                "templates"
+              );
+
+            }}
+
+          >
 
             ▦
 
@@ -636,7 +588,31 @@ function App() {
           </div>
 
 
-          <div className="menu-item">
+          {/* =========================
+              AI ASSISTANT
+              ========================= */}
+
+          <div
+
+            className={
+
+              activePage === "aiAssistant"
+
+                ? "menu-item active-menu"
+
+                : "menu-item"
+
+            }
+
+            onClick={() => {
+
+              setActivePage(
+                "aiAssistant"
+              );
+
+            }}
+
+          >
 
             ✨
 
@@ -648,6 +624,8 @@ function App() {
 
           </div>
 
+
+          {/* INSIGHTS */}
 
           <div className="menu-item">
 
@@ -662,6 +640,8 @@ function App() {
           </div>
 
 
+          {/* SETTINGS */}
+
           <div className="menu-item">
 
             ⚙
@@ -673,6 +653,7 @@ function App() {
             </span>
 
           </div>
+
 
         </nav>
 
@@ -687,6 +668,7 @@ function App() {
 
           </h4>
 
+
           <p>
 
             Describe your incident in your own words
@@ -697,6 +679,7 @@ function App() {
 
           </p>
 
+
           <button
 
             type="button"
@@ -704,9 +687,7 @@ function App() {
             onClick={() => {
 
               setActivePage(
-
                 "newClaim"
-
               );
 
               setCurrentStep(2);
@@ -732,6 +713,7 @@ function App() {
 
           </div>
 
+
           <div className="user-info">
 
             <strong>
@@ -739,6 +721,7 @@ function App() {
               Anjali Sharma
 
             </strong>
+
 
             <small>
 
@@ -748,6 +731,7 @@ function App() {
 
           </div>
 
+
           <span className="user-arrow">
 
             ⌄
@@ -755,6 +739,7 @@ function App() {
           </span>
 
         </div>
+
 
       </aside>
 
@@ -768,6 +753,7 @@ function App() {
 
         <header className="top-header">
 
+
           <div className="header-text">
 
             <h1>
@@ -776,13 +762,20 @@ function App() {
 
                 ? "My "
 
-                : activePage ===
-
-                  "claimTracking"
+                : activePage === "claimTracking"
 
                 ? "Claim "
 
+                : activePage === "templates"
+
+                ? "Claim "
+
+                : activePage === "aiAssistant"
+
+                ? "AI "
+
                 : "Create "}
+
 
               <span>
 
@@ -790,11 +783,17 @@ function App() {
 
                   ? "Claims"
 
-                  : activePage ===
-
-                    "claimTracking"
+                  : activePage === "claimTracking"
 
                   ? "Tracking"
+
+                  : activePage === "templates"
+
+                  ? "Templates"
+
+                  : activePage === "aiAssistant"
+
+                  ? "Assistant"
 
                   : "Insurance Claim"}
 
@@ -814,6 +813,7 @@ function App() {
 
           <div className="header-right">
 
+
             <button
 
               type="button"
@@ -828,10 +828,11 @@ function App() {
 
 
             {/* =========================
-                DAY 12 NOTIFICATION
+                NOTIFICATION
                 ========================= */}
 
             <div className="notification-wrapper">
+
 
               <button
 
@@ -842,10 +843,9 @@ function App() {
                 onClick={() => {
 
                   setShowNotifications(
-
                     !showNotifications
-
                   );
+
 
                   setTimeout(
 
@@ -884,9 +884,7 @@ function App() {
                 <Notifications
 
                   onClose={() =>
-
                     setShowNotifications(false)
-
                   }
 
                 />
@@ -898,11 +896,13 @@ function App() {
 
             <div className="header-user">
 
+
               <div className="header-avatar">
 
                 A
 
               </div>
+
 
               <span>
 
@@ -910,48 +910,83 @@ function App() {
 
               </span>
 
+
               <span>
 
                 ⌄
 
               </span>
 
+
             </div>
+
 
           </div>
 
         </header>
 
 
-        {/* ================= TRACKING ================= */}
+        {/* =========================
+            TEMPLATES PAGE
+            ========================= */}
 
-        {activePage ===
+        {activePage === "templates" ? (
 
-          "claimTracking" ? (
+          <Templates
+
+            onBack={() => {
+
+              setActivePage("newClaim");
+
+              setCurrentStep(2);
+
+            }}
+
+          />
+
+        ) : activePage === "aiAssistant" ? (
+
+
+          /* =========================
+             AI ASSISTANT PAGE
+             ========================= */
+
+          <AIAssistant
+
+            onBack={() => {
+
+              setActivePage("newClaim");
+
+              setCurrentStep(2);
+
+            }}
+
+          />
+
+
+        ) : activePage === "claimTracking" ? (
+
+
+          /* ================= TRACKING ================= */
 
           <ClaimTracking
 
             claim={
-
               trackingClaim
-
             }
 
             onBack={() => {
 
               setActivePage(
-
                 "myClaims"
-
               );
 
             }}
 
           />
 
-        ) : activePage ===
 
-          "myClaims" ? (
+        ) : activePage === "myClaims" ? (
 
 
           /* ================= MY CLAIMS ================= */
@@ -959,21 +994,15 @@ function App() {
           <MyClaims
 
             onCreateNewClaim={
-
               handleNewClaim
-
             }
 
             onRestoreDraft={
-
               handleLoadDraft
-
             }
 
             onTrackClaim={
-
               handleTrackClaim
-
             }
 
           />
@@ -985,6 +1014,7 @@ function App() {
           /* ================= NEW CLAIM ================= */
 
           <>
+
 
             {/* STEPPER */}
 
@@ -999,11 +1029,13 @@ function App() {
 
                 </div>
 
+
                 <strong>
 
                   Describe Incident
 
                 </strong>
+
 
                 <span>
 
@@ -1042,11 +1074,13 @@ function App() {
 
                 </div>
 
+
                 <strong>
 
                   Incident Details
 
                 </strong>
+
 
                 <span>
 
@@ -1089,11 +1123,13 @@ function App() {
 
                 </div>
 
+
                 <strong>
 
                   Vehicle & Damage
 
                 </strong>
+
 
                 <span>
 
@@ -1132,11 +1168,13 @@ function App() {
 
                 </div>
 
+
                 <strong>
 
                   Review & Submit
 
                 </strong>
+
 
                 <span>
 
@@ -1149,6 +1187,7 @@ function App() {
                 </span>
 
               </div>
+
 
             </div>
 
@@ -1179,15 +1218,11 @@ function App() {
                   <BasicForm
 
                     initialData={
-
                       formData
-
                     }
 
                     onContinue={
-
                       handleIncidentContinue
-
                     }
 
                   />
@@ -1200,21 +1235,15 @@ function App() {
                   <VehicleDamage
 
                     initialData={
-
                       formData
-
                     }
 
                     onBack={
-
                       handleVehicleBack
-
                     }
 
                     onContinue={
-
                       handleVehicleContinue
-
                     }
 
                   />
@@ -1227,39 +1256,27 @@ function App() {
                   <ReviewForm
 
                     incidentData={
-
                       formData
-
                     }
 
                     vehicleData={
-
                       formData
-
                     }
 
                     onBack={
-
                       handleReviewBack
-
                     }
 
                     onEditIncident={
-
                       handleEditIncident
-
                     }
 
                     onEditVehicle={
-
                       handleEditVehicle
-
                     }
 
                     onNewClaim={
-
                       handleNewClaim
-
                     }
 
                   />
@@ -1276,9 +1293,7 @@ function App() {
                     className="complete-draft-button"
 
                     onClick={
-
                       handleSaveCompleteDraft
-
                     }
 
                   >
@@ -1289,6 +1304,7 @@ function App() {
 
                 )}
 
+
               </div>
 
 
@@ -1297,24 +1313,23 @@ function App() {
               <AISummary
 
                 formData={
-
                   formData
-
                 }
 
                 onEditIncident={
-
                   handleEditIncident
-
                 }
 
               />
 
+
             </div>
+
 
           </>
 
         )}
+
 
       </main>
 

@@ -1,9 +1,6 @@
 import { useState } from "react";
-function VehicleDamage({
-  initialData,
-  onBack,
-  onContinue
-}) {
+
+function VehicleDamage({ initialData, onBack, onContinue }) {
 
   const [vehicleMake, setVehicleMake] = useState(
     initialData?.vehicleMake || ""
@@ -26,47 +23,89 @@ function VehicleDamage({
   );
 
   const [damageDescription, setDamageDescription] =
-    useState(
-      initialData?.damageDescription || ""
-    );
+    useState(initialData?.damageDescription || "");
 
   const [error, setError] = useState("");
+  const [listening, setListening] = useState(false);
 
+
+  /* VOICE INPUT */
+
+  const handleVoiceInput = () => {
+
+    if (!("webkitSpeechRecognition" in window)) {
+      alert("Voice input is not supported in this browser.");
+      return;
+    }
+
+    const recognition = new window.webkitSpeechRecognition();
+
+    recognition.lang = "en-IN";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    setListening(true);
+    recognition.start();
+
+    recognition.onresult = (event) => {
+
+      const text =
+        event.results[0][0].transcript;
+
+      setDamageDescription((previous) =>
+        previous.trim()
+          ? previous + " " + text
+          : text
+      );
+
+      setListening(false);
+    };
+
+    recognition.onerror = () => {
+      setListening(false);
+    };
+
+    recognition.onend = () => {
+      setListening(false);
+    };
+  };
+
+
+  /* CONTINUE */
 
   const handleContinue = () => {
 
-    if (vehicleMake.trim() === "") {
+    if (!vehicleMake.trim()) {
       setError("Please enter the vehicle make.");
       return;
     }
 
-    if (vehicleModel.trim() === "") {
+    if (!vehicleModel.trim()) {
       setError("Please enter the vehicle model.");
       return;
     }
 
-    if (registration.trim() === "") {
+    if (!registration.trim()) {
       setError("Please enter the vehicle registration number.");
       return;
     }
 
-    if (damageType === "") {
+    if (!damageType) {
       setError("Please select the damage type.");
       return;
     }
 
-    if (severity === "") {
+    if (!severity) {
       setError("Please select the damage severity.");
       return;
     }
 
-    if (damageDescription.trim() === "") {
+    if (!damageDescription.trim()) {
       setError("Please describe the damage.");
       return;
     }
 
-
-    const formData = {
+    const data = {
       vehicleMake,
       vehicleModel,
       registration,
@@ -75,18 +114,14 @@ function VehicleDamage({
       damageDescription
     };
 
-
     setError("");
-
-    onContinue(formData);
-
+    onContinue(data);
   };
 
 
   return (
 
     <div className="form-card">
-
 
       {/* HEADER */}
 
@@ -97,20 +132,17 @@ function VehicleDamage({
         </div>
 
         <div>
-
           <h2>Vehicle & Damage</h2>
 
           <p>
             Tell us about your vehicle and the damage.
           </p>
-
         </div>
 
       </div>
 
 
-
-      {/* VEHICLE */}
+      {/* VEHICLE DETAILS */}
 
       <h3 className="section-title">
         Vehicle Details
@@ -119,7 +151,6 @@ function VehicleDamage({
 
       <div className="form-grid">
 
-
         <div className="form-group">
 
           <label>
@@ -127,17 +158,13 @@ function VehicleDamage({
           </label>
 
           <input
-
             type="text"
-
             value={vehicleMake}
-
-            onChange={(e) =>
-              setVehicleMake(e.target.value)
-            }
-
+            onChange={(e) => {
+              setVehicleMake(e.target.value);
+              setError("");
+            }}
             placeholder="e.g. Honda"
-
           />
 
         </div>
@@ -150,17 +177,13 @@ function VehicleDamage({
           </label>
 
           <input
-
             type="text"
-
             value={vehicleModel}
-
-            onChange={(e) =>
-              setVehicleModel(e.target.value)
-            }
-
+            onChange={(e) => {
+              setVehicleModel(e.target.value);
+              setError("");
+            }}
             placeholder="e.g. City"
-
           />
 
         </div>
@@ -173,17 +196,13 @@ function VehicleDamage({
           </label>
 
           <input
-
             type="text"
-
             value={registration}
-
-            onChange={(e) =>
-              setRegistration(e.target.value)
-            }
-
+            onChange={(e) => {
+              setRegistration(e.target.value);
+              setError("");
+            }}
             placeholder="e.g. MP09AB1234"
-
           />
 
         </div>
@@ -191,8 +210,7 @@ function VehicleDamage({
       </div>
 
 
-
-      {/* DAMAGE */}
+      {/* DAMAGE DETAILS */}
 
       <h3 className="section-title damage-title">
         Damage Details
@@ -201,7 +219,6 @@ function VehicleDamage({
 
       <div className="form-grid">
 
-
         <div className="form-group">
 
           <label>
@@ -209,13 +226,11 @@ function VehicleDamage({
           </label>
 
           <select
-
             value={damageType}
-
-            onChange={(e) =>
-              setDamageType(e.target.value)
-            }
-
+            onChange={(e) => {
+              setDamageType(e.target.value);
+              setError("");
+            }}
           >
 
             <option value="">
@@ -258,13 +273,11 @@ function VehicleDamage({
           </label>
 
           <select
-
             value={severity}
-
-            onChange={(e) =>
-              setSeverity(e.target.value)
-            }
-
+            onChange={(e) => {
+              setSeverity(e.target.value);
+              setError("");
+            }}
           >
 
             <option value="">
@@ -294,8 +307,7 @@ function VehicleDamage({
       </div>
 
 
-
-      {/* DAMAGE DESCRIPTION */}
+      {/* DESCRIPTION */}
 
       <div className="description">
 
@@ -303,89 +315,87 @@ function VehicleDamage({
           Describe the Damage
         </label>
 
-
         <textarea
-
           value={damageDescription}
-
-          onChange={(e) => {
-
-            if (e.target.value.length <= 500) {
-
-              setDamageDescription(
-                e.target.value
-              );
-
-            }
-
-          }}
-
           maxLength="500"
-
           placeholder="Describe the damage to your vehicle..."
-
+          onChange={(e) => {
+            setDamageDescription(e.target.value);
+            setError("");
+          }}
         />
 
-
         <div className="character-count">
-
           {damageDescription.length} / 500
-
         </div>
 
       </div>
 
 
+      {/* VOICE */}
+
+      <div className="voice-input-box">
+
+        <div className="voice-icon">
+          🎙️
+        </div>
+
+        <div>
+
+          <strong>
+            Voice Input
+          </strong>
+
+          <p>
+            Describe the damage using your voice
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          className="voice-button"
+          onClick={handleVoiceInput}
+        >
+          {listening ? "🔴" : "🎤"}
+        </button>
+
+      </div>
+
 
       {/* ERROR */}
 
       {error && (
-
         <div className="form-error">
           {error}
         </div>
-
       )}
-
 
 
       {/* BUTTONS */}
 
       <div className="form-buttons">
 
-
         <button
-
           type="button"
-
           className="secondary-button"
-
           onClick={onBack}
-
         >
           ← Back
         </button>
 
-
         <button
-
           type="button"
-
           className="continue"
-
           onClick={handleContinue}
-
         >
           Continue →
         </button>
 
-
       </div>
-
 
     </div>
   );
 }
-
 
 export default VehicleDamage;

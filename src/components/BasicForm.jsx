@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
 function BasicForm({ initialData, onContinue }) {
+
   const [incidentType, setIncidentType] = useState(
     initialData?.incidentType || ""
   );
@@ -40,49 +42,33 @@ function BasicForm({ initialData, onContinue }) {
   const [saved, setSaved] = useState(false);
 
 
-  /*
-    IMPORTANT:
-    Jab user Step 1 se Step 2 par aayega,
-    initialData ki values yahan update hongi.
-  */
-
-  useEffect(() => {
-    setIncidentType(initialData?.incidentType || "");
-    setDate(initialData?.date || "");
-    setTime(initialData?.time || "");
-    setLocation(initialData?.location || "");
-    setInjured(initialData?.injured || "");
-    setPerson(initialData?.person || "");
-    setInjury(initialData?.injury || "");
-    setPoliceReport(initialData?.policeReport || "");
-    setDescription(initialData?.description || "");
-  }, [initialData]);
-
-
-  /*CONTINUE */
-
   const handleContinue = () => {
 
+    // Incident Type
     if (!incidentType) {
       setError("Please select an incident type.");
       return;
     }
 
+    // Date
     if (!date) {
       setError("Please select the incident date.");
       return;
     }
 
+    // Location
     if (!location.trim()) {
       setError("Please enter the incident location.");
       return;
     }
 
+    // Injury
     if (!injured) {
       setError("Please select whether anyone was injured.");
       return;
     }
 
+    // If injured = yes
     if (injured === "yes" && !person) {
       setError("Please select who was injured.");
       return;
@@ -93,16 +79,13 @@ function BasicForm({ initialData, onContinue }) {
       return;
     }
 
+    // Police report
     if (!policeReport) {
       setError("Please select whether a police report was filed.");
       return;
     }
 
-    /*
-      Description ab bhi yahan maintain kiya hai
-      because tumhare existing form mein ye field hai.
-    */
-
+    // Description
     if (!description.trim()) {
       setError("Please describe what happened.");
       return;
@@ -110,8 +93,6 @@ function BasicForm({ initialData, onContinue }) {
 
 
     const formData = {
-      ...initialData,
-
       incidentType,
       date,
       time,
@@ -126,22 +107,13 @@ function BasicForm({ initialData, onContinue }) {
 
     setError("");
 
-    /*
-      Parent App.jsx ko complete data bhejega.
-      Iske baad App.jsx currentStep ko 3 karega.
-    */
-
     onContinue(formData);
   };
 
 
-  /* SAVE DRAFT */
-
   const handleSaveDraft = () => {
 
     const draftData = {
-      ...initialData,
-
       incidentType,
       date,
       time,
@@ -153,15 +125,12 @@ function BasicForm({ initialData, onContinue }) {
       description
     };
 
-
     localStorage.setItem(
       "formaAI_incident_draft",
       JSON.stringify(draftData)
     );
 
-
     setSaved(true);
-
 
     setTimeout(() => {
       setSaved(false);
@@ -170,6 +139,7 @@ function BasicForm({ initialData, onContinue }) {
 
 
   return (
+
     <div className="form-card">
 
 
@@ -196,7 +166,8 @@ function BasicForm({ initialData, onContinue }) {
       </div>
 
 
-      {/*FIRST ROW*/}
+
+      {/* FIRST ROW */}
 
       <div className="form-grid">
 
@@ -246,6 +217,7 @@ function BasicForm({ initialData, onContinue }) {
         </div>
 
 
+
         {/* DATE */}
 
         <div className="form-group">
@@ -266,6 +238,7 @@ function BasicForm({ initialData, onContinue }) {
         </div>
 
 
+
         {/* TIME */}
 
         <div className="form-group">
@@ -284,6 +257,7 @@ function BasicForm({ initialData, onContinue }) {
           />
 
         </div>
+
 
 
         {/* LOCATION */}
@@ -309,6 +283,7 @@ function BasicForm({ initialData, onContinue }) {
       </div>
 
 
+
       {/* INJURY QUESTION */}
 
       <div className="question">
@@ -317,10 +292,9 @@ function BasicForm({ initialData, onContinue }) {
           Was anyone injured?
         </label>
 
+
         <div className="choice-container">
 
-
-          {/* YES */}
 
           <button
             type="button"
@@ -338,8 +312,6 @@ function BasicForm({ initialData, onContinue }) {
           </button>
 
 
-          {/* NO */}
-
           <button
             type="button"
             className={
@@ -348,10 +320,12 @@ function BasicForm({ initialData, onContinue }) {
                 : "choice"
             }
             onClick={() => {
+
               setInjured("no");
               setPerson("");
               setInjury("");
               setError("");
+
             }}
           >
             🙂 No
@@ -362,14 +336,13 @@ function BasicForm({ initialData, onContinue }) {
       </div>
 
 
-      {/* INJURY DETAILS*/}
+
+      {/* INJURY DETAILS */}
 
       {injured === "yes" && (
 
         <div className="form-grid">
 
-
-          {/* PERSON */}
 
           <div className="form-group">
 
@@ -410,7 +383,6 @@ function BasicForm({ initialData, onContinue }) {
           </div>
 
 
-          {/* INJURY */}
 
           <div className="form-group">
 
@@ -435,7 +407,8 @@ function BasicForm({ initialData, onContinue }) {
       )}
 
 
-      {/* POLICE REPORT*/}
+
+      {/* POLICE REPORT */}
 
       <div className="question">
 
@@ -443,10 +416,9 @@ function BasicForm({ initialData, onContinue }) {
           Police Report Filed?
         </label>
 
+
         <div className="choice-container">
 
-
-          {/* YES */}
 
           <button
             type="button"
@@ -463,8 +435,6 @@ function BasicForm({ initialData, onContinue }) {
             Yes
           </button>
 
-
-          {/* NO */}
 
           <button
             type="button"
@@ -486,6 +456,7 @@ function BasicForm({ initialData, onContinue }) {
       </div>
 
 
+
       {/* DESCRIPTION */}
 
       <div className="description">
@@ -499,10 +470,8 @@ function BasicForm({ initialData, onContinue }) {
           onChange={(e) => {
 
             if (e.target.value.length <= 500) {
-
               setDescription(e.target.value);
               setError("");
-
             }
 
           }}
@@ -517,6 +486,7 @@ function BasicForm({ initialData, onContinue }) {
       </div>
 
 
+
       {/* ERROR */}
 
       {error && (
@@ -528,7 +498,8 @@ function BasicForm({ initialData, onContinue }) {
       )}
 
 
-      {/*SAVE MESSAGE */}
+
+      {/* SAVE MESSAGE */}
 
       {saved && (
 
@@ -539,7 +510,8 @@ function BasicForm({ initialData, onContinue }) {
       )}
 
 
-      {/* BUTTONS*/}
+
+      {/* BUTTONS */}
 
       <div className="form-buttons">
 
@@ -562,7 +534,9 @@ function BasicForm({ initialData, onContinue }) {
 
       </div>
 
+
     </div>
+
   );
 }
 

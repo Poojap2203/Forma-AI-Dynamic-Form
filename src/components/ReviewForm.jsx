@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 function ReviewForm({
   incidentData,
   vehicleData,
@@ -6,77 +7,55 @@ function ReviewForm({
   onEditIncident,
   onEditVehicle
 }) {
-
   const [submitted, setSubmitted] = useState(false);
 
-
   const handleSubmit = () => {
-
     const completeClaim = {
       incident: incidentData,
       vehicle: vehicleData
     };
-
 
     localStorage.setItem(
       "formaAI_claim",
       JSON.stringify(completeClaim)
     );
 
-
     setSubmitted(true);
   };
 
-
   if (submitted) {
-
     return (
-
       <div className="form-card">
-
         <div className="success-container">
 
           <div className="success-icon">
             ✓
           </div>
 
-
           <h2>
             Claim Submitted Successfully
           </h2>
-
 
           <p>
             Your insurance claim has been submitted
             for review.
           </p>
 
-
           <button
-
             type="button"
-
             className="continue"
-
             onClick={() => setSubmitted(false)}
-
           >
             Back to Review
-
           </button>
 
         </div>
-
       </div>
-
     );
   }
 
-
   return (
-
     <div className="form-card">
-
 
       {/* HEADER */}
 
@@ -87,7 +66,6 @@ function ReviewForm({
         </div>
 
         <div>
-
           <h2>
             Review & Submit
           </h2>
@@ -95,17 +73,14 @@ function ReviewForm({
           <p>
             Review your information before submitting.
           </p>
-
         </div>
 
       </div>
 
 
-
-      {/* INCIDENT */}
+      {/* INCIDENT DETAILS */}
 
       <div className="review-section">
-
 
         <div className="review-header">
 
@@ -113,15 +88,10 @@ function ReviewForm({
             Incident Details
           </h3>
 
-
           <button
-
             type="button"
-
             className="edit-button"
-
             onClick={onEditIncident}
-
           >
             Edit
           </button>
@@ -129,153 +99,98 @@ function ReviewForm({
         </div>
 
 
-
         <div className="review-grid">
 
-
           <div className="review-item">
-
-            <span>
-              Incident Type
-            </span>
-
+            <span>Incident Type</span>
             <strong>
-              {incidentData.incidentType || "Not provided"}
+              {incidentData?.incidentType || "Not provided"}
             </strong>
-
           </div>
 
 
           <div className="review-item">
-
-            <span>
-              Date
-            </span>
-
+            <span>Date</span>
             <strong>
-              {incidentData.date || "Not provided"}
+              {incidentData?.date || "Not provided"}
             </strong>
-
           </div>
 
 
           <div className="review-item">
-
-            <span>
-              Time
-            </span>
-
+            <span>Time</span>
             <strong>
-              {incidentData.time || "Not provided"}
+              {incidentData?.time || "Not provided"}
             </strong>
-
           </div>
 
 
           <div className="review-item">
-
-            <span>
-              Location
-            </span>
-
+            <span>Location</span>
             <strong>
-              {incidentData.location || "Not provided"}
+              {incidentData?.location || "Not provided"}
             </strong>
-
           </div>
 
 
           <div className="review-item">
-
-            <span>
-              Injury
-            </span>
-
+            <span>Injury</span>
             <strong>
-              {incidentData.injured === "yes"
+              {incidentData?.injured === "yes"
                 ? "Yes"
-                : incidentData.injured === "no"
-                  ? "No"
-                  : "Not provided"}
+                : incidentData?.injured === "no"
+                ? "No"
+                : "Not provided"}
             </strong>
-
           </div>
 
 
           <div className="review-item">
-
-            <span>
-              Police Report
-            </span>
-
+            <span>Police Report</span>
             <strong>
-              {incidentData.policeReport === "yes"
+              {incidentData?.policeReport === "yes"
                 ? "Yes"
-                : incidentData.policeReport === "no"
-                  ? "No"
-                  : "Not provided"}
+                : incidentData?.policeReport === "no"
+                ? "No"
+                : "Not provided"}
             </strong>
-
           </div>
 
 
-          {incidentData.injured === "yes" && (
-
+          {incidentData?.injured === "yes" && (
             <>
-
               <div className="review-item">
-
-                <span>
-                  Injured Person
-                </span>
-
+                <span>Injured Person</span>
                 <strong>
-                  {incidentData.person || "Not provided"}
+                  {incidentData?.person || "Not provided"}
                 </strong>
-
               </div>
 
-
               <div className="review-item">
-
-                <span>
-                  Injury Description
-                </span>
-
+                <span>Injury Description</span>
                 <strong>
-                  {incidentData.injury || "Not provided"}
+                  {incidentData?.injury || "Not provided"}
                 </strong>
-
               </div>
-
             </>
-
           )}
 
 
-          <div className="review-item">
-
-            <span>
-              Description
-            </span>
-
+          <div className="review-item review-full">
+            <span>Description</span>
             <strong>
-              {incidentData.description || "Not provided"}
+              {incidentData?.description || "Not provided"}
             </strong>
-
           </div>
-
 
         </div>
 
       </div>
 
 
-
-      {/* VEHICLE */}
+      {/* VEHICLE & DAMAGE */}
 
       <div className="review-section">
-
 
         <div className="review-header">
 
@@ -283,15 +198,10 @@ function ReviewForm({
             Vehicle & Damage
           </h3>
 
-
           <button
-
             type="button"
-
             className="edit-button"
-
             onClick={onEditVehicle}
-
           >
             Edit
           </button>
@@ -299,92 +209,58 @@ function ReviewForm({
         </div>
 
 
-
         <div className="review-grid">
 
-
           <div className="review-item">
-
-            <span>
-              Vehicle Make
-            </span>
-
+            <span>Vehicle Make</span>
             <strong>
-              {vehicleData.vehicleMake || "Not provided"}
+              {vehicleData?.vehicleMake || "Not provided"}
             </strong>
-
           </div>
 
 
           <div className="review-item">
-
-            <span>
-              Vehicle Model
-            </span>
-
+            <span>Vehicle Model</span>
             <strong>
-              {vehicleData.vehicleModel || "Not provided"}
+              {vehicleData?.vehicleModel || "Not provided"}
             </strong>
-
           </div>
 
 
           <div className="review-item">
-
-            <span>
-              Registration Number
-            </span>
-
+            <span>Registration Number</span>
             <strong>
-              {vehicleData.registration || "Not provided"}
+              {vehicleData?.registration || "Not provided"}
             </strong>
-
           </div>
 
 
           <div className="review-item">
-
-            <span>
-              Damage Type
-            </span>
-
+            <span>Damage Type</span>
             <strong>
-              {vehicleData.damageType || "Not provided"}
+              {vehicleData?.damageType || "Not provided"}
             </strong>
-
           </div>
 
 
           <div className="review-item">
-
-            <span>
-              Damage Severity
-            </span>
-
+            <span>Damage Severity</span>
             <strong>
-              {vehicleData.severity || "Not provided"}
+              {vehicleData?.severity || "Not provided"}
             </strong>
-
           </div>
 
 
-          <div className="review-item">
-
-            <span>
-              Damage Description
-            </span>
-
+          <div className="review-item review-full">
+            <span>Damage Description</span>
             <strong>
-              {vehicleData.damageDescription || "Not provided"}
+              {vehicleData?.damageDescription || "Not provided"}
             </strong>
-
           </div>
-
 
         </div>
 
       </div>
-
 
 
       {/* NOTICE */}
@@ -395,7 +271,6 @@ function ReviewForm({
           Before you submit
         </strong>
 
-
         <p>
           Please make sure all the information
           provided above is correct.
@@ -404,44 +279,30 @@ function ReviewForm({
       </div>
 
 
-
       {/* BUTTONS */}
 
       <div className="form-buttons">
 
-
         <button
-
           type="button"
-
           className="secondary-button"
-
           onClick={onBack}
-
         >
           ← Back
         </button>
 
-
         <button
-
           type="button"
-
           className="continue"
-
           onClick={handleSubmit}
-
         >
           Submit Claim
         </button>
 
-
       </div>
-
 
     </div>
   );
 }
-
 
 export default ReviewForm;

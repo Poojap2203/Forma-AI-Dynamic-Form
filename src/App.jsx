@@ -1,13 +1,17 @@
 import { useState } from "react";
 import "./App.css";
+
 import BasicForm from "./components/BasicForm";
+import VehicleDamage from "./components/VehicleDamage";
 import AISummary from "./components/AISummary";
+import ReviewForm from "./components/ReviewForm";
+
 
 function App() {
-  const [currentStep, setCurrentStep] = useState(1);
+
+  const [currentStep, setCurrentStep] = useState(2);
 
   const [formData, setFormData] = useState({
-    description: "",
     incidentType: "",
     date: "",
     time: "",
@@ -16,134 +20,181 @@ function App() {
     person: "",
     injury: "",
     policeReport: "",
-    vehicle: "",
-    damage: "",
+    description: "",
+
+    vehicleMake: "",
+    vehicleModel: "",
+    registration: "",
+    damageType: "",
+    severity: "",
+    damageDescription: ""
   });
 
-  // STEP 1
-  const handleIncidentContinue = () => {
-    if (!formData.description.trim()) {
-      alert("Please describe what happened.");
-      return;
-    }
 
-    setCurrentStep(2);
-  };
+  /* =========================
+     INCIDENT CONTINUE
+  ========================= */
 
-  // STEP 2
-  const handleBasicFormContinue = (data) => {
+  const handleIncidentContinue = (data) => {
+
     setFormData((previous) => ({
       ...previous,
-      ...data,
+      ...data
     }));
 
     setCurrentStep(3);
   };
 
-  // STEP 3
-  const handleVehicleContinue = () => {
-    if (!formData.vehicle.trim()) {
-      alert("Please enter the vehicle details.");
-      return;
-    }
 
-    if (!formData.damage.trim()) {
-      alert("Please describe the damage.");
-      return;
-    }
+  /* =========================
+     VEHICLE CONTINUE
+  ========================= */
+
+  const handleVehicleContinue = (data) => {
+
+    setFormData((previous) => ({
+      ...previous,
+      ...data
+    }));
 
     setCurrentStep(4);
   };
 
-  // UPDATE FORM DATA
-  const updateFormData = (field, value) => {
-    setFormData((previous) => ({
-      ...previous,
-      [field]: value,
-    }));
+
+  /* =========================
+     VEHICLE BACK
+  ========================= */
+
+  const handleVehicleBack = () => {
+    setCurrentStep(2);
   };
 
+
+  /* =========================
+     REVIEW BACK
+  ========================= */
+
+  const handleReviewBack = () => {
+    setCurrentStep(3);
+  };
+
+
+  /* =========================
+     EDIT INCIDENT
+  ========================= */
+
+  const handleEditIncident = () => {
+    setCurrentStep(2);
+  };
+
+
+  /* =========================
+     EDIT VEHICLE
+  ========================= */
+
+  const handleEditVehicle = () => {
+    setCurrentStep(3);
+  };
+
+
   return (
+
     <div className="app">
 
-      {/*SIDEBAR  */}
+      {/* ================= SIDEBAR ================= */}
 
       <aside className="sidebar">
 
         <div className="logo-area">
-          <div className="logo-icon">✦</div>
+
+          <div className="logo-icon">
+            ✨
+          </div>
 
           <div>
             <h2>Forma AI</h2>
             <span>Smart Claims Assistant</span>
           </div>
+
         </div>
+
 
         <nav className="sidebar-menu">
 
           <div className="menu-item">
-            <span className="menu-icon">⌂</span>
-            Dashboard
+            🏠
+            <span>Dashboard</span>
           </div>
 
           <div className="menu-item active-menu">
-            <span className="menu-icon">＋</span>
-            New Claim
+            ＋
+            <span>New Claim</span>
           </div>
 
           <div className="menu-item">
-            <span className="menu-icon">▣</span>
-            My Claims
+            📄
+            <span>My Claims</span>
           </div>
 
           <div className="menu-item">
-            <span className="menu-icon">□</span>
-            Drafts
-            <span className="notification-badge">2</span>
+
+            📋
+
+            <span>
+              Drafts
+            </span>
+
+            <span className="notification-badge">
+              2
+            </span>
+
           </div>
 
           <div className="menu-item">
-            <span className="menu-icon">▦</span>
-            Templates
+            ▦
+            <span>Templates</span>
           </div>
 
           <div className="menu-item">
-            <span className="menu-icon">✦</span>
-            AI Assistant
+            ✨
+            <span>AI Assistant</span>
           </div>
 
           <div className="menu-item">
-            <span className="menu-icon">◫</span>
-            Insights
+            📊
+            <span>Insights</span>
           </div>
 
           <div className="menu-item">
-            <span className="menu-icon">⚙</span>
-            Settings
+            ⚙
+            <span>Settings</span>
           </div>
 
         </nav>
 
+
+        {/* AI MAGIC INPUT */}
+
         <div className="magic-box">
 
-          <div className="magic-title">
-            ✦ AI Magic Input
-          </div>
+          <h4 className="magic-title">
+            ✨ AI Magic Input
+          </h4>
 
           <p>
             Describe your incident in your own words
-            and let our AI understand and fill the form
-            intelligently.
+            and let our AI understand and fill the
+            form intelligently.
           </p>
 
-          <button
-            type="button"
-            onClick={() => setCurrentStep(1)}
-          >
+          <button>
             Try It Now →
           </button>
 
         </div>
+
+
+        {/* USER */}
 
         <div className="user-profile">
 
@@ -152,18 +203,27 @@ function App() {
           </div>
 
           <div className="user-info">
-            <strong>Anjali Sharma</strong>
-            <small>anjali@example.com</small>
+
+            <strong>
+              Anjali Sharma
+            </strong>
+
+            <small>
+              anjali@example.com
+            </small>
+
           </div>
 
-          <span className="user-arrow">⌄</span>
+          <span className="user-arrow">
+            ⌄
+          </span>
 
         </div>
 
       </aside>
 
 
-      {/*MAIN */}
+      {/* ================= MAIN ================= */}
 
       <main className="main-content">
 
@@ -183,6 +243,7 @@ function App() {
 
           </div>
 
+
           <div className="header-right">
 
             <button className="header-icon">
@@ -190,7 +251,7 @@ function App() {
             </button>
 
             <button className="header-icon">
-              ♧
+              🔔
             </button>
 
             <div className="header-user">
@@ -199,8 +260,13 @@ function App() {
                 A
               </div>
 
-              <span>Anjali</span>
-              <span>⌄</span>
+              <span>
+                Anjali
+              </span>
+
+              <span>
+                ⌄
+              </span>
 
             </div>
 
@@ -209,26 +275,17 @@ function App() {
         </header>
 
 
-        {/*STEPPER  */}
+        {/* ================= STEPPER ================= */}
 
         <div className="stepper">
 
+
           {/* STEP 1 */}
 
-          <div
-            className={
-              currentStep === 1
-                ? "step active"
-                : currentStep > 1
-                ? "step completed"
-                : "step"
-            }
-          >
+          <div className="step completed">
 
             <div className="step-circle">
-
-              {currentStep > 1 ? "✓" : "1"}
-
+              ✓
             </div>
 
             <strong>
@@ -236,9 +293,7 @@ function App() {
             </strong>
 
             <span>
-              {currentStep > 1
-                ? "Completed"
-                : "You are here"}
+              Completed
             </span>
 
           </div>
@@ -258,7 +313,9 @@ function App() {
 
             <div className="step-circle">
 
-              {currentStep > 2 ? "✓" : "2"}
+              {currentStep > 2
+                ? "✓"
+                : "2"}
 
             </div>
 
@@ -267,11 +324,11 @@ function App() {
             </strong>
 
             <span>
-              {currentStep === 2
-                ? "You are here"
-                : currentStep > 2
+
+              {currentStep > 2
                 ? "Completed"
-                : "Next up"}
+                : "You are here"}
+
             </span>
 
           </div>
@@ -291,7 +348,9 @@ function App() {
 
             <div className="step-circle">
 
-              {currentStep > 3 ? "✓" : "3"}
+              {currentStep > 3
+                ? "✓"
+                : "3"}
 
             </div>
 
@@ -300,11 +359,13 @@ function App() {
             </strong>
 
             <span>
-              {currentStep === 3
-                ? "You are here"
-                : currentStep > 3
+
+              {currentStep > 3
                 ? "Completed"
+                : currentStep === 3
+                ? "You are here"
                 : "Next up"}
+
             </span>
 
           </div>
@@ -329,9 +390,11 @@ function App() {
             </strong>
 
             <span>
+
               {currentStep === 4
                 ? "You are here"
                 : "Final step"}
+
             </span>
 
           </div>
@@ -339,82 +402,14 @@ function App() {
         </div>
 
 
-        {/* CONTENT */}
+        {/* ================= CONTENT ================= */}
 
         <div className="content-layout">
 
 
-          {/*  LEFT  */}
+          {/* LEFT FORM */}
 
           <div className="main-form">
-
-
-            {/* STEP 1 */}
-
-            {currentStep === 1 && (
-
-              <div className="form-card">
-
-                <div className="form-heading">
-
-                  <div className="form-icon">
-                    ✨
-                  </div>
-
-                  <div>
-
-                    <h2>
-                      Describe the Incident
-                    </h2>
-
-                    <p>
-                      Tell us what happened in your own words.
-                    </p>
-
-                  </div>
-
-                </div>
-
-
-                <div className="description">
-
-                  <label>
-                    What happened?
-                  </label>
-
-                  <textarea
-                    value={formData.description}
-                    onChange={(e) =>
-                      updateFormData(
-                        "description",
-                        e.target.value
-                      )
-                    }
-                    placeholder="Example: I was driving to work when another car hit my vehicle from behind..."
-                  />
-
-                  <div className="character-count">
-                    {formData.description.length} / 500
-                  </div>
-
-                </div>
-
-
-                <div className="form-buttons">
-
-                  <button
-                    type="button"
-                    className="continue"
-                    onClick={handleIncidentContinue}
-                  >
-                    Continue →
-                  </button>
-
-                </div>
-
-              </div>
-
-            )}
 
 
             {/* STEP 2 */}
@@ -423,7 +418,7 @@ function App() {
 
               <BasicForm
                 initialData={formData}
-                onContinue={handleBasicFormContinue}
+                onContinue={handleIncidentContinue}
               />
 
             )}
@@ -433,91 +428,11 @@ function App() {
 
             {currentStep === 3 && (
 
-              <div className="form-card">
-
-                <div className="form-heading">
-
-                  <div className="form-icon">
-                    🚘
-                  </div>
-
-                  <div>
-
-                    <h2>
-                      Vehicle & Damage
-                    </h2>
-
-                    <p>
-                      Tell us about your vehicle and the damage.
-                    </p>
-
-                  </div>
-
-                </div>
-
-
-                <div className="form-group">
-
-                  <label>
-                    Vehicle
-                  </label>
-
-                  <input
-                    type="text"
-                    value={formData.vehicle}
-                    onChange={(e) =>
-                      updateFormData(
-                        "vehicle",
-                        e.target.value
-                      )
-                    }
-                    placeholder="Example: Honda City"
-                  />
-
-                </div>
-
-
-                <div className="description">
-
-                  <label>
-                    Describe the Damage
-                  </label>
-
-                  <textarea
-                    value={formData.damage}
-                    onChange={(e) =>
-                      updateFormData(
-                        "damage",
-                        e.target.value
-                      )
-                    }
-                    placeholder="Example: Front bumper damaged and windshield cracked..."
-                  />
-
-                </div>
-
-
-                <div className="form-buttons">
-
-                  <button
-                    type="button"
-                    className="save"
-                    onClick={() => setCurrentStep(2)}
-                  >
-                    ← Back
-                  </button>
-
-                  <button
-                    type="button"
-                    className="continue"
-                    onClick={handleVehicleContinue}
-                  >
-                    Continue →
-                  </button>
-
-                </div>
-
-              </div>
+              <VehicleDamage
+                initialData={formData}
+                onBack={handleVehicleBack}
+                onContinue={handleVehicleContinue}
+              />
 
             )}
 
@@ -526,120 +441,26 @@ function App() {
 
             {currentStep === 4 && (
 
-              <div className="form-card">
+              <ReviewForm
 
-                <div className="form-heading">
+                incidentData={formData}
 
-                  <div className="form-icon">
-                    ✓
-                  </div>
+                vehicleData={formData}
 
-                  <div>
+                onBack={handleReviewBack}
 
-                    <h2>
-                      Review & Submit
-                    </h2>
+                onEditIncident={handleEditIncident}
 
-                    <p>
-                      Please review your claim before submitting.
-                    </p>
+                onEditVehicle={handleEditVehicle}
 
-                  </div>
-
-                </div>
-
-
-                <div className="review-box">
-
-                  <h3>
-                    Incident
-                  </h3>
-
-                  <p>
-                    {formData.description || "Not provided"}
-                  </p>
-
-
-                  <h3>
-                    Incident Type
-                  </h3>
-
-                  <p>
-                    {formData.incidentType || "Not provided"}
-                  </p>
-
-
-                  <h3>
-                    Date & Time
-                  </h3>
-
-                  <p>
-                    {formData.date || "Not provided"}
-                    {formData.time
-                      ? ` at ${formData.time}`
-                      : ""}
-                  </p>
-
-
-                  <h3>
-                    Location
-                  </h3>
-
-                  <p>
-                    {formData.location || "Not provided"}
-                  </p>
-
-
-                  <h3>
-                    Vehicle
-                  </h3>
-
-                  <p>
-                    {formData.vehicle || "Not provided"}
-                  </p>
-
-
-                  <h3>
-                    Damage
-                  </h3>
-
-                  <p>
-                    {formData.damage || "Not provided"}
-                  </p>
-
-                </div>
-
-
-                <div className="form-buttons">
-
-                  <button
-                    type="button"
-                    className="save"
-                    onClick={() => setCurrentStep(3)}
-                  >
-                    ← Back
-                  </button>
-
-                  <button
-                    type="button"
-                    className="continue"
-                    onClick={() =>
-                      alert("Claim submitted successfully!")
-                    }
-                  >
-                    Submit Claim ✓
-                  </button>
-
-                </div>
-
-              </div>
+              />
 
             )}
 
           </div>
 
 
-          {/* ================= AI SUMMARY ================= */}
+          {/* AI SUMMARY */}
 
           <AISummary
             formData={formData}

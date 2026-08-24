@@ -1,4 +1,6 @@
- /*GLOBAL */
+ /* =========================
+GLOBAL
+========================= */
 
 * {
   box-sizing: border-box;
@@ -18,8 +20,9 @@ textarea {
   font-family: Arial, sans-serif;
 }
 
-
-/* APP */
+/* =========================
+APP
+========================= */
 
 .app {
   min-height: 100vh;
@@ -27,8 +30,9 @@ textarea {
   background: #f6f5fb;
 }
 
-
-/* SIDEBAR */
+/* =========================
+SIDEBAR
+========================= */
 
 .sidebar {
   width: 245px;
@@ -39,7 +43,6 @@ textarea {
   display: flex;
   flex-direction: column;
 }
-
 
 /* LOGO */
 
@@ -73,7 +76,6 @@ textarea {
   color: #aaa6c4;
 }
 
-
 /* MENU */
 
 .sidebar-menu {
@@ -100,11 +102,7 @@ textarea {
 }
 
 .active-menu {
-  background: linear-gradient(
-    90deg,
-    #15d7c5,
-    #ff42ae
-  );
+  background: linear-gradient(90deg, #15d7c5, #ff42ae);
   color: white;
 }
 
@@ -127,7 +125,6 @@ textarea {
   font-size: 9px;
 }
 
-
 /* MAGIC BOX */
 
 .magic-box {
@@ -139,10 +136,9 @@ textarea {
   border: 1px solid #49426d;
 }
 
-.magic-title {
+.magic-box h4 {
+  margin: 0 0 8px;
   font-size: 12px;
-  font-weight: bold;
-  margin-bottom: 8px;
 }
 
 .magic-box p {
@@ -162,7 +158,6 @@ textarea {
   font-size: 10px;
   cursor: pointer;
 }
-
 
 /* USER */
 
@@ -203,12 +198,9 @@ textarea {
   font-size: 8px;
 }
 
-.user-arrow {
-  color: #aaa6c1;
-}
-
-
-/* MAIN*/
+/* =========================
+MAIN
+========================= */
 
 .main-content {
   flex: 1;
@@ -216,8 +208,9 @@ textarea {
   padding: 32px 38px 45px;
 }
 
-
-/*HEADER */
+/* =========================
+HEADER
+========================= */
 
 .top-header {
   display: flex;
@@ -226,17 +219,17 @@ textarea {
   margin-bottom: 25px;
 }
 
-.header-text h1 {
+.top-header h1 {
   margin: 0;
   font-size: 28px;
   color: #28234b;
 }
 
-.header-text h1 span {
+.top-header h1 span {
   color: #6954f6;
 }
 
-.header-text p {
+.top-header p {
   margin: 7px 0 0;
   color: #8a879c;
   font-size: 12px;
@@ -282,8 +275,9 @@ textarea {
   font-weight: bold;
 }
 
-
-/*STEPPER*/
+/* =========================
+STEPPER
+========================= */
 
 .stepper {
   display: grid;
@@ -350,8 +344,9 @@ textarea {
   color: #6954f6;
 }
 
-
-/*FORM + AI SUMMARY */
+/* =========================
+FORM + AI SUMMARY
+========================= */
 
 .content-layout {
   display: grid;
@@ -364,8 +359,9 @@ textarea {
   min-width: 0;
 }
 
-
-/* BASIC FORM CARD*/
+/* =========================
+FORM CARD
+========================= */
 
 .form-card {
   background: white;
@@ -375,8 +371,9 @@ textarea {
   box-shadow: 0 8px 25px rgba(42, 35, 79, 0.06);
 }
 
-
-/* FORM HEADER */
+/* =========================
+FORM HEADER
+========================= */
 
 .form-heading {
   display: flex;
@@ -408,8 +405,9 @@ textarea {
   font-size: 11px;
 }
 
-
-/* FORM GRID */
+/* =========================
+FORM GRID
+========================= */
 
 .form-grid {
   display: grid;
@@ -451,8 +449,23 @@ textarea {
   box-shadow: 0 0 0 3px rgba(105, 84, 246, 0.08);
 }
 
+/* =========================
+SECTION TITLE
+========================= */
 
-/* QUESTION */
+.section-title {
+  margin: 22px 0 15px;
+  font-size: 13px;
+  color: #6954f6;
+}
+
+.damage-title {
+  margin-top: 25px;
+}
+
+/* =========================
+QUESTION
+========================= */
 
 .question {
   margin-top: 5px;
@@ -465,13 +478,14 @@ textarea {
 }
 
 .choice {
-  padding: 9px 20px;
+  min-width: 100px;
+  padding: 12px 20px;
   border: 1px solid #dedce7;
   background: white;
   color: #514d63;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .choice:hover {
@@ -484,8 +498,9 @@ textarea {
   border-color: #6954f6;
 }
 
-
-/* DESCRIPTION */
+/* =========================
+DESCRIPTION
+========================= */
 
 .description {
   margin-top: 10px;
@@ -504,8 +519,9 @@ textarea {
   margin-top: 4px;
 }
 
-
-/* ERROR */
+/* =========================
+ERROR
+========================= */
 
 .form-error {
   margin-top: 15px;
@@ -516,8 +532,9 @@ textarea {
   font-size: 10px;
 }
 
-
-/* SAVE MESSAGE */
+/* =========================
+SAVE MESSAGE
+========================= */
 
 .save-message {
   margin-top: 12px;
@@ -528,8 +545,9 @@ textarea {
   font-size: 10px;
 }
 
-
-/* FORM BUTTONS */
+/* =========================
+FORM BUTTONS
+========================= */
 
 .form-buttons {
   display: flex;
@@ -555,17 +573,20 @@ textarea {
 }
 
 .form-buttons .continue {
-  background: linear-gradient(
-    90deg,
-    #6954f6,
-    #ff43ae
-  );
+  background: linear-gradient(90deg, #6954f6, #ff43ae);
   border: none;
   color: white;
 }
 
+.secondary-button {
+  background: #f0efff;
+  border: 1px solid #ddd9ff;
+  color: #6954f6;
+}
 
-/* AI SUMMARY */
+/* =========================
+AI SUMMARY
+========================= */
 
 .ai-summary {
   background: #29234f;
@@ -609,7 +630,6 @@ textarea {
   flex-shrink: 0;
 }
 
-
 /* ROBOT */
 
 .robot-box {
@@ -619,7 +639,6 @@ textarea {
   align-items: center;
   font-size: 55px;
 }
-
 
 /* SUMMARY ITEM */
 
@@ -643,7 +662,7 @@ textarea {
   flex-shrink: 0;
 }
 
-.summary-item div:nth-child(2) {
+.summary-item > div:nth-child(2) {
   flex: 1;
   min-width: 0;
 }
@@ -669,7 +688,6 @@ textarea {
   font-weight: bold;
 }
 
-
 /* EDIT BUTTON */
 
 .edit-summary {
@@ -682,18 +700,139 @@ textarea {
   font-weight: bold;
   font-size: 10px;
   cursor: pointer;
-  background: linear-gradient(
-    90deg,
-    #12d8c5,
-    #ff3cac
-  );
+  background: linear-gradient(90deg, #12d8c5, #ff3cac);
 }
 
-.edit-summary:hover {
-  opacity: 0.9;
+/* =========================
+REVIEW FORM
+========================= */
+
+.review-section {
+  margin-bottom: 22px;
+  padding: 18px;
+  background: #faf9fd;
+  border: 1px solid #e7e4f0;
+  border-radius: 14px;
 }
 
-/* REVIEW */
+.review-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.review-header h3 {
+  margin: 0;
+  color: #6954f6;
+  font-size: 14px;
+}
+
+.edit-button {
+  border: 1px solid #ddd9ff;
+  background: #f0efff;
+  color: #6954f6;
+  border-radius: 7px;
+  padding: 7px 14px;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.edit-button:hover {
+  background: #e6e2ff;
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.review-item {
+  background: white;
+  border: 1px solid #ece9f3;
+  border-radius: 9px;
+  padding: 12px;
+}
+
+.review-item span {
+  display: block;
+  color: #9691a5;
+  font-size: 9px;
+  margin-bottom: 5px;
+}
+
+.review-item strong {
+  display: block;
+  color: #302b4c;
+  font-size: 11px;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+/* REVIEW NOTICE */
+
+.review-notice {
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 10px;
+  background: #f0efff;
+  border: 1px solid #ddd9ff;
+}
+
+.review-notice strong {
+  display: block;
+  color: #6954f6;
+  font-size: 11px;
+  margin-bottom: 5px;
+}
+
+.review-notice p {
+  margin: 0;
+  color: #68637c;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* =========================
+SUCCESS
+========================= */
+
+.success-container {
+  text-align: center;
+  padding: 55px 20px;
+}
+
+.success-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: #18cdbd;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.success-container h2 {
+  margin: 0 0 10px;
+  color: #29254b;
+  font-size: 22px;
+}
+
+.success-container p {
+  margin: 0 0 25px;
+  color: #8b879b;
+  font-size: 12px;
+}
+
+/* =========================
+REVIEW BOX
+========================= */
 
 .review-box {
   background: #f8f7fc;
@@ -708,10 +847,6 @@ textarea {
   color: #6954f6;
 }
 
-.review-box h3:first-child {
-  margin-top: 0;
-}
-
 .review-box p {
   margin: 0;
   color: #4b4760;
@@ -719,11 +854,11 @@ textarea {
   line-height: 1.5;
 }
 
-
-/* RESPONSIVE */
+/* =========================
+RESPONSIVE
+========================= */
 
 @media (max-width: 1100px) {
-
   .sidebar {
     width: 210px;
   }
@@ -741,9 +876,7 @@ textarea {
   }
 }
 
-
 @media (max-width: 750px) {
-
   .app {
     display: block;
   }
@@ -781,11 +914,13 @@ textarea {
   .form-grid {
     grid-template-columns: 1fr;
   }
+
+  .review-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-
 @media (max-width: 480px) {
-
   .main-content {
     padding: 18px;
   }
@@ -795,6 +930,18 @@ textarea {
   }
 
   .stepper {
+    grid-template-columns: 1fr;
+  }
+
+  .choice-container {
+    flex-direction: column;
+  }
+
+  .choice {
+    width: 100%;
+  }
+
+  .review-grid {
     grid-template-columns: 1fr;
   }
 }

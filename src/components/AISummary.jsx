@@ -1,10 +1,117 @@
 function AISummary({ formData }) {
-const hasValue = (value) => {
-    return value && value.trim() !== "";
-  };
+
+const data = formData || {};
+
+
+  /* ===============================
+     ALL IMPORTANT FIELDS
+     =============================== */
+
+  const fields = [
+
+    data.incidentType,
+    data.date,
+    data.time,
+    data.location,
+    data.injured,
+    data.policeReport,
+    data.description,
+
+    data.vehicleMake,
+    data.vehicleModel,
+    data.registration,
+    data.damageType,
+    data.severity,
+    data.damageDescription
+
+  ];
+
+
+  /* ===============================
+     CALCULATE PERCENTAGE
+     =============================== */
+
+  const filledFields = fields.filter(
+    (field) =>
+      field !== undefined &&
+      field !== null &&
+      field.toString().trim() !== ""
+  ).length;
+
+
+  const percentage = Math.round(
+    (filledFields / fields.length) * 100
+  );
+
+
+  /* ===============================
+     VALUES
+     =============================== */
+
+  const incidentType =
+    data.incidentType || "Not provided";
+
+
+  const dateTime =
+    data.date
+      ? `${data.date}${data.time ? `, ${data.time}` : ""}`
+      : "Not provided";
+
+
+  const location =
+    data.location || "Not provided";
+
+
+  const vehicle =
+    data.vehicleMake || data.vehicleModel
+      ? `${data.vehicleMake || ""} ${
+          data.vehicleModel || ""
+        }`.trim()
+      : "Not provided";
+
+
+  const damage =
+    data.damageType || "Not provided";
+
+
+  const severity =
+    data.severity || "Not provided";
+
+
+  let injured = "Not provided";
+
+  if (data.injured === "yes") {
+
+    injured =
+      data.person
+        ? `${data.person}${
+            data.injury
+              ? `, ${data.injury}`
+              : ""
+          }`
+        : "Yes";
+
+  }
+
+  if (data.injured === "no") {
+    injured = "No";
+  }
+
+
+  const policeReport =
+    data.policeReport === "yes"
+      ? "Yes"
+      : data.policeReport === "no"
+      ? "No"
+      : "Not provided";
+
 
   return (
+
     <div className="ai-summary">
+
+
+      {/* HEADER */}
 
       <div className="summary-header">
 
@@ -15,17 +122,20 @@ const hasValue = (value) => {
           </h3>
 
           <p>
-            Details will appear here as you complete the form.
+            We've extracted these details from your description. Please review.
           </p>
 
         </div>
 
+
         <div className="summary-score">
-          95%
+          {percentage}%
         </div>
 
       </div>
 
+
+      {/* ROBOT */}
 
       <div className="robot-box">
         🤖
@@ -47,15 +157,13 @@ const hasValue = (value) => {
           </span>
 
           <strong>
-            {hasValue(formData?.incidentType)
-              ? formData.incidentType
-              : "Not provided"}
+            {incidentType}
           </strong>
 
         </div>
 
         <div className="check">
-          {hasValue(formData?.incidentType) ? "✓" : "—"}
+          {data.incidentType ? "✓" : "○"}
         </div>
 
       </div>
@@ -76,21 +184,13 @@ const hasValue = (value) => {
           </span>
 
           <strong>
-
-            {hasValue(formData?.date)
-              ? formData.date
-              : "Not provided"}
-
-            {hasValue(formData?.time)
-              ? `, ${formData.time}`
-              : ""}
-
+            {dateTime}
           </strong>
 
         </div>
 
         <div className="check">
-          {hasValue(formData?.date) ? "✓" : "—"}
+          {data.date ? "✓" : "○"}
         </div>
 
       </div>
@@ -111,15 +211,13 @@ const hasValue = (value) => {
           </span>
 
           <strong>
-            {hasValue(formData?.location)
-              ? formData.location
-              : "Not provided"}
+            {location}
           </strong>
 
         </div>
 
         <div className="check">
-          {hasValue(formData?.location) ? "✓" : "—"}
+          {data.location ? "✓" : "○"}
         </div>
 
       </div>
@@ -140,15 +238,15 @@ const hasValue = (value) => {
           </span>
 
           <strong>
-            {hasValue(formData?.vehicle)
-              ? formData.vehicle
-              : "Not provided"}
+            {vehicle}
           </strong>
 
         </div>
 
         <div className="check">
-          {hasValue(formData?.vehicle) ? "✓" : "—"}
+          {data.vehicleMake && data.vehicleModel
+            ? "✓"
+            : "○"}
         </div>
 
       </div>
@@ -169,21 +267,46 @@ const hasValue = (value) => {
           </span>
 
           <strong>
-            {hasValue(formData?.damage)
-              ? formData.damage
-              : "Not provided"}
+            {damage}
           </strong>
 
         </div>
 
         <div className="check">
-          {hasValue(formData?.damage) ? "✓" : "—"}
+          {data.damageType ? "✓" : "○"}
         </div>
 
       </div>
 
 
-      {/* INJURY */}
+      {/* SEVERITY */}
+
+      <div className="summary-item">
+
+        <div className="summary-icon">
+          ⚠️
+        </div>
+
+        <div>
+
+          <span>
+            Damage Severity
+          </span>
+
+          <strong>
+            {severity}
+          </strong>
+
+        </div>
+
+        <div className="check">
+          {data.severity ? "✓" : "○"}
+        </div>
+
+      </div>
+
+
+      {/* INJURED */}
 
       <div className="summary-item">
 
@@ -198,23 +321,13 @@ const hasValue = (value) => {
           </span>
 
           <strong>
-
-            {formData?.injured === "yes"
-              ? `${formData.person || "Person"}${formData.injury ? ` — ${formData.injury}` : ""}`
-              : formData?.injured === "no"
-              ? "No"
-              : "Not provided"}
-
+            {injured}
           </strong>
 
         </div>
 
         <div className="check">
-
-          {formData?.injured
-            ? "✓"
-            : "—"}
-
+          {data.injured ? "✓" : "○"}
         </div>
 
       </div>
@@ -235,62 +348,19 @@ const hasValue = (value) => {
           </span>
 
           <strong>
-
-            {formData?.policeReport === "yes"
-              ? "Yes"
-              : formData?.policeReport === "no"
-              ? "No"
-              : "Not provided"}
-
+            {policeReport}
           </strong>
 
         </div>
 
         <div className="check">
-
-          {formData?.policeReport
-            ? "✓"
-            : "—"}
-
+          {data.policeReport ? "✓" : "○"}
         </div>
 
       </div>
 
 
-      {/* DESCRIPTION */}
-
-      <div className="summary-item">
-
-        <div className="summary-icon">
-          📝
-        </div>
-
-        <div>
-
-          <span>
-            Description
-          </span>
-
-          <strong>
-
-            {hasValue(formData?.description)
-              ? formData.description
-              : "Not provided"}
-
-          </strong>
-
-        </div>
-
-        <div className="check">
-
-          {hasValue(formData?.description)
-            ? "✓"
-            : "—"}
-
-        </div>
-
-      </div>
-
+      {/* EDIT */}
 
       <button
         type="button"

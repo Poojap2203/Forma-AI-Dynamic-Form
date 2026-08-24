@@ -1,19 +1,60 @@
-import { useState } from "react";
+ import { useEffect, useState } from "react";
 
-function BasicForm({ initialData, onContinue }) {
+function BasicForm({ initialData, onContinue, templateType = "default" }) {
+  const getTemplateTitle = () => {
+    if (templateType === "vehicleAccident") {
+      return "Vehicle Accident";
+    }
+
+    if (templateType === "vehicleDamage") {
+      return "Vehicle Damage";
+    }
+
+    if (templateType === "insuranceClaim") {
+      return "Insurance Claim";
+    }
+
+    return "Incident Details";
+  };
+
+  const getTemplateIcon = () => {
+    if (templateType === "vehicleAccident") {
+      return "🚗";
+    }
+
+    if (templateType === "vehicleDamage") {
+      return "💥";
+    }
+
+    if (templateType === "insuranceClaim") {
+      return "🛡️";
+    }
+
+    return "🚗";
+  };
+
+  const getTemplateDescription = () => {
+    if (templateType === "vehicleAccident") {
+      return "Report details about your vehicle accident.";
+    }
+
+    if (templateType === "vehicleDamage") {
+      return "Tell us about the damage to your vehicle.";
+    }
+
+    if (templateType === "insuranceClaim") {
+      return "Complete the details to start your insurance claim.";
+    }
+
+    return "Tell us more about what happened.";
+  };
 
   const [incidentType, setIncidentType] = useState(
     initialData?.incidentType || ""
   );
 
-  const [date, setDate] = useState(
-    initialData?.date || ""
-  );
-
-  const [time, setTime] = useState(
-    initialData?.time || ""
-  );
-
+  const [date, setDate] = useState(initialData?.date || "");
+  const [time, setTime] = useState(initialData?.time || "");
   const [location, setLocation] = useState(
     initialData?.location || ""
   );
@@ -41,34 +82,43 @@ function BasicForm({ initialData, onContinue }) {
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
 
+  /*
+    When a template is selected, update the local form values.
+  */
+  useEffect(() => {
+    setIncidentType(initialData?.incidentType || "");
+    setDate(initialData?.date || "");
+    setTime(initialData?.time || "");
+    setLocation(initialData?.location || "");
+    setInjured(initialData?.injured || "");
+    setPerson(initialData?.person || "");
+    setInjury(initialData?.injury || "");
+    setPoliceReport(initialData?.policeReport || "");
+    setDescription(initialData?.description || "");
+    setError("");
+  }, [initialData, templateType]);
 
   const handleContinue = () => {
-
-    // Incident Type
     if (!incidentType) {
       setError("Please select an incident type.");
       return;
     }
 
-    // Date
     if (!date) {
       setError("Please select the incident date.");
       return;
     }
 
-    // Location
     if (!location.trim()) {
       setError("Please enter the incident location.");
       return;
     }
 
-    // Injury
     if (!injured) {
       setError("Please select whether anyone was injured.");
       return;
     }
 
-    // If injured = yes
     if (injured === "yes" && !person) {
       setError("Please select who was injured.");
       return;
@@ -79,18 +129,15 @@ function BasicForm({ initialData, onContinue }) {
       return;
     }
 
-    // Police report
     if (!policeReport) {
       setError("Please select whether a police report was filed.");
       return;
     }
 
-    // Description
     if (!description.trim()) {
       setError("Please describe what happened.");
       return;
     }
-
 
     const formData = {
       incidentType,
@@ -101,18 +148,15 @@ function BasicForm({ initialData, onContinue }) {
       person,
       injury,
       policeReport,
-      description
+      description,
+      templateType
     };
 
-
     setError("");
-
     onContinue(formData);
   };
 
-
   const handleSaveDraft = () => {
-
     const draftData = {
       incidentType,
       date,
@@ -122,7 +166,8 @@ function BasicForm({ initialData, onContinue }) {
       person,
       injury,
       policeReport,
-      description
+      description,
+      templateType
     };
 
     localStorage.setItem(
@@ -137,40 +182,55 @@ function BasicForm({ initialData, onContinue }) {
     }, 2000);
   };
 
-
   return (
-
     <div className="form-card">
 
-
-      {/* FORM HEADER */}
+      {/* TEMPLATE HEADER */}
 
       <div className="form-heading">
 
         <div className="form-icon">
-          🚗
+          {getTemplateIcon()}
         </div>
 
         <div>
-
           <h2>
-            Incident Details
+            {getTemplateTitle()}
           </h2>
 
           <p>
-            Tell us more about what happened.
+            {getTemplateDescription()}
           </p>
-
         </div>
 
       </div>
 
 
+      {/* TEMPLATE INFORMATION */}
 
-      {/* FIRST ROW */}
+      {templateType !== "default" && (
+        <div
+          style={{
+            padding: "12px 16px",
+            marginBottom: "20px",
+            borderRadius: "10px",
+            background: "#f5f7ff",
+            border: "1px solid #e2e5ff",
+            color: "#4b4f72",
+            fontSize: "14px"
+          }}
+        >
+          <strong>
+            Template selected:
+          </strong>{" "}
+          {getTemplateTitle()}
+        </div>
+      )}
+
+
+      {/* FORM GRID */}
 
       <div className="form-grid">
-
 
         {/* INCIDENT TYPE */}
 
@@ -192,30 +252,97 @@ function BasicForm({ initialData, onContinue }) {
               Select Incident Type
             </option>
 
-            <option value="Road Accident">
-              Road Accident
-            </option>
+            {templateType === "vehicleAccident" && (
+              <>
+                <option value="Vehicle Accident">
+                  Vehicle Accident
+                </option>
 
-            <option value="Vehicle Theft">
-              Vehicle Theft
-            </option>
+                <option value="Road Accident">
+                  Road Accident
+                </option>
 
-            <option value="Natural Disaster">
-              Natural Disaster
-            </option>
+                <option value="Collision">
+                  Collision
+                </option>
+              </>
+            )}
 
-            <option value="Fire">
-              Fire
-            </option>
+            {templateType === "vehicleDamage" && (
+              <>
+                <option value="Vehicle Damage">
+                  Vehicle Damage
+                </option>
 
-            <option value="Other">
-              Other
-            </option>
+                <option value="Collision Damage">
+                  Collision Damage
+                </option>
+
+                <option value="Other Vehicle Damage">
+                  Other Vehicle Damage
+                </option>
+              </>
+            )}
+
+            {templateType === "insuranceClaim" && (
+              <>
+                <option value="Insurance Claim">
+                  Insurance Claim
+                </option>
+
+                <option value="Road Accident">
+                  Road Accident
+                </option>
+
+                <option value="Vehicle Damage">
+                  Vehicle Damage
+                </option>
+
+                <option value="Vehicle Theft">
+                  Vehicle Theft
+                </option>
+
+                <option value="Natural Disaster">
+                  Natural Disaster
+                </option>
+
+                <option value="Fire">
+                  Fire
+                </option>
+
+                <option value="Other">
+                  Other
+                </option>
+              </>
+            )}
+
+            {templateType === "default" && (
+              <>
+                <option value="Road Accident">
+                  Road Accident
+                </option>
+
+                <option value="Vehicle Theft">
+                  Vehicle Theft
+                </option>
+
+                <option value="Natural Disaster">
+                  Natural Disaster
+                </option>
+
+                <option value="Fire">
+                  Fire
+                </option>
+
+                <option value="Other">
+                  Other
+                </option>
+              </>
+            )}
 
           </select>
 
         </div>
-
 
 
         {/* DATE */}
@@ -238,7 +365,6 @@ function BasicForm({ initialData, onContinue }) {
         </div>
 
 
-
         {/* TIME */}
 
         <div className="form-group">
@@ -259,7 +385,6 @@ function BasicForm({ initialData, onContinue }) {
         </div>
 
 
-
         {/* LOCATION */}
 
         <div className="form-group">
@@ -270,7 +395,11 @@ function BasicForm({ initialData, onContinue }) {
 
           <input
             type="text"
-            placeholder="Enter incident location"
+            placeholder={
+              templateType === "vehicleDamage"
+                ? "Enter location where damage occurred"
+                : "Enter incident location"
+            }
             value={location}
             onChange={(e) => {
               setLocation(e.target.value);
@@ -283,8 +412,58 @@ function BasicForm({ initialData, onContinue }) {
       </div>
 
 
+      {/* VEHICLE DAMAGE SPECIFIC INFORMATION */}
 
-      {/* INJURY QUESTION */}
+      {templateType === "vehicleDamage" && (
+        <div className="question">
+
+          <label>
+            What type of damage occurred?
+          </label>
+
+          <div className="choice-container">
+
+            <button
+              type="button"
+              className={
+                description.includes("Minor")
+                  ? "choice active"
+                  : "choice"
+              }
+              onClick={() => {
+                setDescription(
+                  `Minor vehicle damage. `
+                );
+                setError("");
+              }}
+            >
+              Minor Damage
+            </button>
+
+            <button
+              type="button"
+              className={
+                description.includes("Major")
+                  ? "choice active"
+                  : "choice"
+              }
+              onClick={() => {
+                setDescription(
+                  `Major vehicle damage. `
+                );
+                setError("");
+              }}
+            >
+              Major Damage
+            </button>
+
+          </div>
+
+        </div>
+      )}
+
+
+      {/* INJURY */}
 
       <div className="question">
 
@@ -292,9 +471,7 @@ function BasicForm({ initialData, onContinue }) {
           Was anyone injured?
         </label>
 
-
         <div className="choice-container">
-
 
           <button
             type="button"
@@ -311,7 +488,6 @@ function BasicForm({ initialData, onContinue }) {
             😟 Yes
           </button>
 
-
           <button
             type="button"
             className={
@@ -320,12 +496,10 @@ function BasicForm({ initialData, onContinue }) {
                 : "choice"
             }
             onClick={() => {
-
               setInjured("no");
               setPerson("");
               setInjury("");
               setError("");
-
             }}
           >
             🙂 No
@@ -336,13 +510,10 @@ function BasicForm({ initialData, onContinue }) {
       </div>
 
 
-
       {/* INJURY DETAILS */}
 
       {injured === "yes" && (
-
         <div className="form-grid">
-
 
           <div className="form-group">
 
@@ -383,7 +554,6 @@ function BasicForm({ initialData, onContinue }) {
           </div>
 
 
-
           <div className="form-group">
 
             <label>
@@ -403,9 +573,7 @@ function BasicForm({ initialData, onContinue }) {
           </div>
 
         </div>
-
       )}
-
 
 
       {/* POLICE REPORT */}
@@ -416,9 +584,7 @@ function BasicForm({ initialData, onContinue }) {
           Police Report Filed?
         </label>
 
-
         <div className="choice-container">
-
 
           <button
             type="button"
@@ -434,7 +600,6 @@ function BasicForm({ initialData, onContinue }) {
           >
             Yes
           </button>
-
 
           <button
             type="button"
@@ -456,27 +621,38 @@ function BasicForm({ initialData, onContinue }) {
       </div>
 
 
-
       {/* DESCRIPTION */}
 
       <div className="description">
 
         <label>
-          Describe what happened
+          {templateType === "vehicleAccident"
+            ? "Describe the accident"
+            : templateType === "vehicleDamage"
+            ? "Describe the vehicle damage"
+            : templateType === "insuranceClaim"
+            ? "Describe your insurance claim"
+            : "Describe what happened"}
         </label>
 
         <textarea
           value={description}
           onChange={(e) => {
-
             if (e.target.value.length <= 500) {
               setDescription(e.target.value);
               setError("");
             }
-
           }}
           maxLength="500"
-          placeholder="Tell us what happened..."
+          placeholder={
+            templateType === "vehicleAccident"
+              ? "Tell us how the accident happened..."
+              : templateType === "vehicleDamage"
+              ? "Tell us what damage occurred..."
+              : templateType === "insuranceClaim"
+              ? "Tell us about your insurance claim..."
+              : "Tell us what happened..."
+          }
         />
 
         <div className="character-count">
@@ -486,29 +662,22 @@ function BasicForm({ initialData, onContinue }) {
       </div>
 
 
-
       {/* ERROR */}
 
       {error && (
-
         <div className="form-error">
           {error}
         </div>
-
       )}
 
 
-
-      {/* SAVE MESSAGE */}
+      {/* SAVE */}
 
       {saved && (
-
         <div className="save-message">
           Draft saved successfully!
         </div>
-
       )}
-
 
 
       {/* BUTTONS */}
@@ -523,7 +692,6 @@ function BasicForm({ initialData, onContinue }) {
           Save Draft
         </button>
 
-
         <button
           type="button"
           className="continue"
@@ -534,11 +702,8 @@ function BasicForm({ initialData, onContinue }) {
 
       </div>
 
-
     </div>
-
   );
 }
-
 
 export default BasicForm;

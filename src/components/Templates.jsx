@@ -1,4 +1,4 @@
-import React from "react";
+ import React from "react";
 
 function Templates({ onClose, onUseTemplate }) {
   const templates = [
@@ -52,7 +52,6 @@ function Templates({ onClose, onUseTemplate }) {
       <div className="templates-grid">
 
         {templates.map((template) => (
-
           <div
             className="template-card"
             key={template.id}
@@ -73,15 +72,12 @@ function Templates({ onClose, onUseTemplate }) {
             <button
               type="button"
               className="template-use-button"
-              onClick={() =>
-                onUseTemplate(template)
-              }
+              onClick={() => onUseTemplate(template)}
             >
               Use Template →
             </button>
 
           </div>
-
         ))}
 
       </div>

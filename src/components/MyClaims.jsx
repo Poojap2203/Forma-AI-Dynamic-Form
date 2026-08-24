@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 
-function MyClaims({
-  onCreateNewClaim,
-  onRestoreDraft,
-  onTrackClaim
-}) {
+function MyClaims({ onCreateNewClaim, onRestoreDraft, onTrackClaim}) {
 
   const [claims, setClaims] = useState([]);
 
@@ -13,6 +9,13 @@ function MyClaims({
 
   const [selectedClaim, setSelectedClaim] =
     useState(null);
+
+  /* =========================
+     STATUS FILTER
+     ========================= */
+
+  const [statusFilter, setStatusFilter] =
+    useState("All");
 
 
   /* =========================
@@ -32,9 +35,13 @@ function MyClaims({
 
 
       setClaims(
+
         Array.isArray(savedClaims)
+
           ? savedClaims
+
           : []
+
       );
 
     } catch (error) {
@@ -59,10 +66,11 @@ function MyClaims({
 
 
   /* =========================
-     SEARCH
+     SEARCH + STATUS FILTER
      ========================= */
 
   const filteredClaims =
+
     claims.filter((claim) => {
 
       const search =
@@ -71,12 +79,9 @@ function MyClaims({
           .trim();
 
 
-      if (!search) {
-        return true;
-      }
+      const matchesSearch =
 
-
-      return (
+        !search ||
 
         claim?.claimId
           ?.toLowerCase()
@@ -84,7 +89,8 @@ function MyClaims({
 
         ||
 
-        claim?.incident?.incidentType
+        claim?.incident
+          ?.incidentType
           ?.toLowerCase()
           .includes(search)
 
@@ -94,16 +100,71 @@ function MyClaims({
           ?.toLowerCase()
           .includes(search)
 
+        ||
+
+        claim?.vehicle
+          ?.vehicleMake
+          ?.toLowerCase()
+          .includes(search)
+
+        ||
+
+        claim?.vehicle
+          ?.vehicleModel
+          ?.toLowerCase()
+          .includes(search);
+
+
+      const matchesStatus =
+
+        statusFilter === "All" ||
+
+        claim?.status ===
+          statusFilter;
+
+
+      return (
+
+        matchesSearch &&
+
+        matchesStatus
+
       );
 
     });
 
 
   /* =========================
+     STATUS COUNT
+     ========================= */
+
+  const getStatusCount = (
+    status
+  ) => {
+
+    if (status === "All") {
+
+      return claims.length;
+
+    }
+
+
+    return claims.filter(
+      (claim) =>
+        claim?.status ===
+        status
+    ).length;
+
+  };
+
+
+  /* =========================
      VIEW DETAILS
      ========================= */
 
-  const handleViewDetails = (claim) => {
+  const handleViewDetails = (
+    claim
+  ) => {
 
     setSelectedClaim(claim);
 
@@ -130,6 +191,7 @@ function MyClaims({
     return (
 
       <div className="my-claims-container">
+
 
         <div className="my-claims-header">
 
@@ -165,9 +227,11 @@ function MyClaims({
             📄
           </div>
 
+
           <h3>
             No Claims Yet
           </h3>
+
 
           <p>
             You haven't submitted any insurance claims yet.
@@ -213,6 +277,7 @@ function MyClaims({
     return (
 
       <div className="my-claims-container">
+
 
         <div className="my-claims-header">
 
@@ -262,8 +327,31 @@ function MyClaims({
             </div>
 
 
-            <span className="claim-status submitted">
-              ● {selectedClaim.status}
+            <span
+              className={
+                selectedClaim.status ===
+                "Completed"
+
+                  ? "claim-status completed"
+
+                  : selectedClaim.status ===
+                    "Assessment"
+
+                  ? "claim-status assessment"
+
+                  : selectedClaim.status ===
+                    "Under Review"
+
+                  ? "claim-status review"
+
+                  : "claim-status submitted"
+              }
+            >
+              ●{" "}
+              {
+                selectedClaim.status ||
+                "Submitted"
+              }
             </span>
 
           </div>
@@ -279,6 +367,7 @@ function MyClaims({
 
 
             <div className="claim-details-grid">
+
 
               <DetailItem
                 label="Claim ID"
@@ -349,6 +438,7 @@ function MyClaims({
 
             <div className="claim-details-grid">
 
+
               <DetailItem
                 label="Vehicle Make"
                 value={
@@ -408,13 +498,18 @@ function MyClaims({
               </span>
 
               <p>
+
                 {
                   selectedClaim
                     .vehicle
                     ?.damageDescription
+
                   ||
+
                   "Not provided"
+
                 }
+
               </p>
 
             </div>
@@ -430,16 +525,22 @@ function MyClaims({
               Incident Description
             </h3>
 
+
             <div className="claim-description">
 
               <p>
+
                 {
                   selectedClaim
                     .incident
                     ?.description
+
                   ||
+
                   "Not provided"
+
                 }
+
               </p>
 
             </div>
@@ -450,6 +551,7 @@ function MyClaims({
           {/* ACTIONS */}
 
           <div className="claim-details-actions">
+
 
             <button
               type="button"
@@ -527,9 +629,12 @@ function MyClaims({
       </div>
 
 
-      {/* SEARCH */}
+      {/* =========================
+         SEARCH
+         ========================= */}
 
       <div className="claims-toolbar">
+
 
         <div className="claims-search">
 
@@ -537,9 +642,10 @@ function MyClaims({
             🔍
           </span>
 
+
           <input
             type="text"
-            placeholder="Search by Claim ID, incident type or status..."
+            placeholder="Search by Claim ID, vehicle, incident type or status..."
             value={
               searchTerm
             }
@@ -550,6 +656,21 @@ function MyClaims({
             }
           />
 
+
+          {searchTerm && (
+
+            <button
+              type="button"
+              className="clear-search-button"
+              onClick={() =>
+                setSearchTerm("")
+              }
+            >
+              ×
+            </button>
+
+          )}
+
         </div>
 
 
@@ -557,48 +678,245 @@ function MyClaims({
 
           {filteredClaims.length}{" "}
 
-          {filteredClaims.length === 1
-            ? "Claim"
-            : "Claims"}
+          {
+            filteredClaims.length ===
+            1
+
+              ? "Claim"
+
+              : "Claims"
+
+          }
 
         </div>
 
       </div>
 
 
-      {/* CLAIM LIST */}
+      {/* =========================
+         DAY 17 STATUS FILTER
+         ========================= */}
+
+      <div className="claim-filter-area">
+
+
+        <div className="claim-filter-title">
+
+          <span>
+            Filter by Status
+          </span>
+
+
+          {(searchTerm ||
+            statusFilter !==
+              "All") && (
+
+            <button
+              type="button"
+              className="clear-filter-button"
+              onClick={() => {
+
+                setSearchTerm("");
+
+                setStatusFilter(
+                  "All"
+                );
+
+              }}
+            >
+              Clear Filters
+            </button>
+
+          )}
+
+        </div>
+
+
+        <div className="claim-filter-chips">
+
+
+          <button
+            type="button"
+            className={
+              statusFilter ===
+              "All"
+
+                ? "claim-filter-chip active"
+
+                : "claim-filter-chip"
+            }
+            onClick={() =>
+              setStatusFilter(
+                "All"
+              )
+            }
+          >
+            All (
+            {
+              getStatusCount(
+                "All"
+              )
+            }
+            )
+          </button>
+
+
+          <button
+            type="button"
+            className={
+              statusFilter ===
+              "Submitted"
+
+                ? "claim-filter-chip active"
+
+                : "claim-filter-chip"
+            }
+            onClick={() =>
+              setStatusFilter(
+                "Submitted"
+              )
+            }
+          >
+            Submitted (
+            {
+              getStatusCount(
+                "Submitted"
+              )
+            }
+            )
+          </button>
+
+
+          <button
+            type="button"
+            className={
+              statusFilter ===
+              "Under Review"
+
+                ? "claim-filter-chip active"
+
+                : "claim-filter-chip"
+            }
+            onClick={() =>
+              setStatusFilter(
+                "Under Review"
+              )
+            }
+          >
+            Under Review (
+            {
+              getStatusCount(
+                "Under Review"
+              )
+            }
+            )
+          </button>
+
+
+          <button
+            type="button"
+            className={
+              statusFilter ===
+              "Assessment"
+
+                ? "claim-filter-chip active"
+
+                : "claim-filter-chip"
+            }
+            onClick={() =>
+              setStatusFilter(
+                "Assessment"
+              )
+            }
+          >
+            Assessment (
+            {
+              getStatusCount(
+                "Assessment"
+              )
+            }
+            )
+          </button>
+
+
+          <button
+            type="button"
+            className={
+              statusFilter ===
+              "Completed"
+
+                ? "claim-filter-chip active"
+
+                : "claim-filter-chip"
+            }
+            onClick={() =>
+              setStatusFilter(
+                "Completed"
+              )
+            }
+          >
+            Completed (
+            {
+              getStatusCount(
+                "Completed"
+              )
+            }
+            )
+          </button>
+
+
+        </div>
+
+      </div>
+
+
+      {/* =========================
+         CLAIM LIST
+         ========================= */}
 
       {filteredClaims.length === 0 ? (
 
         <div className="claims-empty">
 
+
           <div className="claims-empty-icon">
             🔍
           </div>
+
 
           <h3>
             No Matching Claims
           </h3>
 
+
           <p>
-            Try searching with a different Claim ID or status.
+            Try searching with a different Claim ID, vehicle or status.
           </p>
+
 
           <button
             type="button"
             className="secondary-button"
-            onClick={() =>
-              setSearchTerm("")
-            }
+            onClick={() => {
+
+              setSearchTerm("");
+
+              setStatusFilter(
+                "All"
+              );
+
+            }}
           >
-            Clear Search
+            Clear Filters
           </button>
+
 
         </div>
 
       ) : (
 
         <div className="claims-list">
+
 
           {filteredClaims.map(
             (claim, index) => (
@@ -616,11 +934,13 @@ function MyClaims({
 
                 <div className="claim-card-top">
 
+
                   <div className="claim-card-id">
 
                     <div className="claim-card-icon">
                       📄
                     </div>
+
 
                     <div>
 
@@ -629,7 +949,9 @@ function MyClaims({
                       </span>
 
                       <h3>
-                        {claim.claimId}
+                        {
+                          claim.claimId
+                        }
                       </h3>
 
                     </div>
@@ -637,14 +959,38 @@ function MyClaims({
                   </div>
 
 
-                  <span className="claim-status submitted">
+                  {/* DAY 17 DYNAMIC STATUS */}
+
+                  <span
+                    className={
+                      claim.status ===
+                      "Completed"
+
+                        ? "claim-status completed"
+
+                        : claim.status ===
+                          "Assessment"
+
+                        ? "claim-status assessment"
+
+                        : claim.status ===
+                          "Under Review"
+
+                        ? "claim-status review"
+
+                        : "claim-status submitted"
+                    }
+                  >
 
                     ●{" "}
 
-                    {claim.status ||
-                      "Submitted"}
+                    {
+                      claim.status ||
+                      "Submitted"
+                    }
 
                   </span>
+
 
                 </div>
 
@@ -661,13 +1007,18 @@ function MyClaims({
                     </span>
 
                     <strong>
+
                       {
                         claim
                           .incident
                           ?.incidentType
+
                         ||
+
                         "Not provided"
+
                       }
+
                     </strong>
 
                   </div>
@@ -680,13 +1031,18 @@ function MyClaims({
                     </span>
 
                     <strong>
+
                       {
                         claim
                           .incident
                           ?.date
+
                         ||
+
                         "Not provided"
+
                       }
+
                     </strong>
 
                   </div>
@@ -704,8 +1060,11 @@ function MyClaims({
                         claim
                           .vehicle
                           ?.vehicleMake
+
                         ||
+
                         "Not provided"
+
                       }
 
                       {" "}
@@ -714,7 +1073,11 @@ function MyClaims({
                         claim
                           .vehicle
                           ?.vehicleModel
-                        || ""
+
+                        ||
+
+                        ""
+
                       }
 
                     </strong>
@@ -729,13 +1092,20 @@ function MyClaims({
                     </span>
 
                     <strong>
+
                       {
-                        claim.submittedAt ||
+                        claim.submittedAt
+
+                        ||
+
                         "Not available"
+
                       }
+
                     </strong>
 
                   </div>
+
 
                 </div>
 
@@ -743,6 +1113,7 @@ function MyClaims({
                 {/* ACTIONS */}
 
                 <div className="claim-card-actions">
+
 
                   <button
                     type="button"
@@ -769,11 +1140,14 @@ function MyClaims({
                     📍 Track Claim
                   </button>
 
+
                 </div>
+
 
               </div>
 
             )
+
           )}
 
         </div>
@@ -781,9 +1155,12 @@ function MyClaims({
       )}
 
 
-      {/* RESTORE DRAFT */}
+      {/* =========================
+         RESTORE DRAFT
+         ========================= */}
 
       <div className="claims-draft-area">
+
 
         <span>
           Have an unfinished claim?
@@ -799,7 +1176,9 @@ function MyClaims({
           📋 Restore Draft
         </button>
 
+
       </div>
+
 
     </div>
 
@@ -813,8 +1192,11 @@ function MyClaims({
    ========================= */
 
 function DetailItem({
+
   label,
+
   value
+
 }) {
 
   return (

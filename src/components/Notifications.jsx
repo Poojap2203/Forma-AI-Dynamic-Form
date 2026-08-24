@@ -4,151 +4,422 @@ function Notifications({ onClose }) {
 
   const [notifications, setNotifications] =
     useState(() => {
+
       try {
-        return JSON.parse(
+
+        const savedNotifications =
+          JSON.parse(
+            localStorage.getItem(
+              "formaAI_notifications"
+            ) || "[]"
+          );
+
+        return Array.isArray(
+          savedNotifications
+        )
+          ? savedNotifications
+          : [];
+
+      } catch {
+
+        return [];
+
+      }
+
+    });
+
+
+  /* =========================
+     REFRESH NOTIFICATIONS
+     ========================= */
+
+  const loadNotifications = () => {
+
+    try {
+
+      const savedNotifications =
+        JSON.parse(
           localStorage.getItem(
             "formaAI_notifications"
           ) || "[]"
         );
-      } catch {
-        return [];
-      }
-    });
+
+      setNotifications(
+        Array.isArray(
+          savedNotifications
+        )
+          ? savedNotifications
+          : []
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Unable to load notifications:",
+        error
+      );
+
+      setNotifications([]);
+
+    }
+
+  };
 
 
-  const unreadCount = notifications.filter(
-    (notification) =>
-      !notification.read
-  ).length;
+  /* =========================
+     LOAD / REFRESH
+     ========================= */
 
+  useEffect(() => {
+
+    loadNotifications();
+
+    const handleStorageChange = () => {
+
+      loadNotifications();
+
+    };
+
+    window.addEventListener(
+      "storage",
+      handleStorageChange
+    );
+
+    return () => {
+
+      window.removeEventListener(
+        "storage",
+        handleStorageChange
+      );
+
+    };
+
+  }, []);
+
+
+  /* =========================
+     UNREAD COUNT
+     ========================= */
+
+  const unreadCount =
+    notifications.filter(
+      (notification) =>
+        !notification.read
+    ).length;
+
+
+  /* =========================
+     MARK AS READ
+     ========================= */
 
   const markAsRead = (id) => {
 
     const updated =
       notifications.map(
         (notification) =>
+
           notification.id === id
+
             ? {
                 ...notification,
                 read: true
               }
+
             : notification
       );
 
 
     setNotifications(updated);
 
+
     localStorage.setItem(
       "formaAI_notifications",
       JSON.stringify(updated)
     );
+
   };
 
+
+  /* =========================
+     MARK ALL AS READ
+     ========================= */
 
   const markAllAsRead = () => {
 
     const updated =
       notifications.map(
         (notification) => ({
+
           ...notification,
+
           read: true
+
         })
       );
 
 
     setNotifications(updated);
 
+
     localStorage.setItem(
       "formaAI_notifications",
       JSON.stringify(updated)
     );
+
   };
 
+
+  /* =========================
+     CLEAR ALL
+     ========================= */
 
   const clearNotifications = () => {
 
     setNotifications([]);
 
+
     localStorage.removeItem(
       "formaAI_notifications"
     );
+
   };
 
 
-  const getIcon = (type) => {
+  /* =========================
+     GET NOTIFICATION ICON
+     ========================= */
 
-    if (type === "success") {
+  const getIcon = (
+    notification
+  ) => {
+
+    const type =
+      notification?.type
+        ?.toLowerCase();
+
+
+    if (
+      type === "success"
+    ) {
+
       return "✓";
+
     }
 
-    if (type === "warning") {
+
+    if (
+      type === "warning"
+    ) {
+
       return "⚠";
+
     }
 
-    if (type === "review") {
+
+    if (
+      type === "review"
+    ) {
+
       return "🔍";
+
     }
+
+
+    if (
+      type === "submitted"
+    ) {
+
+      return "✓";
+
+    }
+
+
+    if (
+      type === "under_review"
+    ) {
+
+      return "👁";
+
+    }
+
+
+    if (
+      type === "assessment"
+    ) {
+
+      return "🔍";
+
+    }
+
+
+    if (
+      type === "completed"
+    ) {
+
+      return "✓";
+
+    }
+
 
     return "🔔";
+
+  };
+
+
+  /* =========================
+     GET NOTIFICATION TYPE
+     ========================= */
+
+  const getNotificationType = (
+    notification
+  ) => {
+
+    if (
+      notification?.type
+    ) {
+
+      return notification.type;
+
+    }
+
+
+    const title =
+      notification?.title
+        ?.toLowerCase() || "";
+
+
+    if (
+      title.includes("completed")
+    ) {
+
+      return "success";
+
+    }
+
+
+    if (
+      title.includes("submitted")
+    ) {
+
+      return "success";
+
+    }
+
+
+    if (
+      title.includes("review")
+    ) {
+
+      return "review";
+
+    }
+
+
+    if (
+      title.includes("assessment")
+    ) {
+
+      return "review";
+
+    }
+
+
+    return "";
+
   };
 
 
   return (
+
     <div className="notification-panel">
 
-      {/* HEADER */}
+
+      {/* =========================
+          HEADER
+          ========================= */}
 
       <div className="notification-panel-header">
 
         <div>
 
           <h3>
+
             Notifications
+
           </h3>
 
+
           <span>
+
             {unreadCount > 0
+
               ? `${unreadCount} unread`
+
               : "All caught up"}
+
           </span>
 
         </div>
 
 
         <button
+
           type="button"
+
           className="notification-close"
+
           onClick={onClose}
+
         >
+
           ×
+
         </button>
 
       </div>
 
 
-      {/* ACTIONS */}
+
+      {/* =========================
+          ACTIONS
+          ========================= */}
 
       {notifications.length > 0 && (
 
         <div className="notification-actions">
 
+
           {unreadCount > 0 && (
 
             <button
+
               type="button"
-              onClick={markAllAsRead}
+
+              onClick={
+                markAllAsRead
+              }
+
             >
+
               Mark all as read
+
             </button>
 
           )}
 
 
           <button
+
             type="button"
-            onClick={clearNotifications}
+
+            onClick={
+              clearNotifications
+            }
+
           >
+
             Clear all
+
           </button>
 
         </div>
@@ -156,97 +427,188 @@ function Notifications({ onClose }) {
       )}
 
 
-      {/* LIST */}
+
+      {/* =========================
+          NOTIFICATION LIST
+          ========================= */}
 
       <div className="notification-list">
+
 
         {notifications.length === 0 ? (
 
           <div className="notification-empty">
 
+
             <div className="notification-empty-icon">
+
               🔔
+
             </div>
 
+
             <h4>
+
               No Notifications
+
             </h4>
 
+
             <p>
+
               You're all caught up.
+
             </p>
+
 
           </div>
 
         ) : (
 
-          notifications.map(
-            (notification) => (
+          notifications
+            .slice()
+            .reverse()
+            .map(
+              (notification) => {
 
-              <button
-                type="button"
-                key={notification.id}
-                className={
-                  notification.read
-                    ? "notification-item"
-                    : "notification-item unread"
-                }
-                onClick={() =>
-                  markAsRead(
-                    notification.id
-                  )
-                }
-              >
-
-                <div
-                  className={
-                    `notification-icon ${notification.type || ""}`
-                  }
-                >
-                  {getIcon(
-                    notification.type
-                  )}
-                </div>
+                const notificationType =
+                  getNotificationType(
+                    notification
+                  );
 
 
-                <div className="notification-content">
+                return (
 
-                  <div className="notification-title-row">
+                  <button
 
-                    <strong>
-                      {notification.title}
-                    </strong>
+                    type="button"
 
-                    {!notification.read && (
-                      <span className="unread-dot" />
-                    )}
+                    key={
+                      notification.id
+                    }
 
-                  </div>
+                    className={
+
+                      notification.read
+
+                        ? "notification-item"
+
+                        : "notification-item unread"
+
+                    }
+
+                    onClick={() =>
+
+                      markAsRead(
+                        notification.id
+                      )
+
+                    }
+
+                  >
 
 
-                  <p>
-                    {notification.message}
-                  </p>
+                    {/* ICON */}
+
+                    <div
+
+                      className={
+
+                        `notification-icon ${notificationType}`
+
+                      }
+
+                    >
+
+                      {getIcon(
+                        notification
+                      )}
+
+                    </div>
 
 
-                  <small>
-                    {notification.time ||
-                      "Just now"}
-                  </small>
 
-                </div>
+                    {/* CONTENT */}
 
-              </button>
+                    <div className="notification-content">
 
+
+                      <div className="notification-title-row">
+
+                        <strong>
+
+                          {notification.title ||
+                            "Notification"}
+
+                        </strong>
+
+
+                        {!notification.read && (
+
+                          <span className="unread-dot" />
+
+                        )}
+
+                      </div>
+
+
+                      <p>
+
+                        {notification.message ||
+                          "You have a new notification."}
+
+                      </p>
+
+
+                      <small>
+
+                        {notification.time ||
+                          "Just now"}
+
+                      </small>
+
+
+                    </div>
+
+
+                  </button>
+
+                );
+
+              }
             )
-          )
 
         )}
 
       </div>
 
+
+      {/* =========================
+          FOOTER
+          ========================= */}
+
+      {notifications.length > 0 && (
+
+        <div className="notification-panel-footer">
+
+          <span>
+
+            {notifications.length}{" "}
+
+            {notifications.length === 1
+              ? "notification"
+              : "notifications"}
+
+          </span>
+
+        </div>
+
+      )}
+
     </div>
+
   );
+
 }
 
 

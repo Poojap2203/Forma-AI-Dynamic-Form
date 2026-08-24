@@ -1,4 +1,5 @@
-import { useState } from "react";
+ import { useState } from "react";
+
 
 function ReviewForm({
   incidentData,
@@ -12,8 +13,10 @@ function ReviewForm({
   const [submitted, setSubmitted] =
     useState(false);
 
+
   const [claimId, setClaimId] =
     useState("");
+
 
   const [submittedAt, setSubmittedAt] =
     useState("");
@@ -69,7 +72,7 @@ function ReviewForm({
 
 
     /* =========================
-       EXISTING CLAIM STORAGE
+       EXISTING STORAGE
        ========================= */
 
     localStorage.setItem(
@@ -93,11 +96,8 @@ function ReviewForm({
 
 
     const updatedClaims = [
-
       ...existingClaims,
-
       completeClaim
-
     ];
 
 
@@ -117,12 +117,120 @@ function ReviewForm({
       "formaAI_incident_draft"
     );
 
+
     localStorage.removeItem(
       "formaAI_vehicle_draft"
     );
 
+
     localStorage.removeItem(
       "formaAI_complete_draft"
+    );
+
+
+    /* =========================
+       DAY 15
+       CLAIM ACTIVITY
+       ========================= */
+
+    const activity = {
+
+      id:
+        Date.now(),
+
+      claimId:
+        generatedClaimId,
+
+      type:
+        "submitted",
+
+      title:
+        "Claim Submitted",
+
+      description:
+        "Your insurance claim has been successfully submitted.",
+
+      time:
+        submissionTime
+
+    };
+
+
+    const existingActivities =
+      JSON.parse(
+        localStorage.getItem(
+          "formaAI_claim_activity"
+        ) || "[]"
+      );
+
+
+    const updatedActivities = [
+
+      ...existingActivities,
+
+      activity
+
+    ];
+
+
+    localStorage.setItem(
+      "formaAI_claim_activity",
+      JSON.stringify(
+        updatedActivities
+      )
+    );
+
+
+    /* =========================
+       DAY 15
+       NOTIFICATION
+       ========================= */
+
+    const notification = {
+
+      id:
+        Date.now() + 1,
+
+      claimId:
+        generatedClaimId,
+
+      title:
+        "Claim Submitted Successfully",
+
+      message:
+        `Your claim ${generatedClaimId} has been submitted for review.`,
+
+      time:
+        submissionTime,
+
+      read:
+        false
+
+    };
+
+
+    const existingNotifications =
+      JSON.parse(
+        localStorage.getItem(
+          "formaAI_notifications"
+        ) || "[]"
+      );
+
+
+    const updatedNotifications = [
+
+      ...existingNotifications,
+
+      notification
+
+    ];
+
+
+    localStorage.setItem(
+      "formaAI_notifications",
+      JSON.stringify(
+        updatedNotifications
+      )
     );
 
 
@@ -134,11 +242,15 @@ function ReviewForm({
       generatedClaimId
     );
 
+
     setSubmittedAt(
       submissionTime
     );
 
-    setSubmitted(true);
+
+    setSubmitted(
+      true
+    );
 
   };
 
@@ -150,17 +262,21 @@ function ReviewForm({
   if (submitted) {
 
     return (
+
       <div className="form-card">
 
         <div className="success-container">
+
 
           <div className="success-icon">
             ✓
           </div>
 
+
           <h2>
             Claim Submitted Successfully
           </h2>
+
 
           <p>
             Your insurance claim has been submitted
@@ -168,15 +284,19 @@ function ReviewForm({
           </p>
 
 
-          {/* CLAIM INFORMATION */}
+          {/* =========================
+             CLAIM INFORMATION
+             ========================= */}
 
           <div className="claim-success-card">
+
 
             <div className="claim-success-row">
 
               <span>
                 Claim ID
               </span>
+
 
               <strong>
                 {claimId}
@@ -191,6 +311,7 @@ function ReviewForm({
                 Status
               </span>
 
+
               <strong className="status-submitted">
                 ● Submitted
               </strong>
@@ -204,16 +325,23 @@ function ReviewForm({
                 Submitted
               </span>
 
+
               <strong>
                 {submittedAt}
               </strong>
 
             </div>
 
+
           </div>
 
 
+          {/* =========================
+             SUCCESS ACTIONS
+             ========================= */}
+
           <div className="success-actions">
+
 
             <button
               type="button"
@@ -222,7 +350,9 @@ function ReviewForm({
                 setSubmitted(false)
               }
             >
+
               Back to Review
+
             </button>
 
 
@@ -233,15 +363,21 @@ function ReviewForm({
                 onNewClaim
               }
             >
+
               + Create New Claim
+
             </button>
 
+
           </div>
+
 
         </div>
 
       </div>
+
     );
+
   }
 
 
@@ -250,15 +386,21 @@ function ReviewForm({
      ========================= */
 
   return (
+
     <div className="form-card">
 
-      {/* HEADER */}
+
+      {/* =========================
+         HEADER
+         ========================= */}
 
       <div className="form-heading">
+
 
         <div className="form-icon">
           ✓
         </div>
+
 
         <div>
 
@@ -266,24 +408,31 @@ function ReviewForm({
             Review & Submit
           </h2>
 
+
           <p>
             Review your information before submitting.
           </p>
 
         </div>
 
+
       </div>
 
 
-      {/* INCIDENT DETAILS */}
+      {/* =========================
+         INCIDENT DETAILS
+         ========================= */}
 
       <div className="review-section">
 
+
         <div className="review-header">
+
 
           <h3>
             Incident Details
           </h3>
+
 
           <button
             type="button"
@@ -292,13 +441,17 @@ function ReviewForm({
               onEditIncident
             }
           >
+
             Edit
+
           </button>
+
 
         </div>
 
 
         <div className="review-grid">
+
 
           <ReviewItem
             label="Incident Type"
@@ -307,12 +460,14 @@ function ReviewForm({
             }
           />
 
+
           <ReviewItem
             label="Date"
             value={
               incidentData?.date
             }
           />
+
 
           <ReviewItem
             label="Time"
@@ -321,12 +476,14 @@ function ReviewForm({
             }
           />
 
+
           <ReviewItem
             label="Location"
             value={
               incidentData?.location
             }
           />
+
 
           <ReviewItem
             label="Injury"
@@ -338,6 +495,7 @@ function ReviewForm({
                 : "Not provided"
             }
           />
+
 
           <ReviewItem
             label="Police Report"
@@ -351,7 +509,12 @@ function ReviewForm({
           />
 
 
+          {/* =========================
+             INJURY DETAILS
+             ========================= */}
+
           {incidentData?.injured === "yes" && (
+
             <>
 
               <ReviewItem
@@ -361,6 +524,7 @@ function ReviewForm({
                 }
               />
 
+
               <ReviewItem
                 label="Injury Description"
                 value={
@@ -369,6 +533,7 @@ function ReviewForm({
               />
 
             </>
+
           )}
 
 
@@ -380,20 +545,27 @@ function ReviewForm({
             full
           />
 
+
         </div>
+
 
       </div>
 
 
-      {/* VEHICLE & DAMAGE */}
+      {/* =========================
+         VEHICLE & DAMAGE
+         ========================= */}
 
       <div className="review-section">
 
+
         <div className="review-header">
+
 
           <h3>
             Vehicle & Damage
           </h3>
+
 
           <button
             type="button"
@@ -402,13 +574,17 @@ function ReviewForm({
               onEditVehicle
             }
           >
+
             Edit
+
           </button>
+
 
         </div>
 
 
         <div className="review-grid">
+
 
           <ReviewItem
             label="Vehicle Make"
@@ -417,12 +593,14 @@ function ReviewForm({
             }
           />
 
+
           <ReviewItem
             label="Vehicle Model"
             value={
               vehicleData?.vehicleModel
             }
           />
+
 
           <ReviewItem
             label="Registration Number"
@@ -431,6 +609,7 @@ function ReviewForm({
             }
           />
 
+
           <ReviewItem
             label="Damage Type"
             value={
@@ -438,12 +617,14 @@ function ReviewForm({
             }
           />
 
+
           <ReviewItem
             label="Damage Severity"
             value={
               vehicleData?.severity
             }
           />
+
 
           <ReviewItem
             label="Damage Description"
@@ -453,30 +634,40 @@ function ReviewForm({
             full
           />
 
+
         </div>
+
 
       </div>
 
 
-      {/* NOTICE */}
+      {/* =========================
+         NOTICE
+         ========================= */}
 
       <div className="review-notice">
+
 
         <strong>
           Before you submit
         </strong>
+
 
         <p>
           Please make sure all the information
           provided above is correct.
         </p>
 
+
       </div>
 
 
-      {/* BUTTONS */}
+      {/* =========================
+         BUTTONS
+         ========================= */}
 
       <div className="form-buttons">
+
 
         <button
           type="button"
@@ -485,7 +676,9 @@ function ReviewForm({
             onBack
           }
         >
+
           ← Back
+
         </button>
 
 
@@ -496,13 +689,19 @@ function ReviewForm({
             handleSubmit
           }
         >
+
           Submit Claim
+
         </button>
+
 
       </div>
 
+
     </div>
+
   );
+
 }
 
 
@@ -517,6 +716,7 @@ function ReviewItem({
 }) {
 
   return (
+
     <div
       className={
         full
@@ -525,16 +725,21 @@ function ReviewItem({
       }
     >
 
+
       <span>
         {label}
       </span>
+
 
       <strong>
         {value || "Not provided"}
       </strong>
 
+
     </div>
+
   );
+
 }
 
 

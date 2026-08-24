@@ -17,7 +17,7 @@ function App() {
 
 
   /* =========================
-     DAY 12 - NOTIFICATIONS
+     - NOTIFICATIONS
      ========================= */
 
   const [showNotifications, setShowNotifications] =

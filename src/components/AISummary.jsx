@@ -1,14 +1,11 @@
-function AISummary({ formData }) {
-
-const data = formData || {};
-
+function AISummary({ formData, onEditIncident }) {
+ const data = formData || {};
 
   /* ===============================
      ALL IMPORTANT FIELDS
      =============================== */
 
   const fields = [
-
     data.incidentType,
     data.date,
     data.time,
@@ -16,16 +13,13 @@ const data = formData || {};
     data.injured,
     data.policeReport,
     data.description,
-
     data.vehicleMake,
     data.vehicleModel,
     data.registration,
     data.damageType,
     data.severity,
     data.damageDescription
-
   ];
-
 
   /* ===============================
      CALCULATE PERCENTAGE
@@ -38,11 +32,9 @@ const data = formData || {};
       field.toString().trim() !== ""
   ).length;
 
-
   const percentage = Math.round(
     (filledFields / fields.length) * 100
   );
-
 
   /* ===============================
      VALUES
@@ -51,16 +43,13 @@ const data = formData || {};
   const incidentType =
     data.incidentType || "Not provided";
 
-
   const dateTime =
     data.date
       ? `${data.date}${data.time ? `, ${data.time}` : ""}`
       : "Not provided";
 
-
   const location =
     data.location || "Not provided";
-
 
   const vehicle =
     data.vehicleMake || data.vehicleModel
@@ -69,19 +58,15 @@ const data = formData || {};
         }`.trim()
       : "Not provided";
 
-
   const damage =
     data.damageType || "Not provided";
-
 
   const severity =
     data.severity || "Not provided";
 
-
   let injured = "Not provided";
 
   if (data.injured === "yes") {
-
     injured =
       data.person
         ? `${data.person}${
@@ -90,13 +75,11 @@ const data = formData || {};
               : ""
           }`
         : "Yes";
-
   }
 
   if (data.injured === "no") {
     injured = "No";
   }
-
 
   const policeReport =
     data.policeReport === "yes"
@@ -105,142 +88,101 @@ const data = formData || {};
       ? "No"
       : "Not provided";
 
-
   return (
-
     <div className="ai-summary">
 
-
       {/* HEADER */}
-
       <div className="summary-header">
-
         <div>
-
           <h3>
             ✨ AI Extracted Summary
           </h3>
 
           <p>
-            We've extracted these details from your description. Please review.
+            We've extracted these details from your description.
+            Please review.
           </p>
-
         </div>
-
 
         <div className="summary-score">
           {percentage}%
         </div>
-
       </div>
 
-
       {/* ROBOT */}
-
       <div className="robot-box">
         🤖
       </div>
 
-
       {/* INCIDENT */}
-
       <div className="summary-item">
-
         <div className="summary-icon">
           🚗
         </div>
 
         <div>
-
-          <span>
-            Incident Type
-          </span>
+          <span>Incident Type</span>
 
           <strong>
             {incidentType}
           </strong>
-
         </div>
 
         <div className="check">
           {data.incidentType ? "✓" : "○"}
         </div>
-
       </div>
 
-
       {/* DATE */}
-
       <div className="summary-item">
-
         <div className="summary-icon">
           📅
         </div>
 
         <div>
-
-          <span>
-            Date & Time
-          </span>
+          <span>Date & Time</span>
 
           <strong>
             {dateTime}
           </strong>
-
         </div>
 
         <div className="check">
           {data.date ? "✓" : "○"}
         </div>
-
       </div>
 
-
       {/* LOCATION */}
-
       <div className="summary-item">
-
         <div className="summary-icon">
           📍
         </div>
 
         <div>
-
-          <span>
-            Location
-          </span>
+          <span>Location</span>
 
           <strong>
             {location}
           </strong>
-
         </div>
 
         <div className="check">
           {data.location ? "✓" : "○"}
         </div>
-
       </div>
 
-
       {/* VEHICLE */}
-
       <div className="summary-item">
-
         <div className="summary-icon">
           🚘
         </div>
 
         <div>
-
-          <span>
-            Vehicle
-          </span>
+          <span>Vehicle</span>
 
           <strong>
             {vehicle}
           </strong>
-
         </div>
 
         <div className="check">
@@ -248,126 +190,109 @@ const data = formData || {};
             ? "✓"
             : "○"}
         </div>
-
       </div>
 
-
       {/* DAMAGE */}
-
       <div className="summary-item">
-
         <div className="summary-icon">
           🖊
         </div>
 
         <div>
-
-          <span>
-            Damage
-          </span>
+          <span>Damage</span>
 
           <strong>
             {damage}
           </strong>
-
         </div>
 
         <div className="check">
           {data.damageType ? "✓" : "○"}
         </div>
-
       </div>
 
-
       {/* SEVERITY */}
-
       <div className="summary-item">
-
         <div className="summary-icon">
           ⚠️
         </div>
 
         <div>
-
-          <span>
-            Damage Severity
-          </span>
+          <span>Damage Severity</span>
 
           <strong>
             {severity}
           </strong>
-
         </div>
 
         <div className="check">
           {data.severity ? "✓" : "○"}
         </div>
-
       </div>
 
-
       {/* INJURED */}
-
       <div className="summary-item">
-
         <div className="summary-icon">
           👤
         </div>
 
         <div>
-
-          <span>
-            Injured
-          </span>
+          <span>Injured</span>
 
           <strong>
             {injured}
           </strong>
-
         </div>
 
         <div className="check">
           {data.injured ? "✓" : "○"}
         </div>
-
       </div>
 
-
       {/* POLICE */}
-
       <div className="summary-item">
-
         <div className="summary-icon">
           📄
         </div>
 
         <div>
-
-          <span>
-            Police Report
-          </span>
+          <span>Police Report</span>
 
           <strong>
             {policeReport}
           </strong>
-
         </div>
 
         <div className="check">
           {data.policeReport ? "✓" : "○"}
         </div>
-
       </div>
 
-
       {/* EDIT */}
-
       <button
         type="button"
         className="edit-summary"
+        onClick={onEditIncident}
       >
-        Edit Extracted Info
+        ✏️ Edit Extracted Info
       </button>
+
+      {/* NEW DAY 9 INFO */}
+      <div className="ai-status-box">
+        <div className="ai-status-icon">
+          ✨
+        </div>
+
+        <div>
+          <strong>AI Analysis Ready</strong>
+
+          <span>
+            {percentage === 100
+              ? "All important claim information is complete."
+              : "Complete the remaining information for a more complete analysis."}
+          </span>
+        </div>
+      </div>
 
     </div>
   );

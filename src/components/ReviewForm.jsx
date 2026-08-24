@@ -5,27 +5,153 @@ function ReviewForm({
   vehicleData,
   onBack,
   onEditIncident,
-  onEditVehicle
+  onEditVehicle,
+  onNewClaim
 }) {
-  const [submitted, setSubmitted] = useState(false);
+
+  const [submitted, setSubmitted] =
+    useState(false);
+
+  const [claimId, setClaimId] =
+    useState("");
+
+  const [submittedAt, setSubmittedAt] =
+    useState("");
+
+
+  /* =========================
+     SUBMIT CLAIM
+     ========================= */
 
   const handleSubmit = () => {
+
+    /* =========================
+       GENERATE CLAIM ID
+       ========================= */
+
+    const generatedClaimId =
+      "FAI-" +
+      Date.now()
+        .toString()
+        .slice(-8);
+
+
+    /* =========================
+       SUBMISSION TIME
+       ========================= */
+
+    const submissionTime =
+      new Date().toLocaleString();
+
+
+    /* =========================
+       COMPLETE CLAIM
+       ========================= */
+
     const completeClaim = {
-      incident: incidentData,
-      vehicle: vehicleData
+
+      claimId:
+        generatedClaimId,
+
+      status:
+        "Submitted",
+
+      submittedAt:
+        submissionTime,
+
+      incident:
+        incidentData,
+
+      vehicle:
+        vehicleData
+
     };
+
+
+    /* =========================
+       EXISTING CLAIM STORAGE
+       ========================= */
 
     localStorage.setItem(
       "formaAI_claim",
-      JSON.stringify(completeClaim)
+      JSON.stringify(
+        completeClaim
+      )
+    );
+
+
+    /* =========================
+       CLAIM HISTORY
+       ========================= */
+
+    const existingClaims =
+      JSON.parse(
+        localStorage.getItem(
+          "formaAI_claims"
+        ) || "[]"
+      );
+
+
+    const updatedClaims = [
+
+      ...existingClaims,
+
+      completeClaim
+
+    ];
+
+
+    localStorage.setItem(
+      "formaAI_claims",
+      JSON.stringify(
+        updatedClaims
+      )
+    );
+
+
+    /* =========================
+       REMOVE DRAFT AFTER SUBMISSION
+       ========================= */
+
+    localStorage.removeItem(
+      "formaAI_incident_draft"
+    );
+
+    localStorage.removeItem(
+      "formaAI_vehicle_draft"
+    );
+
+    localStorage.removeItem(
+      "formaAI_complete_draft"
+    );
+
+
+    /* =========================
+       SUCCESS SCREEN DATA
+       ========================= */
+
+    setClaimId(
+      generatedClaimId
+    );
+
+    setSubmittedAt(
+      submissionTime
     );
 
     setSubmitted(true);
+
   };
 
+
+  /* =========================
+     SUCCESS SCREEN
+     ========================= */
+
   if (submitted) {
+
     return (
       <div className="form-card">
+
         <div className="success-container">
 
           <div className="success-icon">
@@ -41,18 +167,87 @@ function ReviewForm({
             for review.
           </p>
 
-          <button
-            type="button"
-            className="continue"
-            onClick={() => setSubmitted(false)}
-          >
-            Back to Review
-          </button>
+
+          {/* CLAIM INFORMATION */}
+
+          <div className="claim-success-card">
+
+            <div className="claim-success-row">
+
+              <span>
+                Claim ID
+              </span>
+
+              <strong>
+                {claimId}
+              </strong>
+
+            </div>
+
+
+            <div className="claim-success-row">
+
+              <span>
+                Status
+              </span>
+
+              <strong className="status-submitted">
+                ● Submitted
+              </strong>
+
+            </div>
+
+
+            <div className="claim-success-row">
+
+              <span>
+                Submitted
+              </span>
+
+              <strong>
+                {submittedAt}
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div className="success-actions">
+
+            <button
+              type="button"
+              className="secondary-button"
+              onClick={() =>
+                setSubmitted(false)
+              }
+            >
+              Back to Review
+            </button>
+
+
+            <button
+              type="button"
+              className="continue"
+              onClick={
+                onNewClaim
+              }
+            >
+              + Create New Claim
+            </button>
+
+          </div>
 
         </div>
+
       </div>
     );
   }
+
+
+  /* =========================
+     REVIEW SCREEN
+     ========================= */
 
   return (
     <div className="form-card">
@@ -66,6 +261,7 @@ function ReviewForm({
         </div>
 
         <div>
+
           <h2>
             Review & Submit
           </h2>
@@ -73,6 +269,7 @@ function ReviewForm({
           <p>
             Review your information before submitting.
           </p>
+
         </div>
 
       </div>
@@ -91,7 +288,9 @@ function ReviewForm({
           <button
             type="button"
             className="edit-button"
-            onClick={onEditIncident}
+            onClick={
+              onEditIncident
+            }
           >
             Edit
           </button>
@@ -101,87 +300,85 @@ function ReviewForm({
 
         <div className="review-grid">
 
-          <div className="review-item">
-            <span>Incident Type</span>
-            <strong>
-              {incidentData?.incidentType || "Not provided"}
-            </strong>
-          </div>
+          <ReviewItem
+            label="Incident Type"
+            value={
+              incidentData?.incidentType
+            }
+          />
 
+          <ReviewItem
+            label="Date"
+            value={
+              incidentData?.date
+            }
+          />
 
-          <div className="review-item">
-            <span>Date</span>
-            <strong>
-              {incidentData?.date || "Not provided"}
-            </strong>
-          </div>
+          <ReviewItem
+            label="Time"
+            value={
+              incidentData?.time
+            }
+          />
 
+          <ReviewItem
+            label="Location"
+            value={
+              incidentData?.location
+            }
+          />
 
-          <div className="review-item">
-            <span>Time</span>
-            <strong>
-              {incidentData?.time || "Not provided"}
-            </strong>
-          </div>
-
-
-          <div className="review-item">
-            <span>Location</span>
-            <strong>
-              {incidentData?.location || "Not provided"}
-            </strong>
-          </div>
-
-
-          <div className="review-item">
-            <span>Injury</span>
-            <strong>
-              {incidentData?.injured === "yes"
+          <ReviewItem
+            label="Injury"
+            value={
+              incidentData?.injured === "yes"
                 ? "Yes"
                 : incidentData?.injured === "no"
                 ? "No"
-                : "Not provided"}
-            </strong>
-          </div>
+                : "Not provided"
+            }
+          />
 
-
-          <div className="review-item">
-            <span>Police Report</span>
-            <strong>
-              {incidentData?.policeReport === "yes"
+          <ReviewItem
+            label="Police Report"
+            value={
+              incidentData?.policeReport === "yes"
                 ? "Yes"
                 : incidentData?.policeReport === "no"
                 ? "No"
-                : "Not provided"}
-            </strong>
-          </div>
+                : "Not provided"
+            }
+          />
 
 
           {incidentData?.injured === "yes" && (
             <>
-              <div className="review-item">
-                <span>Injured Person</span>
-                <strong>
-                  {incidentData?.person || "Not provided"}
-                </strong>
-              </div>
 
-              <div className="review-item">
-                <span>Injury Description</span>
-                <strong>
-                  {incidentData?.injury || "Not provided"}
-                </strong>
-              </div>
+              <ReviewItem
+                label="Injured Person"
+                value={
+                  incidentData?.person
+                }
+              />
+
+              <ReviewItem
+                label="Injury Description"
+                value={
+                  incidentData?.injury
+                }
+              />
+
             </>
           )}
 
 
-          <div className="review-item review-full">
-            <span>Description</span>
-            <strong>
-              {incidentData?.description || "Not provided"}
-            </strong>
-          </div>
+          <ReviewItem
+            label="Description"
+            value={
+              incidentData?.description
+            }
+            full
+          />
 
         </div>
 
@@ -201,7 +398,9 @@ function ReviewForm({
           <button
             type="button"
             className="edit-button"
-            onClick={onEditVehicle}
+            onClick={
+              onEditVehicle
+            }
           >
             Edit
           </button>
@@ -211,52 +410,48 @@ function ReviewForm({
 
         <div className="review-grid">
 
-          <div className="review-item">
-            <span>Vehicle Make</span>
-            <strong>
-              {vehicleData?.vehicleMake || "Not provided"}
-            </strong>
-          </div>
+          <ReviewItem
+            label="Vehicle Make"
+            value={
+              vehicleData?.vehicleMake
+            }
+          />
 
+          <ReviewItem
+            label="Vehicle Model"
+            value={
+              vehicleData?.vehicleModel
+            }
+          />
 
-          <div className="review-item">
-            <span>Vehicle Model</span>
-            <strong>
-              {vehicleData?.vehicleModel || "Not provided"}
-            </strong>
-          </div>
+          <ReviewItem
+            label="Registration Number"
+            value={
+              vehicleData?.registration
+            }
+          />
 
+          <ReviewItem
+            label="Damage Type"
+            value={
+              vehicleData?.damageType
+            }
+          />
 
-          <div className="review-item">
-            <span>Registration Number</span>
-            <strong>
-              {vehicleData?.registration || "Not provided"}
-            </strong>
-          </div>
+          <ReviewItem
+            label="Damage Severity"
+            value={
+              vehicleData?.severity
+            }
+          />
 
-
-          <div className="review-item">
-            <span>Damage Type</span>
-            <strong>
-              {vehicleData?.damageType || "Not provided"}
-            </strong>
-          </div>
-
-
-          <div className="review-item">
-            <span>Damage Severity</span>
-            <strong>
-              {vehicleData?.severity || "Not provided"}
-            </strong>
-          </div>
-
-
-          <div className="review-item review-full">
-            <span>Damage Description</span>
-            <strong>
-              {vehicleData?.damageDescription || "Not provided"}
-            </strong>
-          </div>
+          <ReviewItem
+            label="Damage Description"
+            value={
+              vehicleData?.damageDescription
+            }
+            full
+          />
 
         </div>
 
@@ -286,15 +481,20 @@ function ReviewForm({
         <button
           type="button"
           className="secondary-button"
-          onClick={onBack}
+          onClick={
+            onBack
+          }
         >
           ← Back
         </button>
 
+
         <button
           type="button"
           className="continue"
-          onClick={handleSubmit}
+          onClick={
+            handleSubmit
+          }
         >
           Submit Claim
         </button>
@@ -304,5 +504,38 @@ function ReviewForm({
     </div>
   );
 }
+
+
+/* =========================
+   REVIEW ITEM
+   ========================= */
+
+function ReviewItem({
+  label,
+  value,
+  full = false
+}) {
+
+  return (
+    <div
+      className={
+        full
+          ? "review-item review-full"
+          : "review-item"
+      }
+    >
+
+      <span>
+        {label}
+      </span>
+
+      <strong>
+        {value || "Not provided"}
+      </strong>
+
+    </div>
+  );
+}
+
 
 export default ReviewForm;

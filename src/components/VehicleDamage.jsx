@@ -1,7 +1,6 @@
-import { useState } from "react";
+  import { useEffect, useState } from "react";
 
 function VehicleDamage({ initialData, onBack, onContinue }) {
-
   const [vehicleMake, setVehicleMake] = useState(
     initialData?.vehicleMake || ""
   );
@@ -22,21 +21,275 @@ function VehicleDamage({ initialData, onBack, onContinue }) {
     initialData?.severity || ""
   );
 
-  const [damageDescription, setDamageDescription] =
-    useState(initialData?.damageDescription || "");
+  const [damageDescription, setDamageDescription] = useState(
+    initialData?.damageDescription || ""
+  );
 
   const [error, setError] = useState("");
   const [listening, setListening] = useState(false);
 
+  const vehicleModels = {
+    "Maruti Suzuki": [
+      "Swift",
+      "Baleno",
+      "WagonR",
+      "Alto K10",
+      "Dzire",
+      "Brezza",
+      "Ertiga",
+      "Fronx",
+      "Grand Vitara",
+      "Celerio",
+      "Ignis",
+      "S-Presso",
+      "Jimny",
+      "XL6",
+      "Invicto",
+    ],
 
-  /* VOICE INPUT */
+    Hyundai: [
+      "i10",
+      "Grand i10 Nios",
+      "i20",
+      "Aura",
+      "Verna",
+      "Venue",
+      "Creta",
+      "Alcazar",
+      "Exter",
+      "Tucson",
+      "Kona",
+      "Ioniq 5",
+    ],
 
+    Honda: [
+      "City",
+      "Amaze",
+      "Jazz",
+      "Civic",
+      "Accord",
+      "WR-V",
+      "BR-V",
+      "CR-V",
+      "Elevate",
+      "City Hybrid",
+      "Brio",
+      "Mobilio",
+    ],
+
+    Tata: [
+      "Tiago",
+      "Tigor",
+      "Altroz",
+      "Punch",
+      "Nexon",
+      "Harrier",
+      "Safari",
+      "Curvv",
+      "Tiago EV",
+      "Nexon EV",
+      "Punch EV",
+    ],
+
+    Mahindra: [
+      "Bolero",
+      "Scorpio",
+      "Scorpio N",
+      "Thar",
+      "XUV300",
+      "XUV400",
+      "XUV700",
+      "Marazzo",
+      "Bolero Neo",
+      "BE 6",
+      "XEV 9e",
+    ],
+
+    Toyota: [
+      "Innova Crysta",
+      "Innova Hycross",
+      "Fortuner",
+      "Glanza",
+      "Urban Cruiser Hyryder",
+      "Rumion",
+      "Camry",
+      "Vellfire",
+      "Hilux",
+      "Land Cruiser",
+    ],
+
+    Kia: [
+      "Sonet",
+      "Seltos",
+      "Carens",
+      "EV6",
+      "EV9",
+      "Carnival",
+    ],
+
+    MG: [
+      "Hector",
+      "Hector Plus",
+      "Astor",
+      "Gloster",
+      "ZS EV",
+      "Comet EV",
+      "Windsor EV",
+    ],
+
+    Renault: [
+      "Kwid",
+      "Triber",
+      "Kiger",
+      "Duster",
+    ],
+
+    Volkswagen: [
+      "Polo",
+      "Vento",
+      "Taigun",
+      "Virtus",
+      "Tiguan",
+    ],
+
+    Skoda: [
+      "Slavia",
+      "Kushaq",
+      "Kodiaq",
+      "Superb",
+      "Octavia",
+    ],
+
+    Nissan: [
+      "Magnite",
+      "Kicks",
+      "X-Trail",
+    ],
+
+    Ford: [
+      "EcoSport",
+      "Endeavour",
+      "Figo",
+      "Aspire",
+      "Freestyle",
+    ],
+
+    Chevrolet: [
+      "Beat",
+      "Spark",
+      "Cruze",
+      "Sail",
+      "Enjoy",
+      "Tavera",
+    ],
+
+    Jeep: [
+      "Compass",
+      "Meridian",
+      "Wrangler",
+      "Grand Cherokee",
+    ],
+
+    BMW: [
+      "2 Series",
+      "3 Series",
+      "5 Series",
+      "7 Series",
+      "X1",
+      "X3",
+      "X5",
+      "X7",
+      "i4",
+      "iX",
+    ],
+
+    "Mercedes-Benz": [
+      "A-Class",
+      "C-Class",
+      "E-Class",
+      "S-Class",
+      "GLA",
+      "GLB",
+      "GLC",
+      "GLE",
+      "GLS",
+      "EQB",
+      "EQS",
+    ],
+
+    Audi: [
+      "A3",
+      "A4",
+      "A6",
+      "A8",
+      "Q3",
+      "Q5",
+      "Q7",
+      "Q8",
+      "e-tron",
+    ],
+
+    Volvo: [
+      "S60",
+      "S90",
+      "XC40",
+      "XC60",
+      "XC90",
+      "EX30",
+      "EX40",
+      "EC40",
+    ],
+
+    Tesla: [
+      "Model 3",
+      "Model Y",
+      "Model S",
+      "Model X",
+    ],
+
+    "Land Rover": [
+      "Defender",
+      "Discovery",
+      "Discovery Sport",
+      "Range Rover",
+      "Range Rover Sport",
+      "Range Rover Velar",
+      "Range Rover Evoque",
+    ],
+
+    Other: [
+      "Other Model",
+    ],
+  };
+
+  const vehicleMakes = Object.keys(vehicleModels);
+
+  useEffect(() => {
+    if (!initialData) return;
+
+    setVehicleMake(initialData.vehicleMake || "");
+    setVehicleModel(initialData.vehicleModel || "");
+    setRegistration(initialData.registration || "");
+    setDamageType(initialData.damageType || "");
+    setSeverity(initialData.severity || "");
+    setDamageDescription(initialData.damageDescription || "");
+  }, [
+    initialData?.vehicleMake,
+    initialData?.vehicleModel,
+    initialData?.registration,
+    initialData?.damageType,
+    initialData?.severity,
+    initialData?.damageDescription,
+  ]);
+
+  // VOICE INPUT
   const handleVoiceInput = () => {
-
     if (!("webkitSpeechRecognition" in window)) {
       alert("Voice input is not supported in this browser.");
       return;
     }
+
+    if (listening) return;
 
     const recognition = new window.webkitSpeechRecognition();
 
@@ -45,12 +298,11 @@ function VehicleDamage({ initialData, onBack, onContinue }) {
     recognition.interimResults = false;
 
     setListening(true);
+
     recognition.start();
 
     recognition.onresult = (event) => {
-
-      const text =
-        event.results[0][0].transcript;
+      const text = event.results[0][0].transcript;
 
       setDamageDescription((previous) =>
         previous.trim()
@@ -58,6 +310,7 @@ function VehicleDamage({ initialData, onBack, onContinue }) {
           : text
       );
 
+      setError("");
       setListening(false);
     };
 
@@ -70,18 +323,20 @@ function VehicleDamage({ initialData, onBack, onContinue }) {
     };
   };
 
-
-  /* CONTINUE */
+  const handleVehicleMakeChange = (value) => {
+    setVehicleMake(value);
+    setVehicleModel("");
+    setError("");
+  };
 
   const handleContinue = () => {
-
     if (!vehicleMake.trim()) {
-      setError("Please enter the vehicle make.");
+      setError("Please select the vehicle make.");
       return;
     }
 
     if (!vehicleModel.trim()) {
-      setError("Please enter the vehicle model.");
+      setError("Please select the vehicle model.");
       return;
     }
 
@@ -111,89 +366,89 @@ function VehicleDamage({ initialData, onBack, onContinue }) {
       registration,
       damageType,
       severity,
-      damageDescription
+      damageDescription,
     };
 
     setError("");
     onContinue(data);
   };
 
-
   return (
-
     <div className="form-card">
 
       {/* HEADER */}
-
       <div className="form-heading">
-
         <div className="form-icon">
           🚗
         </div>
 
         <div>
           <h2>Vehicle & Damage</h2>
-
           <p>
             Tell us about your vehicle and the damage.
           </p>
         </div>
-
       </div>
 
-
       {/* VEHICLE DETAILS */}
-
       <h3 className="section-title">
         Vehicle Details
       </h3>
 
-
       <div className="form-grid">
 
+        {/* VEHICLE MAKE */}
         <div className="form-group">
+          <label>Vehicle Make</label>
 
-          <label>
-            Vehicle Make
-          </label>
-
-          <input
-            type="text"
+          <select
             value={vehicleMake}
-            onChange={(e) => {
-              setVehicleMake(e.target.value);
-              setError("");
-            }}
-            placeholder="e.g. Honda"
-          />
+            onChange={(e) =>
+              handleVehicleMakeChange(e.target.value)
+            }
+          >
+            <option value="">
+              Select Vehicle Make
+            </option>
 
+            {vehicleMakes.map((make) => (
+              <option key={make} value={make}>
+                {make}
+              </option>
+            ))}
+          </select>
         </div>
 
-
+        {/* VEHICLE MODEL */}
         <div className="form-group">
+          <label>Vehicle Model</label>
 
-          <label>
-            Vehicle Model
-          </label>
-
-          <input
-            type="text"
+          <select
             value={vehicleModel}
+            disabled={!vehicleMake}
             onChange={(e) => {
               setVehicleModel(e.target.value);
               setError("");
             }}
-            placeholder="e.g. City"
-          />
+          >
+            <option value="">
+              {vehicleMake
+                ? "Select Vehicle Model"
+                : "Select Vehicle Make First"}
+            </option>
 
+            {vehicleMake &&
+              vehicleModels[vehicleMake]?.map((model) => (
+                <option key={model} value={model}>
+                  {model}
+                </option>
+              ))}
+          </select>
         </div>
 
-
+        {/* REGISTRATION */}
         <div className="form-group">
-
-          <label>
-            Registration Number
-          </label>
+          <label>Registration Number</label>
 
           <input
             type="text"
@@ -204,26 +459,19 @@ function VehicleDamage({ initialData, onBack, onContinue }) {
             }}
             placeholder="e.g. MP09AB1234"
           />
-
         </div>
-
       </div>
 
-
       {/* DAMAGE DETAILS */}
-
       <h3 className="section-title damage-title">
         Damage Details
       </h3>
 
-
       <div className="form-grid">
 
+        {/* DAMAGE TYPE */}
         <div className="form-group">
-
-          <label>
-            Damage Type
-          </label>
+          <label>Damage Type</label>
 
           <select
             value={damageType}
@@ -232,7 +480,6 @@ function VehicleDamage({ initialData, onBack, onContinue }) {
               setError("");
             }}
           >
-
             <option value="">
               Select Damage Type
             </option>
@@ -260,17 +507,12 @@ function VehicleDamage({ initialData, onBack, onContinue }) {
             <option value="Other">
               Other
             </option>
-
           </select>
-
         </div>
 
-
+        {/* DAMAGE SEVERITY */}
         <div className="form-group">
-
-          <label>
-            Damage Severity
-          </label>
+          <label>Damage Severity</label>
 
           <select
             value={severity}
@@ -279,7 +521,6 @@ function VehicleDamage({ initialData, onBack, onContinue }) {
               setError("");
             }}
           >
-
             <option value="">
               Select Severity
             </option>
@@ -299,31 +540,46 @@ function VehicleDamage({ initialData, onBack, onContinue }) {
             <option value="Severe">
               Severe
             </option>
-
           </select>
-
         </div>
-
       </div>
 
-
-      {/* DESCRIPTION */}
-
+      {/* DAMAGE DESCRIPTION */}
       <div className="description">
 
         <label>
           Describe the Damage
         </label>
 
-        <textarea
-          value={damageDescription}
-          maxLength="500"
-          placeholder="Describe the damage to your vehicle..."
-          onChange={(e) => {
-            setDamageDescription(e.target.value);
-            setError("");
-          }}
-        />
+        <div className="description-box">
+
+          <textarea
+            value={damageDescription}
+            maxLength="500"
+            placeholder="Describe the damage to your vehicle..."
+            onChange={(e) => {
+              setDamageDescription(e.target.value);
+              setError("");
+            }}
+          />
+
+          {/* MIC */}
+          <button
+            type="button"
+            className={`mic-button ${
+              listening ? "listening" : ""
+            }`}
+            onClick={handleVoiceInput}
+            title={
+              listening
+                ? "Listening..."
+                : "Describe using your voice"
+            }
+          >
+            {listening ? "🔴" : "🎙️"}
+          </button>
+
+        </div>
 
         <div className="character-count">
           {damageDescription.length} / 500
@@ -331,49 +587,14 @@ function VehicleDamage({ initialData, onBack, onContinue }) {
 
       </div>
 
-
-      {/* VOICE */}
-
-      <div className="voice-input-box">
-
-        <div className="voice-icon">
-          🎙️
-        </div>
-
-        <div>
-
-          <strong>
-            Voice Input
-          </strong>
-
-          <p>
-            Describe the damage using your voice
-          </p>
-
-        </div>
-
-        <button
-          type="button"
-          className="voice-button"
-          onClick={handleVoiceInput}
-        >
-          {listening ? "🔴" : "🎤"}
-        </button>
-
-      </div>
-
-
       {/* ERROR */}
-
       {error && (
         <div className="form-error">
           {error}
         </div>
       )}
 
-
       {/* BUTTONS */}
-
       <div className="form-buttons">
 
         <button

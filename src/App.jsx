@@ -15,19 +15,179 @@ import Insights from "./components/Insights";
 import Settings from "./components/Settings";
 
 function App() {
+  /* =====================================================
+     CURRENT STEP
+  ===================================================== */
+
   const [currentStep, setCurrentStep] = useState(2);
 
-  // =========================
-  // NOTIFICATIONS
-  // =========================
+  /* =====================================================
+     PROFILE
+  ===================================================== */
 
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [notificationCount, setNotificationCount] = useState(0);
+  const [profileName, setProfileName] = useState(
+    localStorage.getItem("formaAI_name") || "Anjali Raghuwanshi"
+  );
+
+  const [profileEmail, setProfileEmail] = useState(
+    localStorage.getItem("formaAI_email") || "anjali@example.com"
+  );
+
+  const [profilePicture, setProfilePicture] = useState(
+    localStorage.getItem("formaAI_profilePicture") || ""
+  );
+
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+
+  /* =====================================================
+     PROFILE INITIAL
+  ===================================================== */
+
+  const profileInitial =
+    profileName && profileName.trim().length > 0
+      ? profileName.trim().charAt(0).toUpperCase()
+      : "A";
+
+  /* =====================================================
+     LOAD PROFILE
+  ===================================================== */
+
+  const loadProfile = () => {
+    setProfileName(
+      localStorage.getItem("formaAI_name") ||
+        "Anjali Raghuwanshi"
+    );
+
+    setProfileEmail(
+      localStorage.getItem("formaAI_email") ||
+        "anjali@example.com"
+    );
+
+    setProfilePicture(
+      localStorage.getItem("formaAI_profilePicture") || ""
+    );
+  };
+
+  /* =====================================================
+     PROFILE UPDATE EVENT
+  ===================================================== */
+
+  useEffect(() => {
+    loadProfile();
+
+    const handleProfileUpdated = () => {
+      loadProfile();
+    };
+
+    window.addEventListener(
+      "formaAI_profile_updated",
+      handleProfileUpdated
+    );
+
+    return () => {
+      window.removeEventListener(
+        "formaAI_profile_updated",
+        handleProfileUpdated
+      );
+    };
+  }, []);
+
+  /* =====================================================
+     UPDATE PROFILE PICTURE
+  ===================================================== */
+
+  const handleUpdateProfile = (event) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      alert("Please select a valid image file.");
+      event.target.value = "";
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Please select an image smaller than 5 MB.");
+      event.target.value = "";
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const imageData = reader.result;
+
+      localStorage.setItem(
+        "formaAI_profilePicture",
+        imageData
+      );
+
+      setProfilePicture(imageData);
+      setShowProfileMenu(false);
+
+      window.dispatchEvent(
+        new Event("formaAI_profile_updated")
+      );
+    };
+
+    reader.readAsDataURL(file);
+
+    event.target.value = "";
+  };
+
+  /* =====================================================
+     REMOVE PROFILE PICTURE
+  ===================================================== */
+
+  const handleRemoveProfile = () => {
+    const confirmRemove = window.confirm(
+      "Are you sure you want to remove your profile picture?"
+    );
+
+    if (!confirmRemove) {
+      return;
+    }
+
+    localStorage.removeItem(
+      "formaAI_profilePicture"
+    );
+
+    setProfilePicture("");
+    setShowProfileMenu(false);
+
+    window.dispatchEvent(
+      new Event("formaAI_profile_updated")
+    );
+  };
+
+  /* =====================================================
+     OPEN PROFILE SETTINGS
+  ===================================================== */
+
+  const handleOpenProfileSettings = () => {
+    setShowProfileMenu(false);
+    setActivePage("settings");
+  };
+
+  /* =====================================================
+     NOTIFICATIONS
+  ===================================================== */
+
+  const [showNotifications, setShowNotifications] =
+    useState(false);
+
+  const [notificationCount, setNotificationCount] =
+    useState(0);
 
   const updateNotificationCount = () => {
     try {
       const notifications = JSON.parse(
-        localStorage.getItem("formaAI_notifications") || "[]"
+        localStorage.getItem(
+          "formaAI_notifications"
+        ) || "[]"
       );
 
       const unread = notifications.filter(
@@ -44,19 +204,24 @@ function App() {
     updateNotificationCount();
   }, []);
 
-  // =========================
-  // PAGE STATE
-  // =========================
+  /* =====================================================
+     PAGE STATE
+  ===================================================== */
 
-  const [activePage, setActivePage] = useState("newClaim");
-  const [trackingClaim, setTrackingClaim] = useState(null);
-  const [draftLoaded, setDraftLoaded] = useState(false);
+  const [activePage, setActivePage] =
+    useState("newClaim");
 
-  // =========================
-  // FORM DATA
-  // =========================
+  const [trackingClaim, setTrackingClaim] =
+    useState(null);
 
-  const [formData, setFormData] = useState({
+  const [draftLoaded, setDraftLoaded] =
+    useState(false);
+
+  /* =====================================================
+     FORM DATA
+  ===================================================== */
+
+  const emptyFormData = {
     incidentType: "",
     date: "",
     time: "",
@@ -72,11 +237,14 @@ function App() {
     damageType: "",
     severity: "",
     damageDescription: ""
-  });
+  };
 
-  // =========================
-  // INCIDENT
-  // =========================
+  const [formData, setFormData] =
+    useState(emptyFormData);
+
+  /* =====================================================
+     INCIDENT
+  ===================================================== */
 
   const handleIncidentContinue = (data) => {
     setFormData((previous) => ({
@@ -87,9 +255,9 @@ function App() {
     setCurrentStep(3);
   };
 
-  // =========================
-  // VEHICLE
-  // =========================
+  /* =====================================================
+     VEHICLE
+  ===================================================== */
 
   const handleVehicleContinue = (data) => {
     setFormData((previous) => ({
@@ -108,9 +276,9 @@ function App() {
     setCurrentStep(3);
   };
 
-  // =========================
-  // EDIT CLAIM
-  // =========================
+  /* =====================================================
+     EDIT CLAIM
+  ===================================================== */
 
   const handleEditIncident = () => {
     setActivePage("newClaim");
@@ -122,9 +290,9 @@ function App() {
     setCurrentStep(3);
   };
 
-  // =========================
-  // SAVE COMPLETE DRAFT
-  // =========================
+  /* =====================================================
+     SAVE COMPLETE DRAFT
+  ===================================================== */
 
   const handleSaveCompleteDraft = () => {
     localStorage.setItem(
@@ -132,28 +300,40 @@ function App() {
       JSON.stringify(formData)
     );
 
-    alert("Complete claim draft saved successfully!");
+    alert(
+      "Complete claim draft saved successfully!"
+    );
   };
 
-  // =========================
-  // LOAD DRAFT
-  // =========================
+  /* =====================================================
+     LOAD DRAFT
+  ===================================================== */
 
   const handleLoadDraft = () => {
     try {
       const completeDraft = JSON.parse(
-        localStorage.getItem("formaAI_complete_draft") || "null"
+        localStorage.getItem(
+          "formaAI_complete_draft"
+        ) || "null"
       );
 
       const incidentDraft = JSON.parse(
-        localStorage.getItem("formaAI_incident_draft") || "null"
+        localStorage.getItem(
+          "formaAI_incident_draft"
+        ) || "null"
       );
 
       const vehicleDraft = JSON.parse(
-        localStorage.getItem("formaAI_vehicle_draft") || "null"
+        localStorage.getItem(
+          "formaAI_vehicle_draft"
+        ) || "null"
       );
 
-      if (!completeDraft && !incidentDraft && !vehicleDraft) {
+      if (
+        !completeDraft &&
+        !incidentDraft &&
+        !vehicleDraft
+      ) {
         alert("No saved draft found.");
         return;
       }
@@ -170,130 +350,145 @@ function App() {
       setCurrentStep(2);
     } catch (error) {
       console.error(error);
-      alert("Unable to load the saved draft.");
+
+      alert(
+        "Unable to load the saved draft."
+      );
     }
   };
 
-  // =========================
-  // NEW CLAIM
-  // =========================
+  /* =====================================================
+     NEW CLAIM
+  ===================================================== */
 
   const handleNewClaim = () => {
     setActivePage("newClaim");
     setTrackingClaim(null);
     setDraftLoaded(false);
-
-    setFormData({
-      incidentType: "",
-      date: "",
-      time: "",
-      location: "",
-      injured: "",
-      person: "",
-      injury: "",
-      policeReport: "",
-      description: "",
-      vehicleMake: "",
-      vehicleModel: "",
-      registration: "",
-      damageType: "",
-      severity: "",
-      damageDescription: ""
-    });
-
+    setFormData(emptyFormData);
     setCurrentStep(2);
 
-    localStorage.removeItem("formaAI_incident_draft");
-    localStorage.removeItem("formaAI_vehicle_draft");
-    localStorage.removeItem("formaAI_complete_draft");
+    localStorage.removeItem(
+      "formaAI_incident_draft"
+    );
+
+    localStorage.removeItem(
+      "formaAI_vehicle_draft"
+    );
+
+    localStorage.removeItem(
+      "formaAI_complete_draft"
+    );
   };
 
-  // =========================
-  // TRACK CLAIM
-  // =========================
+  /* =====================================================
+     TRACK CLAIM
+  ===================================================== */
 
   const handleTrackClaim = (claim) => {
     setTrackingClaim(claim);
     setActivePage("claimTracking");
   };
 
-  // =========================
-  // USE TEMPLATE
-  // =========================
+  /* =====================================================
+     USE TEMPLATE
+  ===================================================== */
 
   const handleUseTemplate = (template) => {
-    let templateData = {};
-
-    // VEHICLE ACCIDENT
-    if (template.title === "Vehicle Accident") {
-      templateData = {
-        incidentType: "Vehicle Accident",
-        description:
-          "I was involved in a vehicle accident and need to report the incident.",
-        damageType: "Collision",
-        severity: "Moderate"
-      };
-    }
-
-    // VEHICLE DAMAGE
-    else if (template.title === "Vehicle Damage") {
-      templateData = {
-        incidentType: "Vehicle Damage",
-        description:
-          "My vehicle has been damaged and I want to submit an insurance claim.",
-        damageType: "Vehicle Damage",
-        severity: "Minor"
-      };
-    }
-
-    // INSURANCE CLAIM
-    else if (template.title === "Insurance Claim") {
-      templateData = {
-        incidentType: "Insurance Claim",
-        description:
-          "I want to submit a complete insurance claim for my vehicle.",
-        damageType: "",
-        severity: ""
-      };
-    }
-
-    // Save selected template data
-    setFormData((previous) => ({
-      ...previous,
-      ...templateData
-    }));
-
     setDraftLoaded(false);
 
-    // Close template page
-    setActivePage("newClaim");
+    if (
+      template.title === "Vehicle Accident"
+    ) {
+      setFormData((previous) => ({
+        ...previous,
 
-    // Open Incident Details
-    setCurrentStep(2);
+        incidentType: "Road Accident",
+
+        description:
+          "I was involved in a vehicle accident and need to report the incident.",
+
+        damageType: "Collision",
+
+        severity: "Moderate"
+      }));
+
+      setActivePage("newClaim");
+      setCurrentStep(2);
+
+      return;
+    }
+
+    if (
+      template.title === "Vehicle Damage"
+    ) {
+      setFormData((previous) => ({
+        ...previous,
+
+        incidentType: "Other",
+
+        description:
+          "My vehicle has been damaged and I want to submit an insurance claim.",
+
+        damageType: "Vehicle Damage",
+
+        severity: "Minor"
+      }));
+
+      setActivePage("newClaim");
+      setCurrentStep(3);
+
+      return;
+    }
+
+    if (
+      template.title === "Insurance Claim"
+    ) {
+      setFormData((previous) => ({
+        ...previous,
+
+        incidentType: "Other",
+
+        description:
+          "I want to submit a complete insurance claim for my vehicle.",
+
+        damageType: "",
+
+        severity: ""
+      }));
+
+      setActivePage("newClaim");
+      setCurrentStep(4);
+
+      return;
+    }
   };
 
-  // =========================
-  // CLOSE TEMPLATES
-  // =========================
+  /* =====================================================
+     CLOSE TEMPLATES
+  ===================================================== */
 
   const handleCloseTemplates = () => {
     setActivePage("newClaim");
     setCurrentStep(2);
   };
 
-  // =========================
-  // RENDER
-  // =========================
+  /* =====================================================
+     RENDER
+  ===================================================== */
 
   return (
     <div className="app">
 
-      {/* ================= SIDEBAR ================= */}
+      {/* =================================================
+          SIDEBAR
+      ================================================= */}
 
       <aside className="sidebar">
 
-        <div className="logo-area">
+        {/* LOGO */}
 
+        <div className="logo-area">
           <div className="logo-icon">
             ✨
           </div>
@@ -305,8 +500,9 @@ function App() {
               Smart Claims Assistant
             </span>
           </div>
-
         </div>
+
+        {/* SIDEBAR MENU */}
 
         <nav className="sidebar-menu">
 
@@ -436,7 +632,9 @@ function App() {
 
         </nav>
 
-        {/* AI MAGIC */}
+        {/* =================================================
+            AI MAGIC
+        ================================================= */}
 
         <div className="magic-box">
 
@@ -462,39 +660,61 @@ function App() {
 
         </div>
 
-        {/* USER */}
+        {/* =================================================
+            SIDEBAR PROFILE
+            STATIC ONLY — NO CLICK / NO ARROW / NO DROPDOWN
+        ================================================= */}
 
-        <div className="user-profile">
+        <div className="profile-area-wrapper">
 
-          <div className="user-avatar">
-            A
+          <div className="user-profile">
+
+            {/* PROFILE AVATAR */}
+
+            <div className="user-avatar">
+
+              {profilePicture ? (
+                <img
+                  src={profilePicture}
+                  alt="Profile"
+                />
+              ) : (
+                <span>
+                  {profileInitial}
+                </span>
+              )}
+
+            </div>
+
+            {/* USER INFO */}
+
+            <div className="user-info">
+
+              <strong>
+                {profileName}
+              </strong>
+
+              <small>
+                {profileEmail}
+              </small>
+
+            </div>
+
           </div>
-
-          <div className="user-info">
-
-            <strong>
-              Anjali Sharma
-            </strong>
-
-            <small>
-              anjali@example.com
-            </small>
-
-          </div>
-
-          <span className="user-arrow">
-            ⌄
-          </span>
 
         </div>
 
       </aside>
 
-      {/* ================= MAIN ================= */}
+      {/* =================================================
+          MAIN CONTENT
+      ================================================= */}
 
       <main className="main-content">
 
-        {/* HEADER */}
+        {/* =================================================
+            HEADER
+        ================================================= */}
 
         <header className="top-header">
 
@@ -544,6 +764,8 @@ function App() {
 
           <div className="header-right">
 
+            {/* HELP */}
+
             <button
               type="button"
               className="header-icon"
@@ -551,7 +773,9 @@ function App() {
               ?
             </button>
 
-            {/* NOTIFICATIONS */}
+            {/* =================================================
+                NOTIFICATIONS
+            ================================================= */}
 
             <div className="notification-wrapper">
 
@@ -569,16 +793,13 @@ function App() {
                   );
                 }}
               >
-
                 🔔
 
                 {notificationCount > 0 && (
                   <span className="notification-count">
-
                     {notificationCount > 9
                       ? "9+"
                       : notificationCount}
-
                   </span>
                 )}
 
@@ -594,21 +815,157 @@ function App() {
 
             </div>
 
-            {/* HEADER USER */}
+            {/* =================================================
+                HEADER PROFILE
+            ================================================= */}
 
-            <div className="header-user">
+            <div className="header-profile-wrapper">
 
-              <div className="header-avatar">
-                A
+              {/* PROFILE BUTTON */}
+
+              <div
+                className="header-user"
+                onClick={() => {
+                  setShowProfileMenu(
+                    !showProfileMenu
+                  );
+                }}
+              >
+
+                {/* HEADER AVATAR */}
+
+                <div className="header-avatar">
+
+                  {profilePicture ? (
+                    <img
+                      src={profilePicture}
+                      alt="Profile"
+                    />
+                  ) : (
+                    <span>
+                      {profileInitial}
+                    </span>
+                  )}
+
+                </div>
+
+                {/* FULL NAME */}
+
+                <span className="header-user-name">
+                  {profileName}
+                </span>
+
+                {/* ARROW */}
+
+                <span>
+                  {showProfileMenu
+                    ? "⌃"
+                    : "⌄"}
+                </span>
+
               </div>
 
-              <span>
-                Anjali
-              </span>
+              {/* =================================================
+                  HEADER PROFILE DROPDOWN
 
-              <span>
-                ⌄
-              </span>
+                  DIRECTLY BELOW PROFILE
+              ================================================= */}
+
+              {showProfileMenu && (
+
+                <div className="header-profile-dropdown">
+
+                  {/* DROPDOWN HEADER */}
+
+                  <div className="profile-dropdown-header">
+
+                    <div className="profile-dropdown-mini-avatar">
+
+                      {profilePicture ? (
+                        <img
+                          src={profilePicture}
+                          alt="Profile"
+                        />
+                      ) : (
+                        <span>
+                          {profileInitial}
+                        </span>
+                      )}
+
+                    </div>
+
+                    <div className="profile-dropdown-user-info">
+
+                      <strong>
+                        {profileName}
+                      </strong>
+
+                      <span>
+                        {profileEmail}
+                      </span>
+
+                    </div>
+
+                  </div>
+
+                  {/* BUTTONS */}
+
+                  <div className="profile-dropdown-actions">
+
+                    {/* UPDATE PROFILE */}
+
+                    <label
+                      htmlFor="headerProfileInput"
+                      className="profile-dropdown-button change-profile-button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                      }}
+                    >
+                      <span>✏️</span>
+                      <span>Update Profile</span>
+                    </label>
+
+                    <input
+                      id="headerProfileInput"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleUpdateProfile}
+                      className="profile-file-input"
+                    />
+
+                    {/* REMOVE PROFILE */}
+
+                    <button
+                      type="button"
+                      className="profile-dropdown-button remove-profile-button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleRemoveProfile();
+                      }}
+                    >
+                      <span>🗑️</span>
+                      <span>Remove</span>
+                    </button>
+
+                    {/* PROFILE SETTINGS */}
+
+                    <button
+                      type="button"
+                      className="profile-dropdown-button profile-settings-button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleOpenProfileSettings();
+                      }}
+                    >
+                      <span>⚙️</span>
+                      <span>Settings</span>
+                    </button>
+
+                  </div>
+
+                </div>
+
+              )}
 
             </div>
 
@@ -616,7 +973,9 @@ function App() {
 
         </header>
 
-        {/* ================= PAGE CONTENT ================= */}
+        {/* =================================================
+            PAGE CONTENT
+        ================================================= */}
 
         {activePage === "templates" ? (
 
@@ -664,20 +1023,32 @@ function App() {
         ) : activePage === "myClaims" ? (
 
           <MyClaims
-            onCreateNewClaim={handleNewClaim}
-            onRestoreDraft={handleLoadDraft}
-            onTrackClaim={handleTrackClaim}
+            onCreateNewClaim={
+              handleNewClaim
+            }
+
+            onRestoreDraft={
+              handleLoadDraft
+            }
+
+            onTrackClaim={
+              handleTrackClaim
+            }
           />
 
         ) : (
 
-          /* ================= NEW CLAIM ================= */
+          /* =================================================
+             NEW CLAIM
+          ================================================= */
 
           <>
 
             {/* STEPPER */}
 
             <div className="stepper">
+
+              {/* STEP 1 */}
 
               <div className="step completed">
 
@@ -694,6 +1065,8 @@ function App() {
                 </span>
 
               </div>
+
+              {/* STEP 2 */}
 
               <div
                 className={
@@ -726,6 +1099,8 @@ function App() {
                 </span>
 
               </div>
+
+              {/* STEP 3 */}
 
               <div
                 className={
@@ -761,6 +1136,8 @@ function App() {
 
               </div>
 
+              {/* STEP 4 */}
+
               <div
                 className={
                   currentStep === 4
@@ -792,9 +1169,13 @@ function App() {
             {/* DRAFT MESSAGE */}
 
             {draftLoaded && (
+
               <div className="draft-loaded-message">
+
                 ✓ Saved draft loaded successfully.
+
               </div>
+
             )}
 
             {/* CONTENT */}
@@ -806,45 +1187,69 @@ function App() {
                 {/* STEP 2 */}
 
                 {currentStep === 2 && (
+
                   <BasicForm
                     initialData={formData}
-                    onContinue={handleIncidentContinue}
+                    onContinue={
+                      handleIncidentContinue
+                    }
                   />
+
                 )}
 
                 {/* STEP 3 */}
 
                 {currentStep === 3 && (
+
                   <VehicleDamage
                     initialData={formData}
-                    onBack={handleVehicleBack}
-                    onContinue={handleVehicleContinue}
+                    onBack={
+                      handleVehicleBack
+                    }
+                    onContinue={
+                      handleVehicleContinue
+                    }
                   />
+
                 )}
 
                 {/* STEP 4 */}
 
                 {currentStep === 4 && (
+
                   <ReviewForm
                     incidentData={formData}
                     vehicleData={formData}
-                    onBack={handleReviewBack}
-                    onEditIncident={handleEditIncident}
-                    onEditVehicle={handleEditVehicle}
-                    onNewClaim={handleNewClaim}
+                    onBack={
+                      handleReviewBack
+                    }
+                    onEditIncident={
+                      handleEditIncident
+                    }
+                    onEditVehicle={
+                      handleEditVehicle
+                    }
+                    onNewClaim={
+                      handleNewClaim
+                    }
                   />
+
                 )}
 
                 {/* SAVE DRAFT */}
 
                 {currentStep !== 4 && (
+
                   <button
                     type="button"
                     className="complete-draft-button"
-                    onClick={handleSaveCompleteDraft}
+                    onClick={
+                      handleSaveCompleteDraft
+                    }
                   >
                     💾 Save Complete Claim Draft
                   </button>
+
                 )}
 
               </div>
@@ -853,7 +1258,9 @@ function App() {
 
               <AISummary
                 formData={formData}
-                onEditIncident={handleEditIncident}
+                onEditIncident={
+                  handleEditIncident
+                }
               />
 
             </div>

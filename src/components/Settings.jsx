@@ -1,147 +1,95 @@
  import { useState } from "react";
 
 function Settings({ onBack }) {
-
-  /* =========================
-     PROFILE
-     ========================= */
+  // =========================
+  // PROFILE
+  // =========================
 
   const [name, setName] = useState(
-    localStorage.getItem("formaAI_name") ||
-      "Anjali Sharma"
+    localStorage.getItem("formaAI_name") || "Anjali Sharma"
   );
 
   const [email, setEmail] = useState(
-    localStorage.getItem("formaAI_email") ||
-      "anjali@example.com"
+    localStorage.getItem("formaAI_email") || "anjali@example.com"
   );
 
   const [accountType, setAccountType] = useState(
-    localStorage.getItem("formaAI_accountType") ||
-      "Policy Holder"
+    localStorage.getItem("formaAI_accountType") || "Policy Holder"
   );
 
+  // =========================
+  // NOTIFICATIONS
+  // =========================
 
-  /* =========================
-     NOTIFICATIONS
-     ========================= */
+  const [emailNotifications, setEmailNotifications] = useState(
+    localStorage.getItem("formaAI_emailNotifications") !== "false"
+  );
 
-  const [emailNotifications, setEmailNotifications] =
-    useState(
-      localStorage.getItem(
-        "formaAI_emailNotifications"
-      ) !== "false"
-    );
+  const [claimNotifications, setClaimNotifications] = useState(
+    localStorage.getItem("formaAI_claimNotifications") !== "false"
+  );
 
-  const [claimNotifications, setClaimNotifications] =
-    useState(
-      localStorage.getItem(
-        "formaAI_claimNotifications"
-      ) !== "false"
-    );
+  const [reminderNotifications, setReminderNotifications] = useState(
+    localStorage.getItem("formaAI_reminderNotifications") !== "false"
+  );
 
-  const [reminderNotifications, setReminderNotifications] =
-    useState(
-      localStorage.getItem(
-        "formaAI_reminderNotifications"
-      ) !== "false"
-    );
+  // =========================
+  // APPLICATION PREFERENCES
+  // =========================
 
-
-  /* =========================
-     APPLICATION PREFERENCES
-     ========================= */
-
-  const [aiAssistant, setAiAssistant] =
-    useState(
-      localStorage.getItem(
-        "formaAI_aiAssistant"
-      ) !== "false"
-    );
+  const [aiAssistant, setAiAssistant] = useState(
+    localStorage.getItem("formaAI_aiAssistant") !== "false"
+  );
 
   const [theme, setTheme] = useState(
-    localStorage.getItem(
-      "formaAI_theme"
-    ) || "Light"
+    localStorage.getItem("formaAI_theme") || "Light"
   );
 
+  // =========================
+  // CLAIM SETTINGS
+  // =========================
 
-  /* =========================
-     CLAIM SETTINGS
-     ========================= */
+  const [saveDraft, setSaveDraft] = useState(
+    localStorage.getItem("formaAI_saveDraft") !== "false"
+  );
 
-  const [saveDraft, setSaveDraft] =
-    useState(
-      localStorage.getItem(
-        "formaAI_saveDraft"
-      ) !== "false"
-    );
+  const [autoSave, setAutoSave] = useState(
+    localStorage.getItem("formaAI_autoSave") !== "false"
+  );
 
-  const [autoSave, setAutoSave] =
-    useState(
-      localStorage.getItem(
-        "formaAI_autoSave"
-      ) !== "false"
-    );
+  const [draftReminder, setDraftReminder] = useState(
+    localStorage.getItem("formaAI_draftReminder") !== "false"
+  );
 
-  const [draftReminder, setDraftReminder] =
-    useState(
-      localStorage.getItem(
-        "formaAI_draftReminder"
-      ) !== "false"
-    );
+  // =========================
+  // SECURITY
+  // =========================
 
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
 
-  /* =========================
-     SECURITY
-     ========================= */
-
-  const [currentPassword, setCurrentPassword] =
-    useState("");
-
-  const [newPassword, setNewPassword] =
-    useState("");
-
-  const [confirmPassword, setConfirmPassword] =
-    useState("");
-
-  const [passwordMessage, setPasswordMessage] =
-    useState("");
-
-
-  /* =========================
-     PROFILE SAVE
-     ========================= */
+  // =========================
+  // SAVE PROFILE
+  // =========================
 
   const handleSaveProfile = () => {
+    localStorage.setItem("formaAI_name", name);
+    localStorage.setItem("formaAI_email", email);
+    localStorage.setItem("formaAI_accountType", accountType);
 
-    localStorage.setItem(
-      "formaAI_name",
-      name
-    );
+    // Tell App.jsx that profile information changed
+    window.dispatchEvent(new Event("formaAI_profile_updated"));
 
-    localStorage.setItem(
-      "formaAI_email",
-      email
-    );
-
-    localStorage.setItem(
-      "formaAI_accountType",
-      accountType
-    );
-
-    alert(
-      "Profile settings saved successfully!"
-    );
+    alert("Profile settings saved successfully!");
   };
 
-
-  /* =========================
-     NOTIFICATION TOGGLES
-     ========================= */
+  // =========================
+  // NOTIFICATION TOGGLES
+  // =========================
 
   const toggleEmailNotifications = () => {
-
     const value = !emailNotifications;
 
     setEmailNotifications(value);
@@ -152,9 +100,7 @@ function Settings({ onBack }) {
     );
   };
 
-
   const toggleClaimNotifications = () => {
-
     const value = !claimNotifications;
 
     setClaimNotifications(value);
@@ -165,9 +111,7 @@ function Settings({ onBack }) {
     );
   };
 
-
   const toggleReminderNotifications = () => {
-
     const value = !reminderNotifications;
 
     setReminderNotifications(value);
@@ -178,13 +122,11 @@ function Settings({ onBack }) {
     );
   };
 
-
-  /* =========================
-     AI ASSISTANT TOGGLE
-     ========================= */
+  // =========================
+  // AI ASSISTANT
+  // =========================
 
   const toggleAIAssistant = () => {
-
     const value = !aiAssistant;
 
     setAiAssistant(value);
@@ -195,13 +137,11 @@ function Settings({ onBack }) {
     );
   };
 
-
-  /* =========================
-     THEME
-     ========================= */
+  // =========================
+  // THEME
+  // =========================
 
   const handleThemeChange = (event) => {
-
     const value = event.target.value;
 
     setTheme(value);
@@ -212,13 +152,11 @@ function Settings({ onBack }) {
     );
   };
 
-
-  /* =========================
-     CLAIM SETTINGS TOGGLES
-     ========================= */
+  // =========================
+  // CLAIM SETTINGS
+  // =========================
 
   const toggleSaveDraft = () => {
-
     const value = !saveDraft;
 
     setSaveDraft(value);
@@ -229,9 +167,7 @@ function Settings({ onBack }) {
     );
   };
 
-
   const toggleAutoSave = () => {
-
     const value = !autoSave;
 
     setAutoSave(value);
@@ -242,9 +178,7 @@ function Settings({ onBack }) {
     );
   };
 
-
   const toggleDraftReminder = () => {
-
     const value = !draftReminder;
 
     setDraftReminder(value);
@@ -255,13 +189,7 @@ function Settings({ onBack }) {
     );
   };
 
-
-  /* =========================
-     SAVE CLAIM SETTINGS
-     ========================= */
-
   const handleSaveClaimSettings = () => {
-
     localStorage.setItem(
       "formaAI_saveDraft",
       String(saveDraft)
@@ -277,83 +205,55 @@ function Settings({ onBack }) {
       String(draftReminder)
     );
 
-    alert(
-      "Claim settings saved successfully!"
-    );
+    alert("Claim settings saved successfully!");
   };
 
-
-  /* =========================
-     CHANGE PASSWORD
-     ========================= */
+  // =========================
+  // CHANGE PASSWORD
+  // =========================
 
   const handleChangePassword = () => {
-
     setPasswordMessage("");
 
     if (!newPassword || !confirmPassword) {
-
       setPasswordMessage(
         "Please enter the new password and confirm password."
       );
-
       return;
     }
 
-
     if (newPassword.length < 6) {
-
       setPasswordMessage(
         "New password must contain at least 6 characters."
       );
-
       return;
     }
 
-
     if (newPassword !== confirmPassword) {
-
       setPasswordMessage(
         "New password and confirm password do not match."
       );
-
       return;
     }
 
-
-    const savedPassword =
-      localStorage.getItem(
-        "formaAI_password"
-      );
-
-
-    /*
-      If a password already exists,
-      current password must match.
-    */
+    const savedPassword = localStorage.getItem(
+      "formaAI_password"
+    );
 
     if (
       savedPassword &&
       currentPassword !== savedPassword
     ) {
-
       setPasswordMessage(
         "Current password is incorrect."
       );
-
       return;
     }
-
-
-    /*
-      Save new password.
-    */
 
     localStorage.setItem(
       "formaAI_password",
       newPassword
     );
-
 
     setCurrentPassword("");
     setNewPassword("");
@@ -364,22 +264,18 @@ function Settings({ onBack }) {
     );
   };
 
-
-  /* =========================
-     RESET SETTINGS
-     ========================= */
+  // =========================
+  // RESET SETTINGS
+  // =========================
 
   const handleResetSettings = () => {
-
-    const confirmReset =
-      window.confirm(
-        "Are you sure you want to reset all settings?"
-      );
+    const confirmReset = window.confirm(
+      "Are you sure you want to reset all settings?"
+    );
 
     if (!confirmReset) {
       return;
     }
-
 
     setName("Anjali Sharma");
     setEmail("anjali@example.com");
@@ -396,18 +292,14 @@ function Settings({ onBack }) {
     setAutoSave(true);
     setDraftReminder(true);
 
-
+    // Remove profile picture also
     localStorage.removeItem(
-      "formaAI_name"
+      "formaAI_profilePicture"
     );
 
-    localStorage.removeItem(
-      "formaAI_email"
-    );
-
-    localStorage.removeItem(
-      "formaAI_accountType"
-    );
+    localStorage.removeItem("formaAI_name");
+    localStorage.removeItem("formaAI_email");
+    localStorage.removeItem("formaAI_accountType");
 
     localStorage.removeItem(
       "formaAI_emailNotifications"
@@ -441,36 +333,30 @@ function Settings({ onBack }) {
       "formaAI_draftReminder"
     );
 
-
-    alert(
-      "Settings reset successfully!"
+    // Update App.jsx immediately
+    window.dispatchEvent(
+      new Event("formaAI_profile_updated")
     );
+
+    alert("Settings reset successfully!");
   };
 
-
   return (
-
     <div className="settings-page">
-
 
       {/* =========================
           SETTINGS HEADER
-          ========================= */}
+      ========================= */}
 
       <div className="settings-header">
 
         <div>
-
-          <h2>
-            Settings
-          </h2>
+          <h2>Settings</h2>
 
           <p>
             Manage your account and application preferences
           </p>
-
         </div>
-
 
         <button
           type="button"
@@ -485,7 +371,7 @@ function Settings({ onBack }) {
 
       {/* =========================
           PROFILE
-          ========================= */}
+      ========================= */}
 
       <div className="settings-card">
 
@@ -496,19 +382,19 @@ function Settings({ onBack }) {
           </div>
 
           <div>
-
-            <h3>
-              Profile
-            </h3>
+            <h3>Profile</h3>
 
             <p>
               Manage your personal information
             </p>
-
           </div>
 
         </div>
 
+
+        {/* =========================
+            PROFILE INFORMATION
+        ========================= */}
 
         <div className="settings-grid">
 
@@ -555,9 +441,7 @@ function Settings({ onBack }) {
             <select
               value={accountType}
               onChange={(e) =>
-                setAccountType(
-                  e.target.value
-                )
+                setAccountType(e.target.value)
               }
             >
 
@@ -597,7 +481,7 @@ function Settings({ onBack }) {
 
       {/* =========================
           NOTIFICATIONS
-          ========================= */}
+      ========================= */}
 
       <div className="settings-card">
 
@@ -624,9 +508,6 @@ function Settings({ onBack }) {
 
         <div className="settings-options">
 
-
-          {/* EMAIL */}
-
           <div className="settings-option">
 
             <div>
@@ -641,7 +522,6 @@ function Settings({ onBack }) {
 
             </div>
 
-
             <button
               type="button"
               className={
@@ -649,17 +529,13 @@ function Settings({ onBack }) {
                   ? "settings-toggle on"
                   : "settings-toggle"
               }
-              onClick={
-                toggleEmailNotifications
-              }
+              onClick={toggleEmailNotifications}
             >
               <span></span>
             </button>
 
           </div>
 
-
-          {/* CLAIM */}
 
           <div className="settings-option">
 
@@ -675,7 +551,6 @@ function Settings({ onBack }) {
 
             </div>
 
-
             <button
               type="button"
               className={
@@ -683,17 +558,13 @@ function Settings({ onBack }) {
                   ? "settings-toggle on"
                   : "settings-toggle"
               }
-              onClick={
-                toggleClaimNotifications
-              }
+              onClick={toggleClaimNotifications}
             >
               <span></span>
             </button>
 
           </div>
 
-
-          {/* REMINDER */}
 
           <div className="settings-option">
 
@@ -709,7 +580,6 @@ function Settings({ onBack }) {
 
             </div>
 
-
             <button
               type="button"
               className={
@@ -717,9 +587,7 @@ function Settings({ onBack }) {
                   ? "settings-toggle on"
                   : "settings-toggle"
               }
-              onClick={
-                toggleReminderNotifications
-              }
+              onClick={toggleReminderNotifications}
             >
               <span></span>
             </button>
@@ -733,7 +601,7 @@ function Settings({ onBack }) {
 
       {/* =========================
           APPLICATION PREFERENCES
-          ========================= */}
+      ========================= */}
 
       <div className="settings-card">
 
@@ -760,9 +628,6 @@ function Settings({ onBack }) {
 
         <div className="settings-options">
 
-
-          {/* AI ASSISTANT */}
-
           <div className="settings-option">
 
             <div>
@@ -777,7 +642,6 @@ function Settings({ onBack }) {
 
             </div>
 
-
             <button
               type="button"
               className={
@@ -785,17 +649,13 @@ function Settings({ onBack }) {
                   ? "settings-toggle on"
                   : "settings-toggle"
               }
-              onClick={
-                toggleAIAssistant
-              }
+              onClick={toggleAIAssistant}
             >
               <span></span>
             </button>
 
           </div>
 
-
-          {/* THEME */}
 
           <div className="settings-option">
 
@@ -811,13 +671,10 @@ function Settings({ onBack }) {
 
             </div>
 
-
             <select
               className="settings-small-select"
               value={theme}
-              onChange={
-                handleThemeChange
-              }
+              onChange={handleThemeChange}
             >
 
               <option value="Light">
@@ -843,7 +700,7 @@ function Settings({ onBack }) {
 
       {/* =========================
           CLAIM SETTINGS
-          ========================= */}
+      ========================= */}
 
       <div className="settings-card">
 
@@ -870,9 +727,6 @@ function Settings({ onBack }) {
 
         <div className="settings-options">
 
-
-          {/* SAVE CLAIM DRAFT */}
-
           <div className="settings-option">
 
             <div>
@@ -887,7 +741,6 @@ function Settings({ onBack }) {
 
             </div>
 
-
             <button
               type="button"
               className={
@@ -895,17 +748,13 @@ function Settings({ onBack }) {
                   ? "settings-toggle on"
                   : "settings-toggle"
               }
-              onClick={
-                toggleSaveDraft
-              }
+              onClick={toggleSaveDraft}
             >
               <span></span>
             </button>
 
           </div>
 
-
-          {/* AUTOMATIC SAVE */}
 
           <div className="settings-option">
 
@@ -921,7 +770,6 @@ function Settings({ onBack }) {
 
             </div>
 
-
             <button
               type="button"
               className={
@@ -929,17 +777,13 @@ function Settings({ onBack }) {
                   ? "settings-toggle on"
                   : "settings-toggle"
               }
-              onClick={
-                toggleAutoSave
-              }
+              onClick={toggleAutoSave}
             >
               <span></span>
             </button>
 
           </div>
 
-
-          {/* DRAFT REMINDER */}
 
           <div className="settings-option">
 
@@ -955,7 +799,6 @@ function Settings({ onBack }) {
 
             </div>
 
-
             <button
               type="button"
               className={
@@ -963,9 +806,7 @@ function Settings({ onBack }) {
                   ? "settings-toggle on"
                   : "settings-toggle"
               }
-              onClick={
-                toggleDraftReminder
-              }
+              onClick={toggleDraftReminder}
             >
               <span></span>
             </button>
@@ -978,9 +819,7 @@ function Settings({ onBack }) {
         <button
           type="button"
           className="settings-primary-button"
-          onClick={
-            handleSaveClaimSettings
-          }
+          onClick={handleSaveClaimSettings}
         >
           Save Claim Settings
         </button>
@@ -990,7 +829,7 @@ function Settings({ onBack }) {
 
       {/* =========================
           SECURITY
-          ========================= */}
+      ========================= */}
 
       <div className="settings-card">
 
@@ -1017,7 +856,6 @@ function Settings({ onBack }) {
 
         <div className="password-section">
 
-
           <div className="settings-field">
 
             <label>
@@ -1028,9 +866,7 @@ function Settings({ onBack }) {
               type="password"
               value={currentPassword}
               onChange={(e) =>
-                setCurrentPassword(
-                  e.target.value
-                )
+                setCurrentPassword(e.target.value)
               }
               placeholder="Enter current password"
             />
@@ -1048,9 +884,7 @@ function Settings({ onBack }) {
               type="password"
               value={newPassword}
               onChange={(e) =>
-                setNewPassword(
-                  e.target.value
-                )
+                setNewPassword(e.target.value)
               }
               placeholder="Enter new password"
             />
@@ -1068,9 +902,7 @@ function Settings({ onBack }) {
               type="password"
               value={confirmPassword}
               onChange={(e) =>
-                setConfirmPassword(
-                  e.target.value
-                )
+                setConfirmPassword(e.target.value)
               }
               placeholder="Confirm new password"
             />
@@ -1098,9 +930,7 @@ function Settings({ onBack }) {
           <button
             type="button"
             className="settings-primary-button"
-            onClick={
-              handleChangePassword
-            }
+            onClick={handleChangePassword}
           >
             Change Password
           </button>
@@ -1111,8 +941,8 @@ function Settings({ onBack }) {
 
 
       {/* =========================
-          RESET SETTINGS
-          ========================= */}
+          RESET
+      ========================= */}
 
       <div className="settings-danger-card">
 
@@ -1128,13 +958,10 @@ function Settings({ onBack }) {
 
         </div>
 
-
         <button
           type="button"
           className="settings-danger-button"
-          onClick={
-            handleResetSettings
-          }
+          onClick={handleResetSettings}
         >
           Reset Settings
         </button>

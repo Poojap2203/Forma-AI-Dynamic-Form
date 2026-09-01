@@ -1,6 +1,4 @@
- /* =========================
-GLOBAL
-========================= */
+ /*GLOBAL*/
 
 * {
   box-sizing: border-box;
@@ -20,9 +18,7 @@ textarea {
   font-family: Arial, sans-serif;
 }
 
-/* =========================
-APP
-========================= */
+/*APP*/
 
 .app {
   min-height: 100vh;
@@ -30,9 +26,7 @@ APP
   background: #f6f5fb;
 }
 
-/* =========================
-SIDEBAR
-========================= */
+/*SIDEBAR */
 
 .sidebar {
   width: 245px;
@@ -198,9 +192,7 @@ SIDEBAR
   font-size: 8px;
 }
 
-/* =========================
-MAIN
-========================= */
+/*MAIN*/
 
 .main-content {
   flex: 1;
@@ -208,9 +200,7 @@ MAIN
   padding: 32px 38px 45px;
 }
 
-/* =========================
-HEADER
-========================= */
+/*HEADER */
 
 .top-header {
   display: flex;
@@ -275,9 +265,7 @@ HEADER
   font-weight: bold;
 }
 
-/* =========================
-STEPPER
-========================= */
+/*STEPPER */
 
 .stepper {
   display: grid;
@@ -344,9 +332,7 @@ STEPPER
   color: #6954f6;
 }
 
-/* =========================
-FORM + AI SUMMARY
-========================= */
+/* FORM + AI SUMMARY*/
 
 .content-layout {
   display: grid;
@@ -359,9 +345,7 @@ FORM + AI SUMMARY
   min-width: 0;
 }
 
-/* =========================
-FORM CARD
-========================= */
+/* FORM CARD */
 
 .form-card {
   background: white;
@@ -371,9 +355,7 @@ FORM CARD
   box-shadow: 0 8px 25px rgba(42, 35, 79, 0.06);
 }
 
-/* =========================
-FORM HEADER
-========================= */
+/* FORM HEADER */
 
 .form-heading {
   display: flex;
@@ -405,9 +387,7 @@ FORM HEADER
   font-size: 11px;
 }
 
-/* =========================
-FORM GRID
-========================= */
+/*FORM GRID */
 
 .form-grid {
   display: grid;
@@ -449,9 +429,7 @@ FORM GRID
   box-shadow: 0 0 0 3px rgba(105, 84, 246, 0.08);
 }
 
-/* =========================
-SECTION TITLE
-========================= */
+/*SECTION TITLE */
 
 .section-title {
   margin: 22px 0 15px;
@@ -463,9 +441,7 @@ SECTION TITLE
   margin-top: 25px;
 }
 
-/* =========================
-QUESTION
-========================= */
+/* QUESTION */
 
 .question {
   margin-top: 5px;
@@ -498,9 +474,7 @@ QUESTION
   border-color: #6954f6;
 }
 
-/* =========================
-DESCRIPTION
-========================= */
+/* DESCRIPTION */
 
 .description {
   margin-top: 10px;
@@ -519,9 +493,7 @@ DESCRIPTION
   margin-top: 4px;
 }
 
-/* =========================
-ERROR
-========================= */
+/*ERROR*/
 
 .form-error {
   margin-top: 15px;
@@ -532,9 +504,7 @@ ERROR
   font-size: 10px;
 }
 
-/* =========================
-SAVE MESSAGE
-========================= */
+/* SAVE MESSAGE*/
 
 .save-message {
   margin-top: 12px;
@@ -545,9 +515,7 @@ SAVE MESSAGE
   font-size: 10px;
 }
 
-/* =========================
-FORM BUTTONS
-========================= */
+/* FORM BUTTONS */
 
 .form-buttons {
   display: flex;
@@ -584,9 +552,7 @@ FORM BUTTONS
   color: #6954f6;
 }
 
-/* =========================
-AI SUMMARY
-========================= */
+/* AI SUMMARY */
 
 .ai-summary {
   background: #29234f;
@@ -703,9 +669,7 @@ AI SUMMARY
   background: linear-gradient(90deg, #12d8c5, #ff3cac);
 }
 
-/* =========================
-REVIEW FORM
-========================= */
+/* REVIEW FORM */
 
 .review-section {
   margin-bottom: 22px;
@@ -795,9 +759,7 @@ REVIEW FORM
   line-height: 1.5;
 }
 
-/* =========================
-SUCCESS
-========================= */
+/* SUCCESS */
 
 .success-container {
   text-align: center;
@@ -830,9 +792,7 @@ SUCCESS
   font-size: 12px;
 }
 
-/* =========================
-REVIEW BOX
-========================= */
+/*REVIEW BOX */
 
 .review-box {
   background: #f8f7fc;
@@ -853,9 +813,7 @@ REVIEW BOX
   font-size: 11px;
   line-height: 1.5;
 }
-/* =====================================================
-    - ADDITIONAL FUNCTIONAL UI
-   ===================================================== */
+/*- ADDITIONAL FUNCTIONAL UI */
 
 /* AI STATUS BOX */
 
@@ -1067,9 +1025,7 @@ REVIEW BOX
   }
 }
 
-/* =========================
-RESPONSIVE
-========================= */
+/*RESPONSIVE */
 
 @media (max-width: 1100px) {
   .sidebar {
@@ -1159,9 +1115,7 @@ RESPONSIVE
   }
 }
 
-/* =====================================================
-   - MY CLAIMS
-   ===================================================== */
+/* - MY CLAIMS */
 
 .claims-page {
   width: 100%;
@@ -1691,9 +1645,7 @@ RESPONSIVE
   }
 }
 
-/* =====================================================
-    - CLAIM TRACKING
-   ===================================================== */
+/* - CLAIM TRACKING*/
 
 .tracking-page {
   width: 100%;
@@ -2054,9 +2006,7 @@ RESPONSIVE
 
 }
 
-  /* =====================================================
-    NOTIFICATION CENTER
-   ===================================================== */
+  /* NOTIFICATION CENTER */
 
 .notification-wrapper {
   position: relative;
@@ -2392,9 +2342,7 @@ RESPONSIVE
 
 }
 
-/* =========================================
-    MY CLAIMS
-   ========================================= */
+/*MY CLAIMS */
 
 .my-claims-container {
   width: 100%;
@@ -2786,9 +2734,7 @@ RESPONSIVE
 
 }
 
-/* =========================================
-   DAY 14 - CLAIM TRACKING
-   ========================================= */
+/* CLAIM TRACKING */
 
 .tracking-container {
   width: 100%;
@@ -2883,9 +2829,7 @@ RESPONSIVE
 }
 
 
-/* =========================================
-   TIMELINE
-   ========================================= */
+/* TIMELINE */
 
 .tracking-timeline {
   position: relative;
@@ -2986,9 +2930,7 @@ RESPONSIVE
 }
 
 
-/* =========================================
-   CLAIM INFORMATION
-   ========================================= */
+/* CLAIM INFORMATION */
 
 .tracking-info-grid {
   display: grid;
@@ -3110,9 +3052,7 @@ RESPONSIVE
 
 }
 
-/* =========================================
-    - CLAIM ACTIVITY
-   ========================================= */
+/*- CLAIM ACTIVITY */
 
 .activity-list {
   display: flex;
@@ -3212,9 +3152,7 @@ RESPONSIVE
   }
 
 }
-/* =========================================
-   DAY 16 - STATUS UPDATE
-   ========================================= */
+/* - STATUS UPDATE */
 
 .status-update-buttons {
   display: flex;
@@ -3284,9 +3222,7 @@ RESPONSIVE
 
 }
 
-/* =========================================
-   DAY 17 - MY CLAIMS FILTER
-   ========================================= */
+/* - MY CLAIMS FILTER*/
 
 .claim-filter-area {
   margin-bottom: 15px;
@@ -3385,9 +3321,7 @@ RESPONSIVE
 
 }
 
-/* =========================================
-   - CLAIM PROGRESS
-   ========================================= */
+/* - CLAIM PROGRESS*/
 
 .day18-progress-card {
   margin-bottom: 18px;
@@ -3558,9 +3492,7 @@ RESPONSIVE
 }
 
 
-/* =========================================
-   UNREAD NOTIFICATION
-   ========================================= */
+/*  UNREAD NOTIFICATION */
 
 .notification-item.unread {
   background: #f8faff;
@@ -3594,9 +3526,7 @@ RESPONSIVE
 }
 
 
-/* =========================================
-   NOTIFICATION ACTION BUTTONS
-   ========================================= */
+/* NOTIFICATION ACTION BUTTONS */
 
 .notification-actions button {
   cursor: pointer;
@@ -3608,9 +3538,7 @@ RESPONSIVE
 }
 
 
-/* =========================================
-   NOTIFICATION ITEM INTERACTION
-   ========================================= */
+/* NOTIFICATION ITEM INTERACTION */
 
 .notification-item {
   cursor: pointer;
@@ -3630,9 +3558,7 @@ RESPONSIVE
 }
 
 
-/* =========================================
-   NOTIFICATION ICON TYPES
-   ========================================= */
+/*NOTIFICATION ICON TYPES */
 
 .notification-icon.success {
   background: #dcfce7;
@@ -3650,9 +3576,7 @@ RESPONSIVE
 }
 
 
-/* =========================================
-   NOTIFICATION CLOSE BUTTON
-   ========================================= */
+/* NOTIFICATION CLOSE BUTTON*/
 
 .notification-close {
   cursor: pointer;
@@ -3664,9 +3588,7 @@ RESPONSIVE
 }
 
 
-/* =========================================
-   NOTIFICATION EMPTY STATE
-   ========================================= */
+/* NOTIFICATION EMPTY STATE */
 
 .notification-empty {
   text-align: center;
@@ -3677,9 +3599,7 @@ RESPONSIVE
   margin-bottom: 8px;
 }
 
-/* =========================
-   TEMPLATES
-   ========================= */
+/*TEMPLATES */
 
 .templates-page {
   padding: 30px;
@@ -3759,9 +3679,7 @@ RESPONSIVE
   opacity: 0.9;
 }
 
-/* =========================================
-   AI ASSISTANT
-   ========================================= */
+/* AI ASSISTANT */
 
 .ai-assistant-page {
   padding: 28px;
@@ -4088,9 +4006,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   STAT CARDS
-   ========================= */
+/*STAT CARDS */
 
 .insights-stats {
   display: grid;
@@ -4150,9 +4066,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   MAIN GRID
-   ========================= */
+/*MAIN GRID*/
 
 .insights-main-grid {
   display: grid;
@@ -4162,9 +4076,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   CARD
-   ========================= */
+/* CARD */
 
 .insight-card {
   background: #fff;
@@ -4193,9 +4105,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   BAR CHART
-   ========================= */
+/* BAR CHART */
 
 .insight-chart {
   height: 230px;
@@ -4242,9 +4152,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   CLAIM STATUS
-   ========================= */
+/*CLAIM STATUS */
 
 .status-list {
   display: flex;
@@ -4299,9 +4207,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   LOWER GRID
-   ========================= */
+/*  LOWER GRID */
 
 .insights-bottom-grid {
   display: grid;
@@ -4310,9 +4216,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   AI RECOMMENDATIONS
-   ========================= */
+/* AI RECOMMENDATIONS */
 
 .ai-insight-item {
   display: flex;
@@ -4353,9 +4257,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   RECENT ACTIVITY
-   ========================= */
+/* RECENT ACTIVITY */
 
 .activity-list {
   display: flex;
@@ -4397,9 +4299,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   BACK BUTTON
-   ========================= */
+/* BACK BUTTON */
 
 .insights-back-button {
   margin-top: 22px;
@@ -4418,9 +4318,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   RESPONSIVE
-   ========================= */
+/*RESPONSIVE */
 
 @media (max-width: 1100px) {
 
@@ -4461,9 +4359,7 @@ RESPONSIVE
 
 }
 
-/* =========================
-   SETTINGS PAGE
-   ========================= */
+/*SETTINGS PAGE */
 
 .settings-page {
   padding: 28px 32px 40px;
@@ -4472,9 +4368,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   HEADER
-   ========================= */
+/*HEADER */
 
 .settings-header {
   display: flex;
@@ -4509,9 +4403,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   MAIN LAYOUT
-   ========================= */
+/* MAIN LAYOUT */
 
 .settings-layout {
   display: grid;
@@ -4521,9 +4413,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   SETTINGS MENU
-   ========================= */
+/* SETTINGS MENU */
 
 .settings-menu {
   background: white;
@@ -4588,9 +4478,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   CONTENT CARD
-   ========================= */
+/* CONTENT CARD */
 
 .settings-content {
   min-width: 0;
@@ -4625,9 +4513,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   PROFILE AVATAR
-   ========================= */
+/* PROFILE AVATAR */
 
 .large-profile-avatar {
   width: 58px;
@@ -4643,9 +4529,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   FORM
-   ========================= */
+/*FORM */
 
 .settings-form {
   display: grid;
@@ -4691,9 +4575,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   NOTIFICATION OPTIONS
-   ========================= */
+/* NOTIFICATION OPTIONS */
 
 .settings-options {
   display: flex;
@@ -4726,9 +4608,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   TOGGLE
-   ========================= */
+/*TOGGLE */
 
 .switch {
   position: relative;
@@ -4773,9 +4653,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   PREFERENCE INFO
-   ========================= */
+/*PREFERENCE INFO */
 
 .preference-info {
   display: flex;
@@ -4804,9 +4682,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   CLAIM PREFERENCES
-   ========================= */
+/* CLAIM PREFERENCES */
 
 .claim-preference {
   display: flex;
@@ -4855,9 +4731,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   SECURITY
-   ========================= */
+/*SECURITY */
 
 .security-item {
   display: flex;
@@ -4919,9 +4793,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   ACTIONS
-   ========================= */
+/* ACTIONS*/
 
 .settings-actions {
   display: flex;
@@ -4955,9 +4827,7 @@ RESPONSIVE
 }
 
 
-/* =========================
-   RESPONSIVE
-   ========================= */
+/*RESPONSIVE */
 
 @media (max-width: 900px) {
 
@@ -5004,9 +4874,7 @@ RESPONSIVE
 
 }
 
-/* ==============================
-   SETTINGS TOGGLE FIX
-   ============================== */
+/* SETTINGS TOGGLE FIX */
 
 .settings-toggle {
   position: relative !important;
@@ -5053,4 +4921,578 @@ RESPONSIVE
 
 .settings-toggle:active {
   transform: scale(0.96);
+} 
+    /*HEADER PROFILE */
+
+.header-profile-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.header-user {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+
+/*  HEADER AVATAR */
+
+.header-avatar {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #8170ee;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+
+  transition: transform 0.2s ease;
+}
+
+.header-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.header-avatar span {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+
+/* HEADER FULL NAME*/
+
+.header-user-name {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #20204a;
+
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+
+  max-width: 190px;
+}
+
+
+/* HEADER PROFILE DROPDOWN
+   ONLY TOP PROFILE DROPDOWN */
+
+.header-profile-dropdown {
+  position: absolute;
+
+  top: calc(100% + 8px);
+  right: 0;
+  left: auto;
+
+  width: 355px;
+
+  background: #ffffff;
+
+  border: 1px solid #e7e4f3;
+  border-radius: 14px;
+
+  padding: 10px;
+  box-sizing: border-box;
+
+  box-shadow: 0 12px 30px rgba(32, 32, 74, 0.16);
+
+  z-index: 99999;
+}
+
+
+/* DROPDOWN HEADER*/
+
+.header-profile-dropdown .profile-dropdown-header {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 5px 7px 9px;
+  margin-bottom: 9px;
+
+  border-bottom: 1px solid #eeeeF4;
+}
+
+
+/* DROPDOWN PROFILE IMAGE */
+
+.header-profile-dropdown .profile-dropdown-mini-avatar {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #8170ee;
+
+  border: 1px solid #e5e1ff;
+}
+
+.header-profile-dropdown
+.profile-dropdown-mini-avatar img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  display: block;
+}
+
+.header-profile-dropdown
+.profile-dropdown-mini-avatar span {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+
+/*DROPDOWN USER INFO */
+
+.header-profile-dropdown
+.profile-dropdown-user-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.header-profile-dropdown
+.profile-dropdown-user-info strong {
+  color: #20204a;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-profile-dropdown
+.profile-dropdown-user-info span {
+  color: #85899b;
+
+  font-size: 11px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/*  THREE BUTTON AREA */
+
+.header-profile-dropdown
+.profile-dropdown-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 0 4px;
+
+  flex-wrap: nowrap;
+}
+
+
+/* PROFILE BUTTONS */
+
+.header-profile-dropdown
+.profile-dropdown-button {
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
+
+  height: 30px;
+
+  padding: 0 11px;
+
+  border-radius: 8px;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  box-sizing: border-box;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.header-profile-dropdown
+.profile-dropdown-button:hover {
+  transform: translateY(-1px);
+}
+
+
+/*UPDATE PROFILE - BLUE / PURPLE*/
+
+.header-profile-dropdown
+.change-profile-button {
+
+  color: #6655e8;
+
+  background: #f4f1ff;
+
+  border: 1px solid #dcd6ff;
+}
+
+.header-profile-dropdown
+.change-profile-button:hover {
+
+  color: #5948d8;
+
+  background: #eae6ff;
+
+  border-color: #8170ee;
+}
+
+
+/* REMOVE PROFILE - RED */
+
+.header-profile-dropdown
+.remove-profile-button {
+
+  color: #df3838;
+
+  background: #fff3f3;
+
+  border: 1px solid #f4cccc;
+}
+
+.header-profile-dropdown
+.remove-profile-button:hover {
+
+  color: #c92e2e;
+
+  background: #ffe6e6;
+
+  border-color: #e58b8b;
+}
+
+
+/* PROFILE SETTINGS */
+
+.header-profile-dropdown
+.profile-settings-button {
+
+  color: #555b72;
+
+  background: #f4f5f8;
+
+  border: 1px solid #e0e2e8;
+}
+
+.header-profile-dropdown
+.profile-settings-button:hover {
+
+  color: #44495e;
+
+  background: #eaecf1;
+
+  border-color: #cbd0da;
+}
+
+
+/* BUTTON ICONS */
+
+.header-profile-dropdown
+.profile-dropdown-button span:first-child {
+  font-size: 10px;
+}
+
+
+/*OLD DROPDOWN ITEM SUPPORT */
+
+.header-profile-dropdown
+.profile-dropdown-item {
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
+
+  height: 30px;
+
+  padding: 0 11px;
+
+  margin: 0;
+
+  border-radius: 8px;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  box-sizing: border-box;
+
+  cursor: pointer;
+
+  text-decoration: none;
+}
+
+
+/*OLD UPDATE BUTTON */
+
+.header-profile-dropdown
+.profile-dropdown-item:first-child {
+
+  color: #6655e8;
+
+  background: #f4f1ff;
+
+  border: 1px solid #dcd6ff;
+}
+
+.header-profile-dropdown
+.profile-dropdown-item:first-child:hover {
+
+  color: #5948d8;
+
+  background: #eae6ff;
+
+  border-color: #8170ee;
+}
+
+
+/*OLD REMOVE BUTTON */
+
+.header-profile-dropdown
+.profile-dropdown-danger {
+
+  color: #df3838;
+
+  background: #fff3f3;
+
+  border: 1px solid #f4cccc;
+}
+
+.header-profile-dropdown
+.profile-dropdown-danger:hover {
+
+  color: #c92e2e;
+
+  background: #ffe6e6;
+
+  border-color: #e58b8b;
+}
+
+
+/* HIDDEN FILE INPUT */
+
+.profile-file-input {
+  display: none;
+}
+
+
+/*PROFILE HOVER */
+
+.header-user:hover .header-avatar {
+  transform: scale(1.03);
+}
+
+
+/* IMPORTANT:SIDEBAR PROFILE DROPDOWN COMPLETELY DISABLED */
+
+.profile-area-wrapper .profile-dropdown {
+  display: none !important;
+}
+
+
+/* SIDEBAR PROFILE
+   No click/dropdown styling */
+
+.profile-area-wrapper .user-profile {
+  cursor: default;
+}
+
+.profile-area-wrapper .user-profile:hover .user-avatar {
+  transform: none;
+}
+
+
+/*   REMOVE SIDEBAR PROFILE ARROW
+*/
+
+.profile-area-wrapper .user-arrow {
+  display: none !important;
+}
+
+
+/* SIDEBAR AVATAR */
+
+.user-avatar {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #8170ee;
+
+  border: 2px solid #ffffff;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  display: block;
+}
+
+.user-avatar span {
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+
+/*SIDEBAR PROFILE NAME */
+
+.user-profile-name {
+  display: block;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #20204a;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .header-user-name {
+    font-size: 11px;
+    max-width: 140px;
+  }
+
+  .header-profile-wrapper
+  .header-profile-dropdown {
+
+    width: 300px;
+
+    right: -5px;
+  }
+
+  .profile-dropdown-actions {
+    gap: 7px;
+  }
+
+  .header-profile-dropdown
+  .profile-dropdown-button {
+
+    height: 28px;
+
+    padding: 0 8px;
+
+    font-size: 9px;
+  }
+
+  .header-profile-dropdown
+  .profile-dropdown-item {
+
+    height: 28px;
+
+    padding: 0 8px;
+
+    font-size: 9px;
+  }
+   /* Description box */
+.description-field-wrapper {
+  position: relative;
+}
+
+/* Textarea */
+.description-field-wrapper textarea {
+  width: 100%;
+  height: 150px;
+  padding: 12px;
+  padding-bottom: 50px;
+  box-sizing: border-box;
+  border: 1px solid #d9d9e2;
+  border-radius: 10px;
+  background: white;
+  resize: vertical;
+}
+
+/* Mic button */
+.description-mic-button {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+
+  width: 36px;
+  height: 36px;
+
+  border: 1px solid #ddd6ff;
+  border-radius: 8px;
+
+  background: #f5f2ff;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Mic hover */
+.description-mic-button:hover {
+  background: #ebe7ff;
+}
+
+/* Listening */
+.description-mic-button.is-listening {
+  background: #ffeaea;
+}
+
 }

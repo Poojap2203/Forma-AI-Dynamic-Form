@@ -21,4 +21,22 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Get all claims
+router.get("/", async (req, res) => {
+  try {
+    const claims = await Claim.find().sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: claims.length,
+      data: claims,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 module.exports = router;

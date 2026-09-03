@@ -89,4 +89,27 @@ router.put("/:id", async (req, res) => {
     });
   }
 });
+// Delete a claim
+router.delete("/:id", async (req, res) => {
+  try {
+    const claim = await Claim.findByIdAndDelete(req.params.id);
+
+    if (!claim) {
+      return res.status(404).json({
+        success: false,
+        message: "Claim not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Claim deleted successfully",
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 module.exports = router;

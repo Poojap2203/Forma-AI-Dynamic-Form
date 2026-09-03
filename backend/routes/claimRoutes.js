@@ -61,4 +61,32 @@ router.get("/:id", async (req, res) => {
     });
   }
 });
+// Update a claim
+router.put("/:id", async (req, res) => {
+  try {
+    const claim = await Claim.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!claim) {
+      return res.status(404).json({
+        success: false,
+        message: "Claim not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Claim updated successfully",
+      data: claim,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 module.exports = router;

@@ -711,6 +711,13 @@ function App() {
       ================================================= */}
 
       <main className="main-content">
+        <div className="claim-hero">
+
+    <img
+      src="/insurance-hero.png"
+      alt="Insurance protection with car"
+      className="claim-hero-image"
+    />
 
         {/* =================================================
             HEADER
@@ -972,12 +979,9 @@ function App() {
           </div>
 
         </header>
-        <div className="insurance-hero-reference">
-         <img
-         src="/insurance-hero.png"
-         alt="Insurance protection with car"
-             />
-               </div>
+        </div>
+      
+    
 
         {/* =================================================
             PAGE CONTENT

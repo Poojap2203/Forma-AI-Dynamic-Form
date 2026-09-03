@@ -5495,33 +5495,81 @@ textarea {
   background: #ffeaea;
 }
 }
- /* ================================
-   INSURANCE HERO - REFERENCE STYLE
-   ================================ */
+  /* =========================================
+   CLAIM HERO
+   ========================================= */
 
-.insurance-hero-reference {
+.claim-hero {
+  position: relative;
+
   width: 100%;
-  height: 185px;
-  margin: 18px 0 22px;
+  height: 245px;
+
+  margin: -32px 0 25px;
+
   overflow: hidden;
-  border-radius: 20px;
+
+  border-radius: 0 0 20px 20px;
+
   background: #f3efff;
-  border: 1px solid #e7e1f7;
+
   box-sizing: border-box;
 }
 
-.insurance-hero-reference img {
+
+/* Insurance image */
+
+.claim-hero-image {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
-  object-position: center;
+  object-position: center right;
+ z-index: 1;
+}
+
+.claim-hero .top-header {
+  position: relative;
+  z-index: 5;
+  margin: 0;
+  padding: 32px 0 0;
+}
+
+/* Header text */
+
+.claim-hero .header-text {
+  position: relative;
+  z-index: 10;
+}
+/* Header right side */
+
+.claim-hero .header-right {
+  position: relative;
+  z-index: 10;
+}
+
+.claim-hero .header-icon {
+  position: relative;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.95);
+}
+/* Profile */
+.claim-hero .header-user {
+  position: relative;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.95);
 }
 
 
-/* ================================
-   RESPONSIVE
-   ================================ */
+/*STEPPER */
+
+.claim-hero + .stepper {
+  position: relative;
+  z-index: 10;
+}
+/* RESPONSIVE*/
 
 @media (max-width: 900px) {
   .insurance-hero-reference {

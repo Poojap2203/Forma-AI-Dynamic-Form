@@ -1,4 +1,4 @@
- import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./App.css";
 
@@ -972,6 +972,12 @@ function App() {
           </div>
 
         </header>
+        <div className="insurance-hero-reference">
+         <img
+         src="/insurance-hero.png"
+         alt="Insurance protection with car"
+             />
+               </div>
 
         {/* =================================================
             PAGE CONTENT

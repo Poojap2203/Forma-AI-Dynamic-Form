@@ -5,11 +5,12 @@ require("dotenv").config();
 
 const app = express();
 const claimRoutes = require("./routes/claimRoutes");
-
+const aiRoutes = require("./routes/aiRoutes");
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use("/api/claims", claimRoutes);
+app.use("/api/ai", aiRoutes);
 
 // Test route
 app.get("/", (req, res) => {

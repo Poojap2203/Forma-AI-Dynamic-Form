@@ -88,6 +88,36 @@ ${text}
         .trim();
 
       extractedData = JSON.parse(cleanedResult);
+      // Validate extracted claim data
+const requiredFields = [
+  "incidentType",
+  "incidentDate",
+  "incidentTime",
+  "location",
+  "injured",
+  "injuredPerson",
+  "injuryDescription",
+  "policeReportFiled",
+  "policeStation",
+  "firNumber",
+  "incidentDescription",
+  "vehicle",
+  "vehicleNumber",
+  "damage",
+  "damageDescription",
+];
+
+const missingFields = requiredFields.filter(
+  (field) => !(field in extractedData)
+);
+
+if (missingFields.length > 0) {
+  return res.status(422).json({
+    success: false,
+    message: "Extracted data is missing required fields",
+    missingFields,
+  });
+}
     } catch (error) {
       return res.status(500).json({
         success: false,

@@ -21,9 +21,10 @@ font-family: Arial, sans-serif;
 /*APP*/
 
 .app {
-  min-height: 100vh;
+  min-height: 0;
   display: flex;
   background: #f6f5fb;
+
 }
 
 /*SIDEBAR */
@@ -2164,20 +2165,25 @@ font-family: Arial, sans-serif;
 
 /* PANEL */
 .notification-panel {
-  position: absolute;
-  top: 42px;
-  right: 0;
-  width: 330px;
+  position: fixed ;
+  top: 85px;
+  right: 20px;
+  width: 325px;
+  max-height: 710px;
   background: white;
   border: 1px solid #e5e2ed;
-  border-radius: 14px;
+  border-radius: 8px;
   box-shadow:
     0 15px 40px
     rgba(48, 40, 80, 0.18);
 
-  z-index: 1000;
+  z-index: 99999;
   overflow: hidden;
 }
+.notification-list {
+  max-height: 510px !important;
+  overflow-y: auto !important;
+} 
 
 
 /* HEADER */
@@ -5101,12 +5107,42 @@ STATUS UPDATE */
 
   .ai-summary .summary-actions {
     margin-top: 8px;
-  }    
-  .compact-sidebar {
-    min-height: calc(100vh - -210px) !important;
-    height: calc(100vh - -210px) !important;
+  }   
+  
+  @media (min-width: 1001px) {
+  .ai-summary {
+    height: calc(100vh - 188px);
     box-sizing: border-box;
+    transform: translateY(-127px);
   }
+}
+  
  
     
 }
+ @media (min-width: 1001px) {
+
+  .app {
+    min-height: 100vh;
+    height: auto;
+    align-items: stretch;
+  }
+
+  .sidebar {
+    min-height: 100vh;
+    height: auto;
+  }
+
+  .main-content {
+    min-height: 0;
+    height: auto;
+    padding-bottom: 0;
+  }
+
+  .content-layout {
+    margin-bottom: 0;
+  }
+
+}
+
+ 

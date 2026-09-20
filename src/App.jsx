@@ -478,13 +478,12 @@ function App() {
   ===================================================== */
 
   return (
-     <div className={`app ${activePage === "newClaim" ? "compact-page" : ""}`}>
+    <div className="app">
 
       {/* =================================================
           SIDEBAR
       ================================================= */}
-
-      <aside
+ <aside
   className={`sidebar ${
     activePage === "newClaim" ? "compact-sidebar" : ""
   }`}

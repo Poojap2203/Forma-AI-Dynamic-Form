@@ -14,16 +14,14 @@ import AIAssistant from "./components/AIAssistant";
 import Insights from "./components/Insights";
 import Settings from "./components/Settings";
 
+import { extractClaim } from "./services/api";
+
 function App() {
-  /* =====================================================
-     CURRENT STEP
-  ===================================================== */
+  /*CURRENT STEP */
 
   const [currentStep, setCurrentStep] = useState(2);
 
-  /* =====================================================
-     PROFILE
-  ===================================================== */
+  /*PROFILE*/
 
   const [profileName, setProfileName] = useState(
     localStorage.getItem("formaAI_name") || "Anjali Raghuwanshi"
@@ -39,18 +37,14 @@ function App() {
 
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
-  /* =====================================================
-     PROFILE INITIAL
-  ===================================================== */
+  /*PROFILE INITIAL */
 
   const profileInitial =
     profileName && profileName.trim().length > 0
       ? profileName.trim().charAt(0).toUpperCase()
       : "A";
 
-  /* =====================================================
-     LOAD PROFILE
-  ===================================================== */
+  /*LOAD PROFILE */
 
   const loadProfile = () => {
     setProfileName(
@@ -68,9 +62,7 @@ function App() {
     );
   };
 
-  /* =====================================================
-     PROFILE UPDATE EVENT
-  ===================================================== */
+  /*PROFILE UPDATE EVENT */
 
   useEffect(() => {
     loadProfile();
@@ -92,9 +84,7 @@ function App() {
     };
   }, []);
 
-  /* =====================================================
-     UPDATE PROFILE PICTURE
-  ===================================================== */
+  /* UPDATE PROFILE PICTURE*/
 
   const handleUpdateProfile = (event) => {
     const file = event.target.files?.[0];
@@ -138,9 +128,8 @@ function App() {
     event.target.value = "";
   };
 
-  /* =====================================================
-     REMOVE PROFILE PICTURE
-  ===================================================== */
+  /*  
+     REMOVE PROFILE PICTURE*/
 
   const handleRemoveProfile = () => {
     const confirmRemove = window.confirm(
@@ -163,18 +152,14 @@ function App() {
     );
   };
 
-  /* =====================================================
-     OPEN PROFILE SETTINGS
-  ===================================================== */
+  /*OPEN PROFILE SETTINGS*/
 
   const handleOpenProfileSettings = () => {
     setShowProfileMenu(false);
     setActivePage("settings");
   };
 
-  /* =====================================================
-     NOTIFICATIONS
-  ===================================================== */
+  /*NOTIFICATIONS*/
 
   const [showNotifications, setShowNotifications] =
     useState(false);
@@ -204,9 +189,7 @@ function App() {
     updateNotificationCount();
   }, []);
 
-  /* =====================================================
-     PAGE STATE
-  ===================================================== */
+  /* PAGE STATE*/
 
   const [activePage, setActivePage] =
     useState("newClaim");
@@ -217,9 +200,7 @@ function App() {
   const [draftLoaded, setDraftLoaded] =
     useState(false);
 
-  /* =====================================================
-     FORM DATA
-  ===================================================== */
+  /* FORM DATA*/
 
   const emptyFormData = {
     incidentType: "",
@@ -242,9 +223,289 @@ function App() {
   const [formData, setFormData] =
     useState(emptyFormData);
 
-  /* =====================================================
-     INCIDENT
-  ===================================================== */
+   const [aiText, setAiText] = useState("");
+   const [aiLoading, setAiLoading] = useState(false);
+ 
+/* AI CLAIM EXTRACTION */
+ 
+
+ const handleAIExtraction = async (text) => {
+  if (!text || !text.trim()) {
+    alert("Please describe your incident first.");
+    return null;
+  }
+
+  try {
+    const response = await extractClaim(text);
+
+    if (!response?.success || !response?.data) {
+      throw new Error(
+        response?.message || "Unable to extract claim information."
+      );
+    }
+
+    const extracted = response.data;
+
+    const updatedData = {
+      incidentType: extracted.incidentType || "",
+      date: extracted.incidentDate || "",
+      time: extracted.incidentTime || "",
+      location: extracted.location || "",
+
+      // BasicForm uses lowercase "yes" / "no"
+      injured:
+        typeof extracted.injured === "boolean"
+          ? extracted.injured
+            ? "yes"
+            : "no"
+          : extracted.injured || "",
+
+      person: extracted.injuredPerson || "",
+      injury: extracted.injuryDescription || "",
+
+      // BasicForm uses lowercase "yes" / "no"
+      policeReport:
+        typeof extracted.policeReportFiled === "boolean"
+          ? extracted.policeReportFiled
+            ? "yes"
+            : "no"
+          : extracted.policeReportFiled || "",
+
+      description: extracted.incidentDescription || "",
+
+      vehicleMake: "",
+      vehicleModel: "",
+      registration: extracted.vehicleNumber || "",
+      damageType: "",
+      severity: extracted.severity || "",
+      damageDescription: extracted.damageDescription || "",
+    };
+
+    // -----------------------------
+    // VEHICLE MAKE / MODEL
+    // -----------------------------
+    if (extracted.vehicle) {
+      const vehicleText = String(extracted.vehicle).toLowerCase();
+
+      const vehicleData = {
+        "Maruti Suzuki": [
+          "Alto",
+          "Swift",
+          "Baleno",
+          "Dzire",
+          "WagonR",
+          "Brezza",
+          "Ertiga",
+          "Ciaz",
+          "Grand Vitara",
+        ],
+        Hyundai: [
+          "i10",
+          "Grand i10",
+          "i20",
+          "Venue",
+          "Creta",
+          "Verna",
+          "Aura",
+          "Exter",
+          "Alcazar",
+          "Tucson",
+        ],
+        Honda: [
+          "City",
+          "Amaze",
+          "Elevate",
+          "Jazz",
+          "Civic",
+          "WR-V",
+        ],
+        Tata: [
+          "Nexon",
+          "Punch",
+          "Altroz",
+          "Harrier",
+          "Safari",
+          "Tiago",
+          "Tigor",
+        ],
+        Mahindra: [
+          "Thar",
+          "Scorpio",
+          "XUV300",
+          "XUV400",
+          "XUV700",
+          "Bolero",
+        ],
+        Toyota: [
+          "Fortuner",
+          "Innova",
+          "Glanza",
+          "Urban Cruiser",
+          "Hyryder",
+        ],
+        Kia: [
+          "Seltos",
+          "Sonet",
+          "Carens",
+          "EV6",
+        ],
+        MG: [
+          "Hector",
+          "Astor",
+          "Gloster",
+          "ZS EV",
+        ],
+        Renault: [
+          "Kwid",
+          "Kiger",
+          "Triber",
+          "Duster",
+        ],
+        Volkswagen: [
+          "Polo",
+          "Virtus",
+          "Taigun",
+          "Tiguan",
+        ],
+        Skoda: [
+          "Slavia",
+          "Kushaq",
+          "Kodiaq",
+          "Superb",
+        ],
+        Nissan: [
+          "Magnite",
+          "Kicks",
+        ],
+        Ford: [
+          "EcoSport",
+          "Endeavour",
+          "Figo",
+          "Aspire",
+        ],
+        Chevrolet: [
+          "Beat",
+          "Cruze",
+          "Spark",
+        ],
+        Jeep: [
+          "Compass",
+          "Meridian",
+          "Wrangler",
+        ],
+        BMW: [
+          "3 Series",
+          "5 Series",
+          "X1",
+          "X3",
+          "X5",
+        ],
+        "Mercedes-Benz": [
+          "C-Class",
+          "E-Class",
+          "GLA",
+          "GLC",
+        ],
+        Audi: [
+          "A4",
+          "A6",
+          "Q3",
+          "Q5",
+        ],
+        Volvo: [
+          "XC40",
+          "XC60",
+          "XC90",
+        ],
+        Tesla: [
+          "Model 3",
+          "Model Y",
+          "Model S",
+          "Model X",
+        ],
+        "Land Rover": [
+          "Defender",
+          "Range Rover",
+          "Discovery",
+        ],
+      };
+
+      const matchedMake = Object.keys(vehicleData).find((make) =>
+        vehicleText.includes(make.toLowerCase())
+      );
+
+      if (matchedMake) {
+        updatedData.vehicleMake = matchedMake;
+
+        const matchedModel = vehicleData[matchedMake].find((model) =>
+          vehicleText.includes(model.toLowerCase())
+        );
+
+        if (matchedModel) {
+          updatedData.vehicleModel = matchedModel;
+        }
+      }
+    }
+
+    // -----------------------------
+    // DAMAGE TYPE
+    // -----------------------------
+    if (Array.isArray(extracted.damage)) {
+      const damageText = extracted.damage
+        .join(" ")
+        .toLowerCase();
+
+      if (damageText.includes("front bumper")) {
+        updatedData.damageType = "Front Bumper";
+      } else if (damageText.includes("rear bumper")) {
+        updatedData.damageType = "Rear Bumper";
+      } else if (
+        damageText.includes("windshield") ||
+        damageText.includes("windscreen")
+      ) {
+        updatedData.damageType = "Windshield";
+      } else if (
+        damageText.includes("side door") ||
+        damageText.includes("door")
+      ) {
+        updatedData.damageType = "Side Door";
+      } else if (extracted.damage.length > 1) {
+        updatedData.damageType = "Multiple Areas";
+      } else if (extracted.damage.length === 1) {
+        updatedData.damageType = "Other";
+      }
+    }
+
+    // -----------------------------
+    // UPDATE EXISTING FORM
+    // -----------------------------
+    setFormData((previous) => ({
+      ...previous,
+      ...updatedData,
+    }));
+
+    setDraftLoaded(false);
+
+    // Keep existing flow
+    setActivePage("newClaim");
+    setCurrentStep(2);
+
+    alert("✨ Claim information extracted successfully!");
+
+    return updatedData;
+  } catch (error) {
+    console.error("AI Extraction Error:", error);
+
+    alert(
+      error.message ||
+        "Unable to extract claim information. Please make sure the backend is running."
+    );
+
+    return null;
+  }
+};
+
+  /* INCIDENT*/
 
   const handleIncidentContinue = (data) => {
     setFormData((previous) => ({
@@ -255,9 +516,7 @@ function App() {
     setCurrentStep(3);
   };
 
-  /* =====================================================
-     VEHICLE
-  ===================================================== */
+  /*VEHICLE */
 
   const handleVehicleContinue = (data) => {
     setFormData((previous) => ({
@@ -276,9 +535,7 @@ function App() {
     setCurrentStep(3);
   };
 
-  /* =====================================================
-     EDIT CLAIM
-  ===================================================== */
+  /* EDIT CLAIM*/
 
   const handleEditIncident = () => {
     setActivePage("newClaim");
@@ -290,9 +547,7 @@ function App() {
     setCurrentStep(3);
   };
 
-  /* =====================================================
-     SAVE COMPLETE DRAFT
-  ===================================================== */
+  /*SAVE COMPLETE DRAFT*/
 
   const handleSaveCompleteDraft = () => {
     localStorage.setItem(
@@ -305,9 +560,7 @@ function App() {
     );
   };
 
-  /* =====================================================
-     LOAD DRAFT
-  ===================================================== */
+  /*LOAD DRAFT */
 
   const handleLoadDraft = () => {
     try {
@@ -357,9 +610,7 @@ function App() {
     }
   };
 
-  /* =====================================================
-     NEW CLAIM
-  ===================================================== */
+  /* NEW CLAIM*/
 
   const handleNewClaim = () => {
     setActivePage("newClaim");
@@ -381,18 +632,14 @@ function App() {
     );
   };
 
-  /* =====================================================
-     TRACK CLAIM
-  ===================================================== */
+  /*TRACK CLAIM */
 
   const handleTrackClaim = (claim) => {
     setTrackingClaim(claim);
     setActivePage("claimTracking");
   };
 
-  /* =====================================================
-     USE TEMPLATE
-  ===================================================== */
+  /* USE TEMPLATE*/
 
   const handleUseTemplate = (template) => {
     setDraftLoaded(false);
@@ -480,9 +727,7 @@ function App() {
   return (
     <div className="app">
 
-      {/* =================================================
-          SIDEBAR
-      ================================================= */}
+      {/*SIDEBAR*/}
  <aside
   className={`sidebar ${
     activePage === "newClaim" ? "compact-sidebar" : ""
@@ -635,38 +880,31 @@ function App() {
 
         </nav>
 
-        {/* =================================================
-            AI MAGIC
-        ================================================= */}
-
         <div className="magic-box">
+  <h4 className="magic-title">✨ AI Magic Input</h4>
 
-          <h4 className="magic-title">
-            ✨ AI Magic Input
-          </h4>
+  <p>
+    Describe your incident in your own words
+    and let our AI understand and fill the
+    form intelligently.
+  </p>
 
-          <p>
-            Describe your incident in your own words
-            and let our AI understand and fill the
-            form intelligently.
-          </p>
+  <textarea
+    value={aiText}
+    onChange={(e) => setAiText(e.target.value)}
+    placeholder="Example: My car met with an accident yesterday in Bhopal..."
+    rows="4"
+  />
 
-          <button
-            type="button"
-            onClick={() => {
-              setActivePage("newClaim");
-              setCurrentStep(2);
-            }}
-          >
-            Try It Now →
-          </button>
+  <button
+    type="button"
+    onClick={() => handleAIExtraction(aiText)}
+  >
+    ✨ Extract Claim
+  </button>
+</div>
 
-        </div>
-
-        {/* =================================================
-            SIDEBAR PROFILE
-            STATIC ONLY — NO CLICK / NO ARROW / NO DROPDOWN
-        ================================================= */}
+        {/*SIDEBAR PROFILE*/}
 
         <div className="profile-area-wrapper">
 
@@ -709,9 +947,7 @@ function App() {
 
       </aside>
 
-      {/* =================================================
-          MAIN CONTENT
-      ================================================= */}
+      {/*MAIN CONTENT */}
 
       <main className="main-content">
         <div className="claim-hero">
@@ -722,9 +958,7 @@ function App() {
       className="claim-hero-image"
     />
 
-        {/* =================================================
-            HEADER
-        ================================================= */}
+        {/* HEADER */}
 
         <header className="top-header">
 
@@ -783,9 +1017,7 @@ function App() {
               ?
             </button>
 
-            {/* =================================================
-                NOTIFICATIONS
-            ================================================= */}
+            {/* NOTIFICATIONS */}
 
             <div className="notification-wrapper">
 
@@ -825,9 +1057,7 @@ function App() {
 
             </div>
 
-            {/* =================================================
-                HEADER PROFILE
-            ================================================= */}
+            {/* HEADER PROFILE */}
 
             <div className="header-profile-wrapper">
 
@@ -875,11 +1105,8 @@ function App() {
 
               </div>
 
-              {/* =================================================
-                  HEADER PROFILE DROPDOWN
-
-                  DIRECTLY BELOW PROFILE
-              ================================================= */}
+              {/* HEADER PROFILE DROPDOWN DIRECTLY BELOW PROFILE
+               */}
 
               {showProfileMenu && (
 
@@ -986,9 +1213,7 @@ function App() {
       
     
 
-        {/* =================================================
-            PAGE CONTENT
-        ================================================= */}
+        {/* PAGE CONTENT */}
 
         {activePage === "templates" ? (
 
@@ -1051,9 +1276,7 @@ function App() {
 
         ) : (
 
-          /* =================================================
-             NEW CLAIM
-          ================================================= */
+          /*NEW CLAIM*/
 
           <>
 
